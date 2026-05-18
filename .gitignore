@@ -1,0 +1,25 @@
+# ROS2 build artifacts
+ros2_ws/build/
+ros2_ws/install/
+ros2_ws/log/
+
+# Data
+bags/*
+!bags/.gitkeep
+*.db3
+*.mcap
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Local config
+.env
+*.log
+
+# Models / weights
+models/
+*.pt
+*.onnx
+*.engine
