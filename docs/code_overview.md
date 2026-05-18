@@ -1,0 +1,421 @@
+# Code Overview
+
+This document explains the project structure and where to change what.
+
+## Repository structure
+
+```text
+go2_thesis/
+├── bags/
+├── config/
+│   ├── cyclone/
+│   ├── go2/
+│   └── rviz/
+├── docker/
+│   ├── docker-compose.yaml
+│   ├── Dockerfile.humble
+│   └── ros_entrypoint.sh
+├── docs/
+├── ros2_ws/
+│   ├── build/
+│   ├── install/
+│   ├── log/
+│   └── src/
+│       ├── go2_bringup/
+│       ├── risk_map_projection/
+│       └── semantic_risk_node/
+├── scripts/
+├── third_party/
+├── .gitignore
+└── README.md
+```
+
+## `docker/`
+
+Contains the Docker-based ROS 2 development environment.
+
+### `docker/Dockerfile.humble`
+
+Builds the Docker image `go2_thesis:humble`.
+
+Main responsibilities:
+
+```text
+base image: ROS 2 Humble Desktop
+install ROS 2 tools and dependencies
+install CycloneDDS
+install RViz, rosbag, tf2, cv_bridge, PCL, grid_map messages
+install basic Python packages
+clone and build unitree_ros2
+set workspace path to /workspaces/go2_thesis
+```
+
+Change this file when adding system-level dependencies, e.g.:
+
+```text
+new apt packages
+new pip packages
+additional third-party tools that should be inside the image
+```
+
+After changes:
+
+```bash
+./scripts/build.sh
+```
+
+### `docker/docker-compose.yaml`
+
+Defines how the container is started.
+
+Important settings:
+
+```yaml
+image: go2_thesis:humble
+container_name: go2_thesis_humble
+network_mode: host
+volumes:
+  - ..:/workspaces/go2_thesis
+```
+
+`network_mode: host` is important for ROS 2/DDS and Go2 communication.
+
+The volume mount means:
+
+```text
+host project folder  ->  /workspaces/go2_thesis inside container
+```
+
+Change this file when adjusting:
+
+```text
+container name
+image name
+mounted folders
+environment variables
+GPU access
+network behavior
+```
+
+### `docker/ros_entrypoint.sh`
+
+Runs when the container starts.
+
+Main responsibilities:
+
+```bash
+source /opt/ros/humble/setup.bash
+source /opt/unitree_ros2/cyclonedds_ws/install/setup.bash
+source /workspaces/go2_thesis/ros2_ws/install/setup.bash
+export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+```
+
+If `ROS_NET_IFACE` is set, it also creates a CycloneDDS interface configuration.
+
+Example:
+
+```bash
+ROS_NET_IFACE=eno1 ./scripts/run.sh
+```
+
+Change this file when adjusting ROS environment setup.
+
+## `scripts/`
+
+Convenience scripts for common commands.
+
+### `scripts/build.sh`
+
+Builds the Docker image.
+
+Use after changing Docker files or dependencies:
+
+```bash
+./scripts/build.sh
+```
+
+### `scripts/run.sh`
+
+Starts the container and opens a shell inside it:
+
+```bash
+./scripts/run.sh
+```
+
+### `scripts/shell.sh`
+
+Opens another shell in the running container:
+
+```bash
+./scripts/shell.sh
+```
+
+### `scripts/stop.sh`
+
+Stops the container:
+
+```bash
+./scripts/stop.sh
+```
+
+### `scripts/setup_go2_ethernet.sh`
+
+Configures the wired Ethernet interface for Go2 communication.
+
+Example:
+
+```bash
+./scripts/setup_go2_ethernet.sh eno1
+```
+
+Use the wired Ethernet interface from:
+
+```bash
+ip -br link
+```
+
+For example:
+
+```text
+eno1     wired Ethernet, use this for Go2
+wlo1     Wi-Fi, do not use for Go2 Ethernet
+docker0  Docker bridge, do not use
+lo       loopback, do not use
+```
+
+### `scripts/robot_net_check.sh`
+
+Runs network and ROS 2 checks for Go2 debugging:
+
+```bash
+./scripts/robot_net_check.sh
+```
+
+Use inside the container after starting it with `ROS_NET_IFACE=<iface>`.
+
+### `scripts/record_go2_bag.sh`
+
+Records selected Go2 topics to `bags/`.
+
+The topic list is a template. Update it after checking the real Go2 topics with:
+
+```bash
+ros2 topic list
+```
+
+## `ros2_ws/`
+
+The ROS 2 workspace.
+
+### `ros2_ws/src/go2_bringup/`
+
+Package for launch files and Go2 system startup.
+
+Use this package for:
+
+```text
+read-only Go2 sensor bringup
+RViz launch files
+TF/static transform launch files
+mapping pipeline launch files
+```
+
+### `ros2_ws/src/semantic_risk_node/`
+
+Package for semantic perception.
+
+Target role:
+
+```text
+RGB image input
+semantic segmentation / open-vocab segmentation
+risk image output
+preferred image output
+debug overlay output
+```
+
+Expected future topics:
+
+```text
+input:  /camera/color/image_raw
+output: /semantic/risk_image
+output: /semantic/preferred_image
+output: /semantic/debug_overlay
+```
+
+### `ros2_ws/src/risk_map_projection/`
+
+Package for projecting 2D risk into 3D/2.5D space.
+
+Target role:
+
+```text
+2D risk image
++ depth image or LiDAR point cloud
++ camera calibration
++ TF transforms
+-> risk pointcloud or grid-map layer
+```
+
+Expected future topics:
+
+```text
+input:  /semantic/risk_image
+input:  /camera/depth/image_raw or /utlidar/cloud
+input:  /camera/camera_info
+input:  /tf
+output: /risk/pointcloud
+output: /risk/grid_map
+```
+
+### `ros2_ws/build/`, `ros2_ws/install/`, `ros2_ws/log/`
+
+Generated by `colcon build`.
+
+Do not edit manually. Do not commit.
+
+Clean rebuild:
+
+```bash
+cd /workspaces/go2_thesis/ros2_ws
+rm -rf build install log
+colcon build --symlink-install
+source install/setup.bash
+```
+
+## `config/`
+
+Configuration files.
+
+### `config/cyclone/`
+
+For CycloneDDS XML configuration files.
+
+Currently, the network interface can be set dynamically:
+
+```bash
+ROS_NET_IFACE=eno1 ./scripts/run.sh
+```
+
+### `config/go2/`
+
+For Go2-specific topics, frames, and sensor settings.
+
+Suggested files:
+
+```text
+topics.yaml
+frames.yaml
+sensor_extrinsics.yaml
+```
+
+### `config/rviz/`
+
+For saved RViz layouts.
+
+Start with:
+
+```bash
+rviz2 -d config/rviz/<file>.rviz
+```
+
+## `bags/`
+
+For recorded ROS 2 bags.
+
+Bags are ignored by Git because they can become large.
+
+Record:
+
+```bash
+./scripts/record_go2_bag.sh
+```
+
+Replay:
+
+```bash
+ros2 bag play bags/<bag_name>
+```
+
+## `third_party/`
+
+For external repositories.
+
+Possible future repositories:
+
+```text
+elevation_mapping_gpu_ros2
+muse
+other mapping or state-estimation tools
+```
+
+Do not add large generated files here.
+
+## `.gitignore`
+
+Keeps generated and large files out of Git.
+
+Ignored examples:
+
+```text
+ros2_ws/build/
+ros2_ws/install/
+ros2_ws/log/
+bags/
+models/
+*.pt
+*.onnx
+*.engine
+```
+
+## Common changes
+
+### Add a new ROS 2 package
+
+Inside the container:
+
+```bash
+cd /workspaces/go2_thesis/ros2_ws/src
+ros2 pkg create <package_name> --build-type ament_python --dependencies rclpy
+cd /workspaces/go2_thesis/ros2_ws
+colcon build --symlink-install
+source install/setup.bash
+```
+
+### Add a new system dependency
+
+Edit:
+
+```text
+docker/Dockerfile.humble
+```
+
+Then rebuild:
+
+```bash
+./scripts/build.sh
+```
+
+### Change Go2 Ethernet interface
+
+Use the correct wired interface from:
+
+```bash
+ip -br link
+```
+
+Then:
+
+```bash
+./scripts/setup_go2_ethernet.sh <interface>
+ROS_NET_IFACE=<interface> ./scripts/run.sh
+```
+
+### Change Go2 topic names
+
+Update:
+
+```text
+scripts/record_go2_bag.sh
+config/go2/topics.yaml
+```
