@@ -23,3 +23,6 @@ models/
 *.pt
 *.onnx
 *.engine
+
+# VS Code C/C++ cache/database
+.vscode/

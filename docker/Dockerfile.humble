@@ -19,6 +19,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     nano \
     vim \
     htop \
+    sudo \
     net-tools \
     iputils-ping \
     python3-pip \
@@ -27,6 +28,19 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-vcstool \
     python3-argcomplete \
     libyaml-cpp-dev \
+    libgl1 \
+    libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    libxrender1 \
+    libeigen3-dev \
+    libpcl-dev \
+    ros-humble-rqt-image-view \
+    ros-humble-compressed-image-transport \
+    ros-humble-image-proc \
+    ros-humble-depth-image-proc \
+    ros-humble-tf2-sensor-msgs \
+    ros-humble-message-filters \
     ros-humble-rmw-cyclonedds-cpp \
     ros-humble-rosidl-generator-dds-idl \
     ros-humble-tf2-tools \
@@ -46,16 +60,19 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-humble-pcl-ros \
     ros-humble-pcl-conversions \
     ros-humble-rosbag2-storage-mcap \
+    ros-humble-grid-map-core \
+    ros-humble-grid-map-ros \
+    ros-humble-grid-map-cv \
+    ros-humble-grid-map-filters \
+    ros-humble-grid-map-visualization \
+    ros-humble-grid-map-rviz-plugin \
+    ros-humble-tf2-eigen \
+    ros-humble-eigen3-cmake-module \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install --no-cache-dir \
-    numpy \
-    scipy \
-    opencv-python \
-    pillow \
-    pyyaml \
-    tqdm \
-    matplotlib
+COPY requirements/perception.txt /tmp/perception.txt
+RUN python3 -m pip install --upgrade pip && \
+    python3 -m pip install --no-cache-dir --ignore-installed -r /tmp/perception.txt
 
 RUN git clone --depth 1 https://github.com/unitreerobotics/unitree_ros2.git /opt/unitree_ros2 && \
     /bin/bash -c "source /opt/ros/humble/setup.bash && \

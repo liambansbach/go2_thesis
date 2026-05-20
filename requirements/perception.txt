@@ -1,0 +1,24 @@
+numpy
+scipy
+opencv-python-headless
+pillow
+pyyaml
+tqdm
+matplotlib
+
+--extra-index-url https://download.pytorch.org/whl/cu128
+torch
+torchvision
+
+transformers
+accelerate
+safetensors
+huggingface-hub
+
+ultralytics
+
+onnx
+onnxruntime-gpu
+
+# GPU array computing, needed by elevation_mapping_gpu_ros2 / CuPy-based mapping
+cupy-cuda12x
