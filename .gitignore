@@ -2,6 +2,7 @@
 ros2_ws/build/
 ros2_ws/install/
 ros2_ws/log/
+third_party/
 
 # Data
 bags/*
@@ -26,3 +27,6 @@ models/
 
 # VS Code C/C++ cache/database
 .vscode/
+
+# private files
+TODO.md
