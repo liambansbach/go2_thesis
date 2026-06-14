@@ -1412,8 +1412,8 @@ Stephen Brawner (brawner@gmail.com)
     name="realsense_joint"
     type="fixed">
     <origin
-      xyz="0.32 0 0.1"
-      rpy="0 0.05 0" />
+      xyz="0.34 0 0.12"
+      rpy="0 0 0" />
     <parent
       link="base" />
     <child

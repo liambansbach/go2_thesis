@@ -111,11 +111,11 @@ def generate_launch_description():
             'publish_lidar_tf',
             default_value='false',
             description=(
-                'Publish experimental base->utlidar_lidar static TF for '
+                'Publish experimental radar->utlidar_lidar static TF for '
                 'offline visual alignment only.'
             ),
         ),
-        DeclareLaunchArgument('lidar_parent_frame', default_value='base'),
+        DeclareLaunchArgument('lidar_parent_frame', default_value='radar'),
         DeclareLaunchArgument(
             'lidar_child_frame',
             default_value='utlidar_lidar',
@@ -123,9 +123,9 @@ def generate_launch_description():
         DeclareLaunchArgument('lidar_x', default_value='0.0'),
         DeclareLaunchArgument('lidar_y', default_value='0.0'),
         DeclareLaunchArgument('lidar_z', default_value='0.0'),
-        DeclareLaunchArgument('lidar_roll', default_value='-2.913'),
-        DeclareLaunchArgument('lidar_pitch', default_value='-0.13'),
-        DeclareLaunchArgument('lidar_yaw', default_value='-1.075'),
+        DeclareLaunchArgument('lidar_roll', default_value='0.0'),
+        DeclareLaunchArgument('lidar_pitch', default_value='0.0'),
+        DeclareLaunchArgument('lidar_yaw', default_value='-2.09439510239'), # -120 degrees to roughly align the front of the LiDAR FOV with the front of the robot, based on visual inspection of the cloud in RViz. This is not a verified physical calibration.
         DeclareLaunchArgument('publish_odom_tf', default_value='false'),
         DeclareLaunchArgument(
             'odom_topic',
