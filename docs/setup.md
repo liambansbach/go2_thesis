@@ -134,7 +134,7 @@ Inside the container:
 
 ```bash
 cd /workspaces/go2_thesis/ros2_ws
-colcon build --symlink-install
+colcon build
 source install/setup.bash
 ```
 

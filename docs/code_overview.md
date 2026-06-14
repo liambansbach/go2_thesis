@@ -49,12 +49,14 @@ Use `scripts/README_scripts.md` for detailed commands and launch-wrapper example
 Go2-W bringup and debug package.
 
 Change here for:
-- launch wrappers such as `go2w_realsense_d456.launch.py`, `go2w_nvblox.launch.py`, `go2w_debug_rviz.launch.py`, and `go2w_tf.launch.py`
+- launch wrappers such as `go2w_nvblox.launch.py`, `go2w_debug_rviz.launch.py`, and `go2w_tf.launch.py`
 - read-only TF helpers and visualization bridges
 - package-installed RViz profiles in `rviz/`
 - package-owned Nvblox config in `config/nvblox/`
 
 Do not change odometry logic, LowState mapping, sensor transforms, Docker behavior, or Nvblox parameters unless that is the explicit task.
+
+The local RealSense launch wrapper is for optional local USB camera development only. Normal live Go2-W tests consume onboard-published camera topics over Ethernet.
 
 ## `ros2_ws/src/go2w_description/`
 

@@ -4,7 +4,41 @@ This guide is for static-scene Go2-W Nvblox feasibility tests with a front-mount
 
 Keep the stack on Ubuntu 22.04, ROS 2 Humble, and Isaac ROS release-3.x. Start with RealSense depth-only/static TSDF behavior, then evaluate optional LiDAR fusion separately after the camera-only result is understood. Do not enable human, dynamic, or segmentation Nvblox pipelines for this harness.
 
+## Nvblox Setup Notes
+
+Before live testing, check the local container setup:
+
+```bash
+./scripts/setup/check_nvblox_setup.sh
+```
+
+This checks ROS, CycloneDDS, NVIDIA runtime visibility, installed Nvblox/Isaac/RealSense packages, and available Nvblox RealSense example arguments when present.
+
+The official Nvblox quickstart assets are not committed with this repository. Download them only when needed:
+
+```bash
+./scripts/setup/download_nvblox_assets.sh
+```
+
+Run the official Isaac ROS Nvblox quickstart manually:
+
+```bash
+ros2 launch nvblox_examples_bringup isaac_sim_example.launch.py \
+  rosbag:=/workspaces/go2_thesis/bags/isaac_ros_assets/isaac_ros_nvblox/quickstart \
+  navigation:=False
+```
+
+That quickstart checks Nvblox, GPU, and RViz at a basic level. It does not validate the Go2-W RealSense mount, Go2-W TF, or robot odometry.
+
 ## 1. Preflight
+
+The real thesis setup is an Ethernet topic-consumer setup:
+
+- The D456 is connected onboard to the Go2-W Jetson/onboard computer, not to the laptop.
+- The laptop connects to the Go2-W over Ethernet.
+- The laptop Docker container should normally consume existing `/camera/...`, `/utlidar/...`, odometry, and TF topics over DDS.
+- The custom onboard RealSense service should already publish RealSense topics in `ROS_DOMAIN_ID=0`.
+- Do not run the laptop/container RealSense launch during normal live robot tests.
 
 On the host:
 
@@ -13,12 +47,6 @@ cd ~/Desktop/projects/go2_thesis
 git status --short
 ip -br addr
 nvidia-smi
-```
-
-Check that the D456 is plugged in and visible:
-
-```bash
-v4l2-ctl --list-devices
 ```
 
 Create a live-test log folder before launching anything:
@@ -58,20 +86,34 @@ Expected stack: Ubuntu 22.04 container, ROS 2 Humble, CycloneDDS.
 
 ## 3. RealSense Health Check
 
-Terminal 1 inside the container:
+For normal live Go2-W tests, do not launch a local RealSense driver. Confirm that the onboard service is already publishing camera topics over DDS:
 
 ```bash
-ros2 launch go2_bringup go2w_realsense_d456.launch.py
+./scripts/inspect/robot_net_check.sh
+./scripts/inspect/inspect_realsense_topics.sh
+ros2 topic list -t | grep -E "/camera|/utlidar|/odom|/tf"
+ros2 topic hz /camera/depth/image_rect_raw
+ros2 topic hz /camera/color/image_raw
+ros2 topic echo /camera/depth/camera_info --once
 ```
 
-Terminal 2:
+If the onboard service uses a different camera namespace, use the visible `/camera/...` topic names from `ros2 topic list -t` and `docs/reference/topics/go2w_topics.yaml`.
+
+Open the sensor RViz profile after camera topics are visible:
 
 ```bash
-./scripts/inspect/inspect_realsense_topics.sh
 ros2 launch go2_bringup go2w_debug_rviz.launch.py rviz_config:=go2w_sensor_debug.rviz
 ```
 
-Confirm color, depth, aligned depth, and camera info topics. Common names are documented in `docs/reference/topics/go2w_topics.yaml`.
+Only run `ros2 launch go2_bringup go2w_realsense_d456.launch.py` or `./scripts/run/run_realsense_d456.sh` in optional local USB camera development mode, when the D456 is physically connected to the laptop/container. Do not run it during normal live Go2-W tests because the RealSense is expected to be published by the onboard Jetson service.
+
+Optional onboard checks, without writing passwords into docs:
+
+```bash
+ssh unitree@192.168.123.18
+systemctl status go2-realsense-domain0.service --no-pager
+ros2 topic list -t | grep camera
+```
 
 ## 4. Go2-W Topic Health Check
 
@@ -101,13 +143,13 @@ Start with RealSense-only Nvblox. Do not add LiDAR fusion until the camera-only 
 ros2 launch go2_bringup go2w_nvblox.launch.py \
   use_rviz:=true \
   use_sim_time:=false \
-  launch_realsense:=true \
+  launch_realsense:=false \
   global_frame:=odom \
   voxel_size:=0.08 \
   enable_lidar:=false
 ```
 
-The wrapper loads `go2_bringup/config/nvblox/go2w_static_realsense.yaml`, sets `mapping_type:=static_tsdf`, enables depth and TF transforms, disables segmentation and topic transforms, and remaps RealSense topics into Nvblox `camera_0` inputs. If your RealSense wrapper publishes different names, override the visible launch arguments:
+The wrapper loads `go2_bringup/config/nvblox/go2w_static_realsense.yaml`, sets `mapping_type:=static_tsdf`, enables depth and TF transforms, disables segmentation and topic transforms, and remaps existing RealSense topics into Nvblox `camera_0` inputs. If the onboard RealSense service publishes different names, override the visible launch arguments:
 
 ```bash
 ros2 launch go2_bringup go2w_nvblox.launch.py \
@@ -124,6 +166,21 @@ ros2 launch nvblox_examples_bringup realsense_example.launch.py --show-args
 ```
 
 The wrapper is best-effort across Isaac ROS Nvblox package versions. It includes this repository's Nvblox RViz debug layout when `use_rviz:=true`.
+
+### Optional Local USB Camera Development Mode
+
+Use this mode only when the D456 is physically connected to the laptop/container for local USB development. It is not the normal live Go2-W workflow.
+
+```bash
+v4l2-ctl --list-devices  # optional local USB/onboard diagnostic only
+ros2 launch go2_bringup go2w_realsense_d456.launch.py  # optional local USB camera development only
+```
+
+For local USB Nvblox development, the wrapper can launch RealSense:
+
+```bash
+ros2 launch go2_bringup go2w_nvblox.launch.py use_rviz:=true use_sim_time:=false launch_realsense:=true  # optional local USB camera development only
+```
 
 ## 6. Static Transform
 
@@ -267,12 +324,21 @@ Capture:
 No RealSense topics:
 
 ```bash
-v4l2-ctl --list-devices
-ros2 launch go2_bringup go2w_realsense_d456.launch.py
-./scripts/inspect/inspect_realsense_topics.sh
+./scripts/inspect/robot_net_check.sh
+ros2 topic list -t | grep -E "/camera|realsense|depth|color"
+ros2 topic hz /camera/depth/image_rect_raw
+ros2 topic hz /camera/color/image_raw
 ```
 
-Check USB cable, permissions, and whether another process owns the camera.
+For normal live tests, first debug DDS/network visibility and the onboard RealSense service. Optional onboard checks:
+
+```bash
+ssh unitree@192.168.123.18
+systemctl status go2-realsense-domain0.service --no-pager
+ros2 topic list -t | grep camera
+```
+
+Use `v4l2-ctl --list-devices` only on the Jetson/onboard computer, or in optional local USB camera development mode when the D456 is physically connected to the laptop/container.
 
 No LiDAR topics:
 

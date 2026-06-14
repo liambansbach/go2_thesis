@@ -39,7 +39,6 @@ Use `./scripts/docker/run.sh` without `ROS_NET_IFACE` for offline builds, bag re
 - `docs/workflow.md`: compact daily workflow cheat sheet.
 - `scripts/README_scripts.md`: detailed script and launch-wrapper reference.
 - `docs/go2w_nvblox_live_test.md`: detailed Go2-W RealSense/Nvblox live-test guide.
-- `docs/nvblox_testing.md`: short Nvblox setup and quickstart notes.
 - `docs/code_overview.md`: where to change what.
 
 ## Project Layout

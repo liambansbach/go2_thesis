@@ -1,6 +1,6 @@
 # Daily Workflow
 
-Compact command sheet for normal Go2-W development. See `docs/setup.md` for first-time setup, `scripts/README_scripts.md` for script details, and `docs/go2w_nvblox_live_test.md` for the full live Nvblox procedure.
+Compact command sheet for normal Go2-W development. See `docs/setup.md` for first-time setup, `scripts/README_scripts.md` for script details, and `docs/go2w_nvblox_live_test.md` for Nvblox setup notes and the full live procedure.
 
 ## Start Container
 
@@ -17,6 +17,8 @@ ip -br addr
 ./scripts/setup/setup_go2_ethernet.sh <iface>
 ROS_NET_IFACE=<iface> ./scripts/docker/run.sh
 ```
+
+-> iface is the Ethernet interface connected to the Go2-W, e.g., `eno1` or `enp0s3`...
 
 Open a second shell:
 
@@ -36,7 +38,7 @@ Inside the container:
 
 ```bash
 cd /workspaces/go2_thesis/ros2_ws
-colcon build --symlink-install
+colcon build
 source install/setup.bash
 ```
 
@@ -83,4 +85,4 @@ ros2 launch go2_bringup go2w_debug_rviz.launch.py rviz_config:=go2w_tf_robot_deb
 
 ## Nvblox
 
-Use `docs/nvblox_testing.md` for setup checks and local quickstarts. Use `docs/go2w_nvblox_live_test.md` for the detailed Go2-W live-test flow.
+Use `docs/go2w_nvblox_live_test.md` for Nvblox setup checks, local quickstart notes, and the detailed Go2-W live-test flow.
