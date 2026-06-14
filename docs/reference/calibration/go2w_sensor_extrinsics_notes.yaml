@@ -1,0 +1,25 @@
+# Go2-W sensor extrinsics notes.
+#
+# TODO: Rough/manual-measurement-required.
+# These values are intentionally placeholders for planning and launch argument
+# defaults only. Do not use them as truth for final evaluation, thesis metrics,
+# or any claim about map quality. Measure the RealSense D456 mount relative to
+# the real Go2-W base and verify the TF direction in RViz/tf2 before live tests.
+
+realsense_d456_to_base_link:
+  parent_frame: base_link
+  child_frame: camera_link
+  transform_direction: parent_to_child
+  translation_m:
+    x: 0.25
+    y: 0.0
+    z: 0.18
+  rotation_rpy_rad:
+    roll: 0.0
+    pitch: 0.0
+    yaw: 0.0
+  quality: TODO_ROUGH_MANUAL_MEASUREMENT_REQUIRED
+  notes:
+    - Front-mounted RealSense D456 placeholder relative to Go2-W base.
+    - Confirm camera optical frame orientation from the RealSense wrapper.
+    - Prefer measured CAD/caliper values before comparing Nvblox results.

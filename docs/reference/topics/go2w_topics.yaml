@@ -1,0 +1,98 @@
+# Go2-W live Nvblox feasibility topic candidates.
+#
+# Confirm live topic names with:
+#   ros2 topic list -t
+#   ros2 topic info -v <topic>
+#   ros2 topic echo <topic> --once
+#
+# Topic names vary between RealSense wrapper versions and Unitree firmware/software
+# versions. Treat this file as a checklist, not as ground truth.
+
+realsense_d456:
+  color_image:
+    primary: /camera/camera/color/image_raw
+    alternatives:
+      - /camera/color/image_raw
+  depth_image:
+    primary: /camera/camera/depth/image_rect_raw
+    alternatives:
+      - /camera/depth/image_rect_raw
+  aligned_depth_image:
+    primary: /camera/camera/aligned_depth_to_color/image_raw
+    alternatives:
+      - /camera/aligned_depth_to_color/image_raw
+  camera_info:
+    color:
+      primary: /camera/camera/color/camera_info
+      alternatives:
+        - /camera/color/camera_info
+    depth:
+      primary: /camera/camera/depth/camera_info
+      alternatives:
+        - /camera/depth/camera_info
+    aligned_depth:
+      primary: /camera/camera/aligned_depth_to_color/camera_info
+      alternatives:
+        - /camera/aligned_depth_to_color/camera_info
+  pointcloud_optional:
+    primary: /camera/camera/points
+    alternatives:
+      - /camera/points
+    note: Disabled by default in Go2-W RealSense launch wrappers.
+
+unitree_4d_lidar:
+  pointcloud_candidates:
+    - /utlidar/cloud
+    - /utlidar/cloud_base
+    - /utlidar/cloud_deskewed
+  map_debug_candidates:
+    - /utlidar/grid_map
+    - /utlidar/height_map
+    - /utlidar/height_map_array
+    - /utlidar/range_map
+    - /utlidar/range_info
+    - /utlidar/voxel_map
+    - /utlidar/voxel_map_compressed
+  imu_candidates:
+    - /utlidar/imu
+
+go2w_odometry:
+  candidates:
+    - /utlidar/robot_odom
+    - /uslam/frontend/odom
+    - /uslam/localization/odom
+    - /lio_sam_ros2/mapping/odometry
+  path_candidates:
+    - /uslam/navigation/global_path
+
+go2w_state:
+  common_topics:
+    - /tf
+    - /tf_static
+    - /sportmodestate
+    - /lf/sportmodestate
+    - /lowstate
+    - /lf/lowstate
+    - /wirelesscontroller
+
+tf:
+  dynamic: /tf
+  static: /tf_static
+
+nvblox_outputs:
+  topic_patterns:
+    - nvblox
+    - mesh
+    - esdf
+    - tsdf
+    - occupancy
+    - distance_slice
+    - map_slice
+    - voxel
+  likely_debug_topics:
+    - /nvblox_node/mesh
+    - /nvblox_node/static_map_slice
+    - /nvblox_node/dynamic_map_slice
+    - /nvblox_node/esdf_pointcloud
+    - /nvblox_node/tsdf_pointcloud
+  note: Exact Nvblox topics depend on the installed Isaac ROS Nvblox launch and parameters.

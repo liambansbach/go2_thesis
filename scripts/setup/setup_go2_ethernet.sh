@@ -1,10 +1,16 @@
 #!/usr/bin/env bash
 set -e
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+cd "$REPO_ROOT"
+
+# example usage:
+# ./scripts/setup/setup_go2_ethernet.sh eno1
 
 IFACE="${1:-}"
 
 if [ -z "$IFACE" ]; then
-  echo "Usage: ./scripts/setup_go2_ethernet.sh <network-interface>"
+  echo "Usage: ./scripts/setup/setup_go2_ethernet.sh <network-interface>"
   echo ""
   echo "Available interfaces:"
   ip -br link

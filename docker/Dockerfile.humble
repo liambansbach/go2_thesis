@@ -10,16 +10,44 @@ ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
 ENV ROS_DOMAIN_ID=0
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    gnupg \
+    lsb-release \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN CUDA_REPO_ARCH="$(dpkg --print-architecture)" && \
+    if [ "$CUDA_REPO_ARCH" = "amd64" ]; then CUDA_REPO_ARCH="x86_64"; fi && \
+    if [ "$CUDA_REPO_ARCH" = "arm64" ]; then CUDA_REPO_ARCH="sbsa"; fi && \
+    curl -fsSL "https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/${CUDA_REPO_ARCH}/3bf863cc.pub" \
+    | gpg --dearmor -o /usr/share/keyrings/cuda-archive-keyring.gpg && \
+    echo "deb [signed-by=/usr/share/keyrings/cuda-archive-keyring.gpg] https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/${CUDA_REPO_ARCH}/ /" \
+    > /etc/apt/sources.list.d/cuda-ubuntu2204.list && \
+    curl -fsSL https://isaac.download.nvidia.com/isaac-ros/repos.key \
+    | gpg --dearmor -o /usr/share/keyrings/isaac-ros-archive-keyring.gpg && \
+    echo "deb [signed-by=/usr/share/keyrings/isaac-ros-archive-keyring.gpg] https://isaac.download.nvidia.com/isaac-ros/release-3 jammy release-3.0" \
+    > /etc/apt/sources.list.d/isaac-ros-release-3.list && \
+    curl -fsSL https://repo.download.nvidia.com/jetson/jetson-ota-public.asc \
+    | gpg --dearmor -o /usr/share/keyrings/nvidia-jetson-archive-keyring.gpg && \
+    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/nvidia-jetson-archive-keyring.gpg] https://repo.download.nvidia.com/jetson/x86_64/jammy r36.2 main" \
+    > /etc/apt/sources.list.d/nvidia-vpi3-jammy.list
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
     bash-completion \
     build-essential \
     cmake \
     git \
     wget \
     curl \
+    jq \
+    tar \
     nano \
     vim \
+    tmux \
+    tree \
     htop \
     sudo \
+    iproute2 \
     net-tools \
     iputils-ping \
     python3-pip \
@@ -35,10 +63,19 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxrender1 \
     libeigen3-dev \
     libpcl-dev \
+    cuda-cudart-12-6 \
+    libnpp-12-6 \
+    libnvvpi3 \
     ros-humble-rqt-image-view \
     ros-humble-compressed-image-transport \
     ros-humble-image-proc \
     ros-humble-depth-image-proc \
+    ros-humble-realsense2-camera \
+    ros-humble-realsense2-description \
+    ros-humble-realsense2-camera-msgs \
+    ros-humble-isaac-ros-nvblox \
+    ros-humble-tf-transformations \
+    ros-humble-ros2bag \
     ros-humble-tf2-sensor-msgs \
     ros-humble-message-filters \
     ros-humble-rmw-cyclonedds-cpp \
@@ -68,7 +105,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-humble-grid-map-rviz-plugin \
     ros-humble-tf2-eigen \
     ros-humble-eigen3-cmake-module \
+    v4l-utils \
+    usbutils \
     && rm -rf /var/lib/apt/lists/*
+
+RUN ARCH="$(dpkg --print-architecture)" && \
+    if [ "$ARCH" = "amd64" ]; then \
+      printf '/usr/local/cuda-12.6/targets/x86_64-linux/lib\n/opt/nvidia/vpi3/lib/x86_64-linux-gnu\n' > /etc/ld.so.conf.d/nvidia-cuda-vpi.conf; \
+    elif [ "$ARCH" = "arm64" ]; then \
+      printf '/usr/local/cuda-12.6/targets/aarch64-linux/lib\n/opt/nvidia/vpi3/lib/aarch64-linux-gnu\n' > /etc/ld.so.conf.d/nvidia-cuda-vpi.conf; \
+    fi && \
+    ldconfig
 
 COPY requirements/perception.txt /tmp/perception.txt
 RUN python3 -m pip install --upgrade pip && \
@@ -87,12 +134,53 @@ RUN groupadd --gid ${USER_GID} ${USERNAME} || true && \
 COPY docker/ros_entrypoint.sh /ros_entrypoint.sh
 RUN chmod +x /ros_entrypoint.sh
 
-# Make ROS available in every interactive docker exec shell as well.
-RUN printf '\n# Go2 thesis ROS setup\n\
-source /opt/ros/humble/setup.bash\n\
-if [ -f /opt/unitree_ros2/cyclonedds_ws/install/setup.bash ]; then source /opt/unitree_ros2/cyclonedds_ws/install/setup.bash; fi\n\
-if [ -f /workspaces/go2_thesis/ros2_ws/install/setup.bash ]; then source /workspaces/go2_thesis/ros2_ws/install/setup.bash; fi\n\
-export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp\n' >> /etc/bash.bashrc
+# Make the Go2 ROS environment available in every interactive docker exec shell.
+RUN printf '%s\n' \
+    '' \
+    '# >>> go2 thesis ros environment >>>' \
+    'if [[ $- == *i* ]]; then' \
+    '  if [ -z "${GO2_THESIS_BASHRC_ENV_LOADED:-}" ]; then' \
+    '    export GO2_THESIS_BASHRC_ENV_LOADED=1' \
+    '' \
+    '    export GO2_THESIS_DIR="${GO2_THESIS_DIR:-/workspaces/go2_thesis}"' \
+    '    export ROS_DISTRO="${ROS_DISTRO:-humble}"' \
+    '' \
+    '    if [ -f "/opt/ros/${ROS_DISTRO}/setup.bash" ]; then' \
+    '      source "/opt/ros/${ROS_DISTRO}/setup.bash"' \
+    '    fi' \
+    '' \
+    '    if [ -f /opt/unitree_ros2/cyclonedds_ws/install/setup.bash ]; then' \
+    '      source /opt/unitree_ros2/cyclonedds_ws/install/setup.bash' \
+    '    fi' \
+    '' \
+    '    if [ -f "${GO2_THESIS_DIR}/third_party/unitree_ros2_example/install/setup.bash" ]; then' \
+    '      source "${GO2_THESIS_DIR}/third_party/unitree_ros2_example/install/setup.bash"' \
+    '    fi' \
+    '' \
+    '    if [ -f "${GO2_THESIS_DIR}/ros2_ws/install/setup.bash" ]; then' \
+    '      source "${GO2_THESIS_DIR}/ros2_ws/install/setup.bash"' \
+    '    fi' \
+    '' \
+    '    export RMW_IMPLEMENTATION="${RMW_IMPLEMENTATION:-rmw_cyclonedds_cpp}"' \
+    '    export ROS_DOMAIN_ID="${ROS_DOMAIN_ID:-0}"' \
+    '' \
+    '    if [ -n "${ROS_NET_IFACE:-}" ]; then' \
+    '      export CYCLONEDDS_URI="<CycloneDDS><Domain><General><Interfaces><NetworkInterface name=\"${ROS_NET_IFACE}\" priority=\"default\" multicast=\"default\" /></Interfaces></General></Domain></CycloneDDS>"' \
+    '    fi' \
+    '' \
+    '    if [ "${GO2_ENV_VERBOSE:-0}" = "1" ]; then' \
+    '      echo "Go2 thesis ROS environment loaded from ${GO2_THESIS_DIR}"' \
+    '    fi' \
+    '  fi' \
+    '' \
+    "  alias go2cd='cd \"\${GO2_THESIS_DIR:-/workspaces/go2_thesis}\"'" \
+    "  alias go2ws='cd \"\${GO2_THESIS_DIR:-/workspaces/go2_thesis}/ros2_ws\"'" \
+    "  alias go2buildws='cd \"\${GO2_THESIS_DIR:-/workspaces/go2_thesis}\" && ./scripts/setup/build_ros2_ws.sh'" \
+    "  alias go2topics='ros2 topic list'" \
+    "  alias go2nodes='ros2 node list'" \
+    'fi' \
+    '# <<< go2 thesis ros environment <<<' \
+    >> /etc/bash.bashrc
 
 WORKDIR /workspaces/go2_thesis
 

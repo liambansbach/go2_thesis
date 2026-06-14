@@ -1,0 +1,57 @@
+# Go2-W frame candidates for live Nvblox feasibility tests.
+#
+# Real Go2-W frame IDs must be confirmed on the robot. Use:
+#   ros2 topic echo <topic> --once
+#   ros2 run tf2_tools view_frames
+#   ros2 run tf2_ros tf2_echo <parent> <child>
+#
+# Do not assume these names are correct for evaluation until confirmed from
+# message headers and the live TF tree.
+
+global_frames:
+  map:
+    expected_role: Long-lived mapping frame when localization/mapping provides one.
+    status: candidate
+  odom:
+    expected_role: Locally continuous odometry frame; common RViz fixed frame candidate.
+    status: candidate
+
+robot_frames:
+  base_link:
+    expected_role: Robot base frame for sensor extrinsics.
+    status: candidate
+  alternatives:
+    - base
+    - body
+    - trunk
+    - robot_base
+
+realsense_d456_frames:
+  camera_link:
+    expected_role: Physical camera body/link frame.
+    status: candidate
+  optical_frames:
+    - camera_color_optical_frame
+    - camera_depth_optical_frame
+    - camera_aligned_depth_to_color_frame
+    - camera_infra1_optical_frame
+    - camera_infra2_optical_frame
+  note: RealSense wrapper frame prefixes can change with camera_name and namespace.
+
+unitree_4d_lidar_frames:
+  candidates:
+    - utlidar
+    - utlidar_link
+    - utlidar_lidar
+    - lidar
+    - lidar_link
+    - livox_frame
+  note: Check the PointCloud2 header.frame_id on /utlidar/cloud* before choosing an RViz fixed frame.
+
+nvblox_frames:
+  common_expectations:
+    - map
+    - odom
+    - base_link
+    - camera_color_optical_frame
+  note: Nvblox needs a valid transform chain from depth/color camera frames into the chosen global/robot frame.

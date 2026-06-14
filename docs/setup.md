@@ -1,6 +1,6 @@
 # Setup
 
-This document describes the initial setup for the `go2_thesis` project.
+First-time setup for the `go2_thesis` Go2-W ROS 2 Docker workspace.
 
 Target setup:
 
@@ -8,23 +8,23 @@ Target setup:
 Host:      Ubuntu 24.04
 Container: Ubuntu 22.04 + ROS 2 Humble
 Middleware: CycloneDDS
-Robot:     Unitree Go2 wheeled
+Robot:     Unitree Go2-W
 ```
 
-The host only needs Docker, NVIDIA drivers/toolkit, Git, and basic development tools. ROS 2 runs inside the Docker container.
+ROS 2 runs inside Docker. The host needs Docker, NVIDIA GPU support if using Nvblox, Git, and basic development tools.
 
-## 1. Install basic host tools
+## 1. Host Tools
 
 ```bash
 sudo apt update
 sudo apt install -y \
   git curl wget build-essential \
   python3-pip python3-venv \
-  net-tools iputils-ping \
+  iproute2 net-tools iputils-ping \
   x11-xserver-utils
 ```
 
-## 2. Install Docker if missing
+## 2. Docker
 
 Check first:
 
@@ -57,15 +57,13 @@ newgrp docker
 docker run hello-world
 ```
 
-## 3. Install NVIDIA Container Toolkit if GPU support is needed
+## 3. NVIDIA Container Toolkit
 
-Check first:
+Nvblox needs GPU access. Check the host driver first:
 
 ```bash
 nvidia-smi
 ```
-
-If `nvidia-smi` fails, fix the host NVIDIA driver first. Docker GPU support only works if the host driver works.
 
 Install the NVIDIA Container Toolkit:
 
@@ -83,13 +81,13 @@ sudo nvidia-ctk runtime configure --runtime=docker
 sudo systemctl restart docker
 ```
 
-Test GPU access in Docker:
+Test GPU passthrough:
 
 ```bash
 docker run --rm --gpus all nvidia/cuda:12.3.2-base-ubuntu22.04 nvidia-smi
 ```
 
-## 4. Clone the repository
+## 4. Repository
 
 ```bash
 cd ~/Desktop/projects
@@ -104,21 +102,16 @@ cd ~/Desktop/projects/go2_thesis
 git pull
 ```
 
-## 5. Build and start the ROS 2 container
-
-Build the Docker image:
+## 5. Build And Start Container
 
 ```bash
-./scripts/build.sh
+./scripts/docker/build.sh
+./scripts/docker/run.sh
 ```
 
-Start the container:
+Use plain `./scripts/docker/run.sh` for offline builds, bag replay, and local checks. Live Go2-W Ethernet mode is covered in `docs/workflow.md` and `scripts/README_scripts.md`.
 
-```bash
-./scripts/run.sh
-```
-
-Inside the container, verify ROS 2:
+Inside the container:
 
 ```bash
 echo $ROS_DISTRO
@@ -127,17 +120,15 @@ which ros2
 ros2 topic list
 ```
 
-Expected:
+Expected basics:
 
 ```text
 humble
 rmw_cyclonedds_cpp
 /opt/ros/humble/bin/ros2
-/parameter_events
-/rosout
 ```
 
-## 6. Build the ROS 2 workspace
+## 6. Build ROS Workspace
 
 Inside the container:
 
@@ -147,70 +138,25 @@ colcon build --symlink-install
 source install/setup.bash
 ```
 
-Check custom packages:
+Check project packages:
 
 ```bash
-ros2 pkg list | grep -E "go2_bringup|semantic_risk_node|risk_map_projection"
+ros2 pkg list | grep -E "go2_bringup|go2w_description|semantic_risk_node|risk_map_projection"
 ```
 
-## 7. Test ROS 2 communication
+## 7. Local ROS Check
 
-Terminal 1, inside container:
+Terminal 1:
 
 ```bash
 ros2 run demo_nodes_cpp talker
 ```
 
-Terminal 2, open another container shell or even from outside the container if you have a different ROS 2 setup:
+Terminal 2:
 
 ```bash
-./scripts/shell.sh
+./scripts/docker/shell.sh
 ros2 run demo_nodes_py listener
 ```
 
-If the listener receives messages, the ROS 2 container setup works.
-
-## 8. Prepare Ethernet for Go2 testing
-
-Check available interfaces on the host:
-
-```bash
-ip -br link
-```
-
-Example output:
-
-```text
-lo       UNKNOWN
-eno1     DOWN
-wlo1     UP
-docker0  DOWN
-```
-
-Use the wired Ethernet interface for the Go2. In this example, use `eno1`.
-Do not use:
-
-```text
-lo       loopback
-wlo1     Wi-Fi
-docker0  Docker bridge
-```
-
-Configure the Ethernet interface:
-
-```bash
-./scripts/setup_go2_ethernet.sh eno1
-```
-
-Start the container with the Go2 network interface:
-
-```bash
-ROS_NET_IFACE=eno1 ./scripts/run.sh
-```
-
-Inside the container:
-
-```bash
-./scripts/robot_net_check.sh
-ros2 topic list
-```
+If the listener receives messages, the local ROS 2 container setup is working.

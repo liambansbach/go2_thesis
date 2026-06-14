@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 set -e
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+cd "$REPO_ROOT"
 
 # call script -> build unitree_ros2_example package -> source setup.bash
-# ./scripts/build_unitree_examples.sh
+# ./scripts/setup/build_unitree_ros2_packages.sh
 # source third_party/unitree_ros2_example/install/setup.bash
 
 mkdir -p /workspaces/go2_thesis/third_party
@@ -13,7 +16,7 @@ fi
 
 cd /workspaces/go2_thesis/third_party/unitree_ros2_example
 
-colcon build --symlink-install
+colcon build
 
 echo ""
 echo "Available ROS2 executables:"

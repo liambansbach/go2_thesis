@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 set -e
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+cd "$REPO_ROOT"
 
 OUT_DIR="docs/go2_runtime"
 STAMP=$(date +"%Y_%m_%d_%H_%M_%S")
@@ -69,8 +72,8 @@ for t in "${TOPICS[@]}"; do
     if [ -n "$TYPE" ]; then
       ros2 interface show "$TYPE" > "$OUT/$(echo "$t" | tr '/' '_')_interface.txt" 2>/dev/null || true
     fi
-    timeout 3 ros2 topic hz "$t" | tee "$OUT/$(echo "$t" | tr '/' '_')_hz.txt" || true
-    timeout 3 ros2 topic echo "$t" --no-arr | tee "$OUT/$(echo "$t" | tr '/' '_')_sample.txt" || true
+    #timeout 3 ros2 topic hz "$t" | tee "$OUT/$(echo "$t" | tr '/' '_')_hz.txt" || true
+    #timeout 3 ros2 topic echo "$t" --no-arr | tee "$OUT/$(echo "$t" | tr '/' '_')_sample.txt" || true
   else
     echo "Topic not available: $t" | tee "$OUT/$(echo "$t" | tr '/' '_')_missing.txt"
   fi

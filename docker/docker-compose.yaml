@@ -27,6 +27,7 @@ services:
     volumes:
       - ..:/workspaces/go2_thesis
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /dev/bus/usb:/dev/bus/usb
     working_dir: /workspaces/go2_thesis
     command: bash
     gpus: all

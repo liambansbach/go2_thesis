@@ -10,14 +10,27 @@ bags/*
 *.db3
 *.mcap
 
+# Runtime inspection outputs
+docs/go2_runtime/
+!docs/go2_runtime/
+docs/go2_runtime/*
+!docs/go2_runtime/.gitkeep
+frames*.pdf
+frames*.gv
+
 # Python
 __pycache__/
 *.pyc
 .venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
 
 # Local config
 .env
 *.log
+docker/docker-compose.override.yaml
+*.local.yaml
 
 # Models / weights
 models/
@@ -25,8 +38,12 @@ models/
 *.onnx
 *.engine
 
+# Downloaded external test assets
+bags/isaac_ros_assets/
+
 # VS Code C/C++ cache/database
 .vscode/
 
 # private files
 TODO.md
+docs/jetson_information.md

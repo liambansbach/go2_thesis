@@ -1,0 +1,24 @@
+/**:
+  ros__parameters:
+    # Go2-W static-scene Nvblox feasibility defaults for Ubuntu 22.04,
+    # ROS 2 Humble, and Isaac ROS release-3.x. Keep this depth-first and
+    # static_tsdf until the RealSense-only behavior is understood.
+    mapping_type: static_tsdf
+
+    use_depth: true
+    use_color: true
+    use_lidar: false
+    use_segmentation: false
+
+    use_tf_transforms: true
+    use_topic_transforms: false
+
+    global_frame: odom
+    map_clearing_frame_id: base
+    map_clearing_radius_m: 5.0
+    voxel_size: 0.08
+
+    print_rates_to_console: true
+    print_timings_to_console: true
+    print_delays_to_console: true
+    print_statistics_on_console_period_ms: 10000
