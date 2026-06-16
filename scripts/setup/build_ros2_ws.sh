@@ -9,7 +9,7 @@ cd "$REPO_ROOT"
 # ./scripts/setup/build_ros2_ws.sh
 # source ros2_ws/install/setup.bash
 
-cd /workspaces/go2_thesis/ros2_ws
+cd "$REPO_ROOT/ros2_ws"
 
 rosdep update || true
 rosdep install --from-paths src --ignore-src -r -y --rosdistro humble || true
@@ -18,4 +18,4 @@ colcon build
 
 echo ""
 echo "Done. Source with:"
-echo "source /workspaces/go2_thesis/ros2_ws/install/setup.bash"
+echo "source $REPO_ROOT/ros2_ws/install/setup.bash"

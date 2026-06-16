@@ -8,7 +8,6 @@ install(
     config
     dae
     launch
-    rviz
     urdf
   DESTINATION share/${PROJECT_NAME}
 )

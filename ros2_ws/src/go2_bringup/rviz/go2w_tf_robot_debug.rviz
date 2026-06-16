@@ -9,12 +9,15 @@ Panels:
         - /TF1
         - /RobotModel1
         - /Go2-W Sensors1
-      Splitter Ratio: 0.5
-    Tree Height: 650
+        - /Go2-W Sensors1//camera/depth/image_rect_raw1/Auto Size1
+        - /Go2-W Sensors1//camera/depth/image_rect_raw1/Occlusion Compensation1
+        - /Go2-W Sensors1//camera/depth/image_rect_raw1/Autocompute Value Bounds1
+      Splitter Ratio: 0.44999998807907104
+    Tree Height: 472
 Visualization Manager:
   Class: ""
   Displays:
-    - Alpha: 0.45
+    - Alpha: 0.44999998807907104
       Cell Size: 1
       Class: rviz_default_plugins/Grid
       Color: 160; 160; 164
@@ -36,14 +39,170 @@ Visualization Manager:
       Enabled: true
       Frame Timeout: 15
       Frames:
-        All Enabled: true
-      Marker Scale: 0.35
+        All Enabled: false
+        FL_calf:
+          Value: true
+        FL_calflower:
+          Value: true
+        FL_calflower1:
+          Value: true
+        FL_foot:
+          Value: true
+        FL_foot_motor:
+          Value: true
+        FL_hip:
+          Value: true
+        FL_thigh:
+          Value: true
+        FR_calf:
+          Value: true
+        FR_calflower:
+          Value: true
+        FR_calflower1:
+          Value: true
+        FR_foot:
+          Value: true
+        FR_foot_motor:
+          Value: true
+        FR_hip:
+          Value: true
+        FR_thigh:
+          Value: true
+        Head_lower:
+          Value: true
+        Head_upper:
+          Value: true
+        RL_calf:
+          Value: true
+        RL_calflower:
+          Value: true
+        RL_calflower1:
+          Value: true
+        RL_foot:
+          Value: true
+        RL_foot_motor:
+          Value: true
+        RL_hip:
+          Value: true
+        RL_thigh:
+          Value: true
+        RR_calf:
+          Value: true
+        RR_calflower:
+          Value: true
+        RR_calflower1:
+          Value: true
+        RR_foot:
+          Value: true
+        RR_foot_motor:
+          Value: true
+        RR_hip:
+          Value: true
+        RR_thigh:
+          Value: true
+        base:
+          Value: true
+        camera_color_frame:
+          Value: true
+        camera_color_optical_frame:
+          Value: true
+        camera_depth_frame:
+          Value: true
+        camera_depth_optical_frame:
+          Value: true
+        camera_link:
+          Value: true
+        imu:
+          Value: true
+        odom:
+          Value: true
+        radar:
+          Value: true
+        rs_base:
+          Value: false
+        rs_d456_solid:
+          Value: false
+        rs_flange_left:
+          Value: false
+        rs_flange_right:
+          Value: false
+        rs_mount:
+          Value: false
+        rs_tilt_axis:
+          Value: false
+        utlidar_lidar:
+          Value: true
+      Marker Scale: 0.3499999940395355
       Name: TF
       Show Arrows: true
       Show Axes: true
       Show Names: true
       Tree:
-        {}
+        odom:
+          base:
+            FL_hip:
+              FL_thigh:
+                FL_calf:
+                  FL_calflower:
+                    FL_calflower1:
+                      {}
+                  FL_foot:
+                    {}
+                  FL_foot_motor:
+                    {}
+            FR_hip:
+              FR_thigh:
+                FR_calf:
+                  FR_calflower:
+                    FR_calflower1:
+                      {}
+                  FR_foot:
+                    {}
+                  FR_foot_motor:
+                    {}
+            Head_upper:
+              Head_lower:
+                {}
+            RL_hip:
+              RL_thigh:
+                RL_calf:
+                  RL_calflower:
+                    RL_calflower1:
+                      {}
+                  RL_foot:
+                    {}
+                  RL_foot_motor:
+                    {}
+            RR_hip:
+              RR_thigh:
+                RR_calf:
+                  RR_calflower:
+                    RR_calflower1:
+                      {}
+                  RR_foot:
+                    {}
+                  RR_foot_motor:
+                    {}
+            imu:
+              {}
+            radar:
+              utlidar_lidar:
+                {}
+            rs_base:
+              rs_tilt_axis:
+                rs_flange_left:
+                  {}
+                rs_flange_right:
+                  {}
+                rs_mount:
+                  rs_d456_solid:
+                    camera_link:
+                      camera_color_frame:
+                        camera_color_optical_frame:
+                          {}
+                      camera_depth_frame:
+                        camera_depth_optical_frame:
+                          {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -63,7 +222,206 @@ Visualization Manager:
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
+        FL_calf:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        FL_calflower:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        FL_calflower1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        FL_foot:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        FL_foot_motor:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        FL_hip:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        FL_thigh:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        FR_calf:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        FR_calflower:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        FR_calflower1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        FR_foot:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        FR_foot_motor:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        FR_hip:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        FR_thigh:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        Head_lower:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        Head_upper:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         Link Tree Style: Links in Alphabetic Order
+        RL_calf:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RL_calflower:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RL_calflower1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RL_foot:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RL_foot_motor:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RL_hip:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RL_thigh:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RR_calf:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RR_calflower:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RR_calflower1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RR_foot:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RR_foot_motor:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RR_hip:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RR_thigh:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        camera_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        imu:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        radar:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rs_base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rs_d456_solid:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rs_flange_left:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rs_flange_right:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rs_mount:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rs_tilt_axis:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+      Mass Properties:
+        Inertia: false
+        Mass: false
       Name: RobotModel
       TF Prefix: ""
       Update Interval: 0
@@ -74,27 +432,27 @@ Visualization Manager:
         - Alpha: 0.75
           Autocompute Intensity Bounds: true
           Autocompute Value Bounds:
-            Max Value: 10
-            Min Value: -10
+            Max Value: 1.2691049575805664
+            Min Value: -0.8903678059577942
             Value: true
           Axis: Z
           Channel Name: intensity
           Class: rviz_default_plugins/PointCloud2
           Color: 255; 255; 255
           Color Transformer: AxisColor
-          Decay Time: 0
+          Decay Time: 0.20000000298023224
           Enabled: true
           Invert Rainbow: false
           Max Color: 255; 255; 255
-          Max Intensity: 4096
+          Max Intensity: 255
           Min Color: 0; 0; 0
-          Min Intensity: 0
+          Min Intensity: 45
           Name: /utlidar/cloud
           Position Transformer: XYZ
           Selectable: true
           Size (Pixels): 3
-          Size (m): 0.035
-          Style: Flat Squares
+          Size (m): 0.02568189986050129
+          Style: Squares
           Topic:
             Depth: 5
             Durability Policy: Volatile
@@ -106,38 +464,47 @@ Visualization Manager:
           Use rainbow: true
           Value: true
         - Alpha: 1
+          Auto Size:
+            Auto Size Factor: 1
+            Value: true
+          Autocompute Intensity Bounds: true
+          Autocompute Value Bounds:
+            Max Value: 7
+            Min Value: 0.20000000298023224
+            Value: false
+          Axis: X
+          CameraInfo Topic: /camera/depth/camera_info
+          Channel Name: intensity
           Class: rviz_default_plugins/DepthCloud
-          Color Image Topic:
-            Depth: 5
-            Durability Policy: Volatile
-            History Policy: Keep Last
-            Reliability Policy: Best Effort
-            Value: ""
-          Camera Info Topic:
-            Depth: 5
-            Durability Policy: Volatile
-            History Policy: Keep Last
-            Reliability Policy: Best Effort
-            Value: /camera/depth/camera_info
-          Color Transformer: Intensity
-          Decay Time: 0
-          Depth Map Topic:
-            Depth: 5
-            Durability Policy: Volatile
-            History Policy: Keep Last
-            Reliability Policy: Best Effort
-            Value: /camera/depth/image_rect_raw
-          Enabled: false
+          Color: 255; 255; 255
+          Color Image Topic: /camera/color/image_raw
+          Color Transformer: AxisColor
+          Color Transport Hint: raw
+          Decay Time: 0.20000000298023224
+          Depth Map Topic: /camera/depth/image_rect_raw
+          Depth Map Transport Hint: raw
+          Enabled: true
+          Invert Rainbow: false
+          Max Color: 255; 255; 255
+          Max Intensity: 4096
+          Min Color: 0; 0; 0
+          Min Intensity: 0
           Name: /camera/depth/image_rect_raw
           Occlusion Compensation:
-            Enabled: false
-          Point Size: 2
+            Occlusion Time-Out: 0.5
+            Value: false
+          Position Transformer: XYZ
           Queue Size: 5
+          Reliability Policy: Best effort
+          Selectable: true
+          Size (Pixels): 3
+          Style: Squares
           Topic Filter: true
           Use Fixed Frame: true
-          Value: false
+          Use rainbow: true
+          Value: true
         - Class: rviz_default_plugins/Image
-          Enabled: false
+          Enabled: true
           Max Value: 1
           Median window: 5
           Min Value: 0
@@ -149,7 +516,7 @@ Visualization Manager:
             History Policy: Keep Last
             Reliability Policy: Best Effort
             Value: /camera/color/image_raw
-          Value: false
+          Value: true
       Enabled: true
       Name: Go2-W Sensors
   Enabled: true
@@ -165,26 +532,43 @@ Visualization Manager:
     - Class: rviz_default_plugins/Select
     - Class: rviz_default_plugins/FocusCamera
     - Class: rviz_default_plugins/Measure
+      Line color: 128; 128; 0
   Transformation:
     Current:
       Class: rviz_default_plugins/TF
+  Value: true
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 5
+      Distance: 12.64931869506836
+      Enable Stereo Rendering:
+        Stereo Eye Separation: 0.05999999865889549
+        Stereo Focal Distance: 1
+        Swap Stereo Eyes: false
+        Value: false
       Focal Point:
-        X: 0
-        Y: 0
-        Z: 0
+        X: 5.977169990539551
+        Y: -0.13550572097301483
+        Z: -0.9900485277175903
+      Focal Shape Fixed Size: true
+      Focal Shape Size: 0.05000000074505806
+      Invert Z Axis: false
       Name: Current View
-      Pitch: 0.55
+      Near Clip Distance: 0.009999999776482582
+      Pitch: 0.30000022053718567
       Target Frame: <Fixed Frame>
-      Yaw: 0.78
+      Value: Orbit (rviz_default_plugins)
+      Yaw: 3.0700130462646484
     Saved: ~
 Window Geometry:
+  /camera/color/image_raw:
+    collapsed: false
   Displays:
     collapsed: false
-  Height: 900
-  Width: 1400
-  X: 60
-  Y: 60
+  Height: 1065
+  Hide Left Dock: false
+  Hide Right Dock: false
+  QMainWindow State: 000000ff00000000fd0000000100000000000001b5000003d3fc0200000002fb0000002e002f00630061006d006500720061002f0063006f006c006f0072002f0069006d006100670065005f007200610077010000003b0000016c0000002800fffffffb000000100044006900730070006c00610079007301000001ad00000261000000c700ffffff000005c5000003d300000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  Width: 1920
+  X: 0
+  Y: 32
