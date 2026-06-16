@@ -6,7 +6,7 @@ from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node, SetParameter, SetParametersFromFile, SetRemap
 from launch_ros.substitutions import FindPackageShare
 
-# Live: ros2 launch go2_bringup go2w_nvblox.launch.py use_sim_time:=false launch_realsense:=true
+# Live: ros2 launch go2_bringup go2w_nvblox.launch.py use_sim_time:=false launch_realsense:=false
 # Replay: ros2 bag play bags/<bag_name> --clock; ros2 launch go2_bringup go2w_nvblox.launch.py use_sim_time:=true launch_realsense:=false
 # Static feasibility harness only: no navigation, no autonomous robot commands.
 
@@ -23,7 +23,7 @@ def generate_launch_description():
         DeclareLaunchArgument('use_rviz', default_value='true'),
         DeclareLaunchArgument('use_sim_time', default_value='false'),
         DeclareLaunchArgument('log_level', default_value='info'),
-        DeclareLaunchArgument('launch_realsense', default_value='true'),
+        DeclareLaunchArgument('launch_realsense', default_value='false'),
         DeclareLaunchArgument('nvblox_config', default_value=nvblox_config),
         DeclareLaunchArgument('global_frame', default_value='odom'),
         DeclareLaunchArgument('map_clearing_frame_id', default_value='base_link'),
@@ -32,25 +32,29 @@ def generate_launch_description():
         DeclareLaunchArgument('enable_lidar', default_value='false'),
         DeclareLaunchArgument(
             'depth_image_topic',
-            default_value='/camera/camera/aligned_depth_to_color/image_raw',
+            default_value='/camera/depth/image_rect_raw',
             description='RealSense depth topic remapped to camera_0/depth/image. '
-                        'Common fallback: /camera/camera/depth/image_rect_raw.',
+                        'Fallbacks include /camera/camera/depth/image_rect_raw '
+                        'and /camera/aligned_depth_to_color/image_raw.',
         ),
         DeclareLaunchArgument(
             'depth_camera_info_topic',
-            default_value='/camera/camera/aligned_depth_to_color/camera_info',
+            default_value='/camera/depth/camera_info',
             description='RealSense depth CameraInfo remapped to camera_0/depth/camera_info. '
-                        'Common fallback: /camera/camera/depth/camera_info.',
+                        'Fallbacks include /camera/camera/depth/camera_info '
+                        'and /camera/aligned_depth_to_color/camera_info.',
         ),
         DeclareLaunchArgument(
             'color_image_topic',
-            default_value='/camera/camera/color/image_raw',
-            description='RealSense color topic remapped to camera_0/color/image.',
+            default_value='/camera/color/image_raw',
+            description='RealSense color topic remapped to camera_0/color/image. '
+                        'Fallback: /camera/camera/color/image_raw.',
         ),
         DeclareLaunchArgument(
             'color_camera_info_topic',
-            default_value='/camera/camera/color/camera_info',
-            description='RealSense color CameraInfo remapped to camera_0/color/camera_info.',
+            default_value='/camera/color/camera_info',
+            description='RealSense color CameraInfo remapped to camera_0/color/camera_info. '
+                        'Fallback: /camera/camera/color/camera_info.',
         ),
         DeclareLaunchArgument(
             'lidar_topic',
@@ -98,8 +102,8 @@ def generate_launch_description():
         SetParameter(name='print_statistics_on_console_period_ms', value=10000),
 
         # Visible RealSense remaps for Isaac ROS Nvblox camera_0 inputs.
-        # D456 wrapper versions commonly publish either aligned_depth_to_color
-        # or depth/image_rect_raw; override the launch arguments when needed.
+        # The onboard Domain-0 service normally publishes /camera/... topics.
+        # Some RealSense wrapper versions use /camera/camera/... or aligned depth.
         SetRemap(src='camera_0/depth/image', dst=LaunchConfiguration('depth_image_topic')),
         SetRemap(
             src='camera_0/depth/camera_info',

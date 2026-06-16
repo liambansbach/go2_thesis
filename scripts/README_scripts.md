@@ -203,18 +203,6 @@ ros2 run tf2_ros tf2_echo base radar
 `base -> radar` comes from the original Unitree Go2-W URDF and should remain
 unchanged while the raw `/utlidar/cloud` frame convention is still unverified.
 
-## Run
-
-- `run/run_realsense_d456.sh`: Optional local USB camera development helper. Use it only when the D456 is physically connected to the laptop/container.
-
-```bash
-./scripts/run/run_realsense_d456.sh  # optional local USB camera development only
-```
-
-Do not run this helper during normal live Go2-W tests. In the thesis robot setup,
-the D456 is expected to be connected onboard and published by the Go2-W
-Jetson/onboard service over DDS.
-
 ## Record
 
 - `record/record_go2w_bag.sh`: Canonical Go2-W MCAP recorder with profiles `mapping_raw`, `nvblox_debug`, `lidar`, `camera`, `state`, and `full`.
@@ -231,7 +219,6 @@ After building and sourcing `ros2_ws`, use:
 ```bash
 ros2 launch go2_bringup go2w_nvblox.launch.py use_sim_time:=false launch_realsense:=false
 ros2 launch go2_bringup go2w_nvblox.launch.py use_sim_time:=true launch_realsense:=false
-ros2 launch go2_bringup go2w_debug_rviz.launch.py rviz_config:=go2w_sensor_debug.rviz
 ros2 launch go2_bringup go2w_debug_rviz.launch.py rviz_config:=go2w_nvblox_debug.rviz
 ros2 launch go2_bringup go2w_debug_rviz.launch.py rviz_config:=go2w_tf_robot_debug.rviz
 ros2 launch go2_bringup go2w_tf.launch.py publish_robot_description_tf:=true
@@ -239,13 +226,6 @@ ros2 launch go2_bringup go2w_tf.launch.py publish_robot_description_tf:=true pub
 ros2 launch go2_bringup go2w_tf.launch.py publish_robot_description_tf:=true publish_lowstate_joint_states:=true
 ros2 launch go2_bringup go2w_tf.launch.py publish_odom_tf:=true odom_topic:=/utlidar/robot_odom
 ros2 launch go2_bringup go2w_tf.launch.py publish_camera_tf:=true
-```
-
-Optional local USB camera development mode only:
-
-```bash
-ros2 launch go2_bringup go2w_realsense_d456.launch.py  # optional local USB camera development only
-ros2 launch go2_bringup go2w_nvblox.launch.py use_sim_time:=false launch_realsense:=true  # optional local USB camera development only
 ```
 
 `go2w_tf.launch.py` is the reproducible TF wrapper for Go2-W replay and

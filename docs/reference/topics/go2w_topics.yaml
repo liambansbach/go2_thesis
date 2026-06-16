@@ -38,7 +38,7 @@ realsense_d456:
     primary: /camera/camera/points
     alternatives:
       - /camera/points
-    note: Disabled by default in Go2-W RealSense launch wrappers.
+    note: Onboard service dependent; usually not needed for the depth-image Nvblox harness.
 
 unitree_4d_lidar:
   pointcloud_candidates:

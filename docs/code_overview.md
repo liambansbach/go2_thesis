@@ -38,7 +38,6 @@ Workflow helpers are grouped by purpose:
 scripts/docker/   build, run, shell, stop
 scripts/setup/    host/network/setup checks and workspace builds
 scripts/inspect/  read-only topic, TF, RealSense, Nvblox inspection helpers
-scripts/run/      small run wrappers such as RealSense
 scripts/record/   Go2-W bag recorder
 ```
 
@@ -56,7 +55,7 @@ Change here for:
 
 Do not change odometry logic, LowState mapping, sensor transforms, Docker behavior, or Nvblox parameters unless that is the explicit task.
 
-The local RealSense launch wrapper is for optional local USB camera development only. Normal live Go2-W tests consume onboard-published camera topics over Ethernet.
+Normal live Go2-W tests consume onboard-published RealSense topics over Ethernet. The container-side package keeps only TF, RViz, inspection, and Nvblox wrappers.
 
 ## `ros2_ws/src/go2w_description/`
 

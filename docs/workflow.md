@@ -78,7 +78,6 @@ ros2 bag play bags/<bag_name>
 RViz profiles live in `ros2_ws/src/go2_bringup/rviz/` and are installed through `go2_bringup`:
 
 ```bash
-ros2 launch go2_bringup go2w_debug_rviz.launch.py rviz_config:=go2w_sensor_debug.rviz
 ros2 launch go2_bringup go2w_debug_rviz.launch.py rviz_config:=go2w_nvblox_debug.rviz
 ros2 launch go2_bringup go2w_debug_rviz.launch.py rviz_config:=go2w_tf_robot_debug.rviz
 ```

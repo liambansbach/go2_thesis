@@ -4,13 +4,13 @@ from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
-# Sensor debug: ros2 launch go2_bringup go2w_debug_rviz.launch.py rviz_config:=go2w_sensor_debug.rviz
 # Nvblox debug: ros2 launch go2_bringup go2w_debug_rviz.launch.py rviz_config:=go2w_nvblox_debug.rviz
+# Robot/TF debug: ros2 launch go2_bringup go2w_debug_rviz.launch.py rviz_config:=go2w_tf_robot_debug.rviz
 
 
 def generate_launch_description():
     args = [
-        DeclareLaunchArgument('rviz_config', default_value='go2w_sensor_debug.rviz'),
+        DeclareLaunchArgument('rviz_config', default_value='go2w_tf_robot_debug.rviz'),
         DeclareLaunchArgument('use_sim_time', default_value='false'),
         DeclareLaunchArgument('log_level', default_value='info'),
     ]

@@ -99,13 +99,13 @@ ros2 topic echo /camera/depth/camera_info --once
 
 If the onboard service uses a different camera namespace, use the visible `/camera/...` topic names from `ros2 topic list -t` and `docs/reference/topics/go2w_topics.yaml`.
 
-Open the sensor RViz profile after camera topics are visible:
+Open the robot/TF RViz profile after camera topics are visible:
 
 ```bash
-ros2 launch go2_bringup go2w_debug_rviz.launch.py rviz_config:=go2w_sensor_debug.rviz
+ros2 launch go2_bringup go2w_debug_rviz.launch.py rviz_config:=go2w_tf_robot_debug.rviz
 ```
 
-Only run `ros2 launch go2_bringup go2w_realsense_d456.launch.py` or `./scripts/run/run_realsense_d456.sh` in optional local USB camera development mode, when the D456 is physically connected to the laptop/container. Do not run it during normal live Go2-W tests because the RealSense is expected to be published by the onboard Jetson service.
+Do not launch a laptop/container RealSense driver during normal live Go2-W tests. The RealSense is expected to be published by the onboard Jetson service.
 
 Optional onboard checks, without writing passwords into docs:
 
@@ -122,7 +122,7 @@ With the Go2-W powered and visible on DDS:
 ```bash
 ./scripts/inspect/inspect_go2w_topics.sh
 ./scripts/inspect/inspect_go2w_nvblox_topics.sh
-ros2 launch go2_bringup go2w_debug_rviz.launch.py rviz_config:=go2w_sensor_debug.rviz
+ros2 launch go2_bringup go2w_debug_rviz.launch.py rviz_config:=go2w_tf_robot_debug.rviz
 ```
 
 Confirm the real frame IDs from message headers:
@@ -149,12 +149,14 @@ ros2 launch go2_bringup go2w_nvblox.launch.py \
   enable_lidar:=false
 ```
 
-The wrapper loads `go2_bringup/config/nvblox/go2w_static_realsense.yaml`, sets `mapping_type:=static_tsdf`, enables depth and TF transforms, disables segmentation and topic transforms, and remaps existing RealSense topics into Nvblox `camera_0` inputs. If the onboard RealSense service publishes different names, override the visible launch arguments:
+The wrapper loads `go2_bringup/config/nvblox/go2w_static_realsense.yaml`, sets `mapping_type:=static_tsdf`, enables depth and TF transforms, disables segmentation and topic transforms, and remaps the normal onboard `/camera/...` RealSense topics into Nvblox `camera_0` inputs. If the onboard service publishes a different namespace or aligned-depth topics, override the visible launch arguments:
 
 ```bash
 ros2 launch go2_bringup go2w_nvblox.launch.py \
   depth_image_topic:=/camera/camera/depth/image_rect_raw \
-  depth_camera_info_topic:=/camera/camera/depth/camera_info
+  depth_camera_info_topic:=/camera/camera/depth/camera_info \
+  color_image_topic:=/camera/camera/color/image_raw \
+  color_camera_info_topic:=/camera/camera/color/camera_info
 ```
 
 Leave `enable_lidar:=false` for the first evaluation. When testing LiDAR later, use `enable_lidar:=true lidar_topic:=/utlidar/cloud`, but verify Unitree 4D LiDAR-specific Nvblox parameters first; do not reuse VLP16/Hesai defaults blindly.
@@ -166,21 +168,6 @@ ros2 launch nvblox_examples_bringup realsense_example.launch.py --show-args
 ```
 
 The wrapper is best-effort across Isaac ROS Nvblox package versions. It includes this repository's Nvblox RViz debug layout when `use_rviz:=true`.
-
-### Optional Local USB Camera Development Mode
-
-Use this mode only when the D456 is physically connected to the laptop/container for local USB development. It is not the normal live Go2-W workflow.
-
-```bash
-v4l2-ctl --list-devices  # optional local USB/onboard diagnostic only
-ros2 launch go2_bringup go2w_realsense_d456.launch.py  # optional local USB camera development only
-```
-
-For local USB Nvblox development, the wrapper can launch RealSense:
-
-```bash
-ros2 launch go2_bringup go2w_nvblox.launch.py use_rviz:=true use_sim_time:=false launch_realsense:=true  # optional local USB camera development only
-```
 
 ## 6. Static Transform
 
@@ -338,7 +325,7 @@ systemctl status go2-realsense-domain0.service --no-pager
 ros2 topic list -t | grep camera
 ```
 
-Use `v4l2-ctl --list-devices` only on the Jetson/onboard computer, or in optional local USB camera development mode when the D456 is physically connected to the laptop/container.
+Use `v4l2-ctl --list-devices` only on the Jetson/onboard computer.
 
 No LiDAR topics:
 
