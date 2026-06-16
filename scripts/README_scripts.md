@@ -228,6 +228,21 @@ ros2 launch go2_bringup go2w_tf.launch.py publish_odom_tf:=true odom_topic:=/utl
 ros2 launch go2_bringup go2w_tf.launch.py publish_camera_tf:=true
 ```
 
+For offline replay with `ros2 bag play <bag_path> --clock`, launch TF, RViz,
+and Nvblox with `use_sim_time:=true`. For the first test, play the bag once
+without `--loop`; looping can cause `TF_OLD_DATA` warnings at the loop boundary.
+
+Useful Nvblox replay checks:
+
+```bash
+ros2 param get /nvblox_node global_frame
+ros2 param get /nvblox_node map_clearing_frame_id
+ros2 run tf2_ros tf2_echo odom base
+ros2 run tf2_ros tf2_echo base camera_link
+ros2 run tf2_ros tf2_echo odom camera_depth_optical_frame
+ros2 run tf2_ros tf2_echo camera_link camera0_link  # only if alias enabled
+```
+
 `go2w_tf.launch.py` is the reproducible TF wrapper for Go2-W replay and
 visualization. Prefer `publish_robot_description_tf:=true` so
 `robot_state_publisher` publishes the Go2-W URDF tree from the

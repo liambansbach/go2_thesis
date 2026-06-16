@@ -145,11 +145,12 @@ ros2 launch go2_bringup go2w_nvblox.launch.py \
   use_sim_time:=false \
   launch_realsense:=false \
   global_frame:=odom \
+  map_clearing_frame_id:=base \
   voxel_size:=0.08 \
   enable_lidar:=false
 ```
 
-The wrapper loads `go2_bringup/config/nvblox/go2w_static_realsense.yaml`, sets `mapping_type:=static_tsdf`, enables depth and TF transforms, disables segmentation and topic transforms, and remaps the normal onboard `/camera/...` RealSense topics into Nvblox `camera_0` inputs. If the onboard service publishes a different namespace or aligned-depth topics, override the visible launch arguments:
+The wrapper launches the Nvblox component directly for normal Go2-W use, loads the official Nvblox base config followed by `go2_bringup/config/nvblox/go2w_static_realsense.yaml`, sets `mapping_type:=static_tsdf`, enables depth and TF transforms, disables segmentation and topic transforms, and remaps the normal onboard `/camera/...` RealSense topics into Nvblox `camera_0` inputs. It does not launch a laptop/container RealSense driver unless `launch_realsense:=true` is explicitly requested. If the onboard service publishes a different namespace or aligned-depth topics, override the visible launch arguments:
 
 ```bash
 ros2 launch go2_bringup go2w_nvblox.launch.py \
@@ -169,6 +170,15 @@ ros2 launch nvblox_examples_bringup realsense_example.launch.py --show-args
 
 The wrapper is best-effort across Isaac ROS Nvblox package versions. It includes this repository's Nvblox RViz debug layout when `use_rviz:=true`.
 
+Only enable the optional `camera0_link` alias for compatibility with Isaac ROS examples or configs that still hard-code that frame:
+
+```bash
+ros2 launch go2_bringup go2w_nvblox.launch.py \
+  publish_camera0_alias_tf:=true
+```
+
+This publishes an identity `camera_link -> camera0_link` static transform. It is only a compatibility alias and is not a new physical calibration.
+
 ## 6. Static Transform
 
 Only publish a camera-to-base static transform when explicitly testing it:
@@ -176,7 +186,7 @@ Only publish a camera-to-base static transform when explicitly testing it:
 ```bash
 ros2 launch go2_bringup go2w_tf.launch.py \
   publish_camera_tf:=true \
-  camera_parent_frame:=base_link \
+  camera_parent_frame:=base \
   camera_child_frame:=camera_link \
   camera_x:=0.25 camera_y:=0.0 camera_z:=0.18 \
   camera_roll:=0.0 camera_pitch:=0.0 camera_yaw:=0.0
@@ -186,10 +196,10 @@ Those numbers are placeholders. Measure the D456 mount on the real Go2-W before 
 
 ## 7. Odometry To TF Bridge
 
-Moving Nvblox tests need a dynamic transform such as `odom -> base_link`. First check whether it already exists:
+Moving Nvblox tests need a dynamic transform such as `odom -> base`. First check whether it already exists:
 
 ```bash
-ros2 run tf2_ros tf2_echo odom base_link
+ros2 run tf2_ros tf2_echo odom base
 ```
 
 If that transform is missing, confirm the selected Go2-W odometry topic is really `nav_msgs/msg/Odometry`:
@@ -214,7 +224,7 @@ ros2 launch go2_bringup go2w_tf.launch.py \
   publish_odom_tf:=true \
   odom_topic:=/utlidar/robot_odom \
   odom_parent_frame:=odom \
-  odom_child_frame:=base_link
+  odom_child_frame:=base
 ```
 
 After also launching the measured camera static transform, re-check the full transform chain:
@@ -285,7 +295,19 @@ Terminal 1:
 ros2 bag play bags/go2w_<profile>_<label>_<timestamp> --clock
 ```
 
-Terminal 2:
+For a first offline Nvblox test, play the bag once without `--loop`; looping can cause `TF_OLD_DATA` warnings at the loop boundary when simulated time jumps backwards.
+
+Terminal 2, TF:
+
+```bash
+ros2 launch go2_bringup go2w_tf.launch.py \
+  publish_robot_description_tf:=true \
+  publish_static_odom_tf:=true \
+  publish_lowstate_joint_states:=true \
+  use_sim_time:=true
+```
+
+Terminal 3, Nvblox and RViz:
 
 ```bash
 ros2 launch go2_bringup go2w_nvblox.launch.py \
@@ -294,7 +316,7 @@ ros2 launch go2_bringup go2w_nvblox.launch.py \
   launch_realsense:=false
 ```
 
-Replay support depends on the installed Nvblox example launch structure. If it starts live RealSense despite the wrapper argument, inspect `--show-args` and adapt the wrapper locally without editing `/opt/ros/humble`.
+Keep TF, RViz, and Nvblox on `use_sim_time:=true` for `ros2 bag play --clock`.
 
 ## 11. Screenshots And Screen Recording
 
@@ -352,11 +374,11 @@ No TF between camera and odom/base:
 
 ```bash
 ros2 run tf2_tools view_frames
-ros2 run tf2_ros tf2_echo odom base_link
+ros2 run tf2_ros tf2_echo odom base
 ros2 run tf2_ros tf2_echo odom camera_link
 ```
 
-If `odom -> base_link` is missing but a Go2-W odometry topic is valid `nav_msgs/msg/Odometry`, use `go2w_tf.launch.py publish_odom_tf:=true`. Use `go2w_tf.launch.py publish_camera_tf:=true` only with measured camera values.
+If `odom -> base` is missing but a Go2-W odometry topic is valid `nav_msgs/msg/Odometry`, use `go2w_tf.launch.py publish_odom_tf:=true`. Use `go2w_tf.launch.py publish_camera_tf:=true` only with measured camera values.
 
 RViz fixed frame wrong:
 
@@ -364,21 +386,29 @@ Set Fixed Frame to the frame in the PointCloud2/Odometry header, commonly `odom`
 
 RViz shows Color/Depth but no Nvblox mesh/map:
 
+Check RViz display types before debugging the mapping pipeline. `/nvblox_node/mesh` is `nvblox_msgs/msg/Mesh`, so it must use `nvblox_rviz_plugin/NvbloxMesh`, not a MarkerArray display. `/nvblox_node/static_map_slice` is `nvblox_msgs/msg/DistanceMapSlice`, not a normal `nav_msgs/msg/OccupancyGrid`; use `/nvblox_node/static_occupancy_grid` for a standard RViz Map display. `ros2 topic list` can include topics that only exist because RViz subscribed to them, so confirm real publishers with `ros2 topic info -v <topic>`.
+
 Check depth image, camera info, TF, and Nvblox node logs. Also inspect:
 
 ```bash
 ros2 node list | grep -E 'nvblox|visual|slam'
 ros2 topic list -t | grep -Ei 'nvblox|mesh|esdf|tsdf'
+ros2 param get /nvblox_node global_frame
+ros2 param get /nvblox_node map_clearing_frame_id
+ros2 run tf2_ros tf2_echo odom base
+ros2 run tf2_ros tf2_echo base camera_link
+ros2 run tf2_ros tf2_echo odom camera_depth_optical_frame
+ros2 run tf2_ros tf2_echo camera_link camera0_link  # only if alias enabled
 ldd /opt/ros/humble/lib/libvisual_slam_node.so | grep -i 'not found\|cublas\|cusolver\|cuda'
 ```
 
 In RViz, check whether the status panel reports `Global Status: Frame [odom] does not exist`. With the official NVIDIA RealSense bag, `visual_slam_node` must run because it provides the cuVSLAM odom/TF chain, commonly around `camera0_link` and `odom`. Missing `libcublas.so.12` or `libcusolver.so.11` can prevent that node from loading, so Color/Depth may appear while Nvblox has no useful global frame.
 
-For the Go2-W feasibility harness, Visual SLAM is optional. The required chain is `odom -> base_link -> camera_link`, provided by Go2 odometry TF plus the measured RealSense static transform. Check it with:
+For the Go2-W feasibility harness, Visual SLAM is optional. The required chain is `odom -> base -> camera_link`, provided by Go2 odometry TF plus the measured RealSense static transform. Check it with:
 
 ```bash
-ros2 run tf2_ros tf2_echo odom base_link
-ros2 run tf2_ros tf2_echo base_link camera_link
+ros2 run tf2_ros tf2_echo odom base
+ros2 run tf2_ros tf2_echo base camera_link
 ```
 
 Official NVIDIA RealSense bag:
@@ -389,7 +419,7 @@ Official NVIDIA RealSense bag:
 Go2-W feasibility harness:
 
 - Uses Go2 odometry TF and measured RealSense extrinsics.
-- Does not require Visual SLAM when `odom -> base_link -> camera_link` is available.
+- Does not require Visual SLAM when `odom -> base -> camera_link` is available.
 
 Ghosting or double walls:
 
