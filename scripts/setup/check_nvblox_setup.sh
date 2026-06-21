@@ -77,7 +77,7 @@ if [ -f "$VISUAL_SLAM_LIB" ]; then
   VISUAL_SLAM_MISSING_DEPS=$(ldd "$VISUAL_SLAM_LIB" | grep "not found" || true)
   if [ -n "$VISUAL_SLAM_MISSING_DEPS" ]; then
     echo "$VISUAL_SLAM_MISSING_DEPS"
-    echo "WARNING: $VISUAL_SLAM_LIB has missing runtime dependencies. This mainly breaks Isaac ROS Visual SLAM / the official RealSense bag odom source; for Go2-W live tests, provide odom -> base_link -> camera_link from Go2 odometry and measured camera TF."
+    echo "WARNING: $VISUAL_SLAM_LIB has missing runtime dependencies. This mainly breaks Isaac ROS Visual SLAM / the official RealSense bag odom source; for Go2-W live tests, provide odom -> base_link -> front_realsense plus RealSense driver optical-frame TF."
   fi
 else
   echo "$VISUAL_SLAM_LIB not found; skipping Visual SLAM dynamic dependency check."

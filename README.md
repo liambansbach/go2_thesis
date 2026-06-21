@@ -1,13 +1,13 @@
 # Go2-W Semantic Mapping
 
-ROS 2/Docker workspace for Unitree Go2-W sensor access, Nvblox feasibility testing, and semantic risk-map projection experiments.
+ROS 2/Docker workspace for Unitree Go2-W sensor inspection, Nvblox feasibility testing, and later semantic risk-map projection experiments.
 
 Target stack:
 - Host: Ubuntu 24.04
 - Container: Ubuntu 22.04 + ROS 2 Humble
 - Middleware: CycloneDDS
 - Robot: Unitree Go2-W
-- Mapping: Intel RealSense D456, Unitree 4D LiDAR, Isaac ROS Nvblox, and later semantic/risk-map projection
+- Mapping: front-mounted Intel RealSense, Unitree 4D LiDAR, Isaac ROS Nvblox, and later semantic/risk-map projection
 
 ## Quick Start
 
@@ -37,16 +37,17 @@ Use `./scripts/docker/run.sh` without `ROS_NET_IFACE` for offline builds, bag re
 
 - `docs/setup.md`: first-time host, Docker, GPU, and workspace setup.
 - `docs/workflow.md`: compact daily workflow cheat sheet.
-- `scripts/README_scripts.md`: detailed script and launch-wrapper reference.
-- `docs/go2w_nvblox_live_test.md`: detailed Go2-W RealSense/Nvblox live-test guide.
+- `docs/go2w_nvblox_live_test.md`: canonical Go2-W RealSense/Nvblox live and replay procedure.
 - `docs/code_overview.md`: where to change what.
+- `docs/jetson_information.md`: private robot-specific onboard reference.
+- `scripts/README_scripts.md`: script reference.
 
 ## Project Layout
 
 ```text
 docker/                         Docker image, compose file, ROS entrypoint
 scripts/                        Workflow helpers
-docs/                           Setup, workflow, live-test, and reference docs
+docs/                           Setup, workflow, live-test, and runtime notes
 ros2_ws/src/go2_bringup/        Go2-W launch files, TF helpers, RViz profiles, Nvblox config
 ros2_ws/src/go2w_description/   Canonical editable Go2-W URDF, meshes, and joint config
 ros2_ws/src/semantic_risk_node/ Future semantic perception package

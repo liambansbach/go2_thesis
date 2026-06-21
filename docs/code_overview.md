@@ -8,7 +8,7 @@ Where to change things in the Go2-W-first repository.
 go2_thesis/
 ├── bags/                         local rosbag data, ignored/generated
 ├── docker/                       container image, compose file, ROS entrypoint
-├── docs/                         setup, workflow, live-test, and reference docs
+├── docs/                         setup, workflow, live-test, and runtime notes
 ├── requirements/                 Python requirement files
 ├── ros2_ws/
 │   └── src/
@@ -24,7 +24,7 @@ Generated folders such as `ros2_ws/build/`, `ros2_ws/install/`, `ros2_ws/log/`, 
 
 ## `docker/`
 
-- `Dockerfile.humble`: ROS 2 Humble, Unitree dependencies, Nvblox/RealSense dependencies, RViz, rosbag, and Python/system tools.
+- `Dockerfile.humble`: ROS 2 Humble, Unitree dependencies, Nvblox/RealSense/domain_bridge dependencies, RViz, rosbag, and Python/system tools.
 - `docker-compose.yaml`: host-networked container and workspace mount.
 - `ros_entrypoint.sh`: sources ROS overlays and creates a CycloneDDS interface config dynamically when `ROS_NET_IFACE` is set.
 
@@ -49,13 +49,14 @@ Go2-W bringup and debug package.
 
 Change here for:
 - launch wrappers such as `go2w_nvblox.launch.py`, `go2w_debug_rviz.launch.py`, and `go2w_tf.launch.py`
+- the optional read-only `go2w_domain_bridge.launch.py` Domain 10 -> Domain 0 normalization bridge
 - read-only TF helpers and visualization bridges
 - package-installed RViz profiles in `rviz/`
-- package-owned Nvblox config in `config/nvblox/`
+- package-owned Nvblox and domain bridge config in `config/nvblox/` and `config/domain_bridge/`
 
 Do not change odometry logic, LowState mapping, sensor transforms, Docker behavior, or Nvblox parameters unless that is the explicit task.
 
-Normal live Go2-W tests consume onboard-published RealSense topics over Ethernet. The container-side package keeps only TF, RViz, inspection, and Nvblox wrappers.
+Normal live Go2-W tests consume onboard-published RealSense topics over Ethernet. The canonical thesis graph is Domain 0 with `/tf`, `/tf_static`, `/joint_states`, `/robot_description`, `/camera/...` or future `/front_realsense/...`, `/utlidar/...`, `/odom`, and `/nvblox_node/...`. Domain 10 vendor/MyBotShop topics can be bridged read-only into Domain 0 when useful; command/control topics are intentionally not bridged.
 
 ## `ros2_ws/src/go2w_description/`
 
@@ -68,6 +69,27 @@ Change here for:
 - package-local description/RViz launch support
 
 Mesh paths should resolve through `package://go2w_description/...`. The old root-level duplicate description tree has been removed.
+
+The WR thesis URDF names the custom front RealSense mount as:
+
+```text
+base_link
+└── front_realsense_base
+    └── front_realsense_tilt_axis
+        └── front_realsense_mount
+            └── front_realsense_body
+                └── front_realsense
+```
+
+`front_realsense_pitch_joint` is the mechanical pitch adjustment about the
+flange axis; keep camera pitch tuning there. `front_realsense_body` holds the
+currently installed D456 body visual. `front_realsense` is the canonical
+RealSense depth-origin / left-imager frame, and the frame names stay generic so
+a D435i or another RealSense can use the same physical mount naming after the
+model-specific body-to-sensor offset and visual mesh are updated. Do not use
+`camera_link` for this mount in the URDF; vendor Domain 10 TF may already
+publish that child frame. RealSense optical frames should normally come from the
+RealSense driver.
 
 ## `semantic_risk_node`
 
@@ -85,17 +107,15 @@ Future projection package. Intended role:
 risk image + depth/LiDAR + camera calibration + TF -> risk pointcloud or grid-map layer
 ```
 
-## `docs/reference/`
+## `docs/go2_runtime/`
 
-Reference-only notes and snapshots that are not loaded by runtime code:
+Generated runtime inspection output:
 
 ```text
-docs/reference/topics/
-docs/reference/frames/
-docs/reference/calibration/
+docs/go2_runtime/
 ```
 
-Keep active ROS configuration in the owning package, usually `ros2_ws/src/go2_bringup/config/`.
+Do not hand-edit generated scan folders. Use the inspection scripts to create new evidence when the robot, bags, or ROS graph change. Keep active ROS configuration in the owning package, usually `ros2_ws/src/go2_bringup/config/`.
 
 ## `bags/`
 

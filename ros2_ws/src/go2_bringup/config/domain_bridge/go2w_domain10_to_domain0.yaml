@@ -1,0 +1,55 @@
+# Read-only Domain 10 -> Domain 0 normalization bridge for Go2-W thesis work.
+#
+# Domain 0 is the canonical thesis graph. Domain 10 is an optional
+# vendor/MyBotShop source graph. Do not add command, request, e-stop, teleop, or
+# motion-control topics here.
+name: go2w_domain10_to_domain0
+from_domain: 10
+to_domain: 0
+topics:
+  /go2_unit_38712/tf:
+    type: tf2_msgs/msg/TFMessage
+    remap: /tf
+  /go2_unit_38712/tf_static:
+    type: tf2_msgs/msg/TFMessage
+    remap: /tf_static
+    qos:
+      history: keep_last
+      depth: 1
+      reliability: reliable
+      durability: transient_local
+  /go2_unit_38712/joint_states:
+    type: sensor_msgs/msg/JointState
+    remap: /joint_states
+  /go2_unit_38712/platform/joint_states:
+    type: sensor_msgs/msg/JointState
+    remap: /platform/joint_states
+  /go2_unit_38712/robot_description:
+    type: std_msgs/msg/String
+    remap: /robot_description
+    qos:
+      history: keep_last
+      depth: 1
+      reliability: reliable
+      durability: transient_local
+  /go2_unit_38712/base/odom:
+    type: nav_msgs/msg/Odometry
+    remap: /odom
+  /go2_unit_38712/utlidar/robot_odom:
+    type: nav_msgs/msg/Odometry
+    remap: /utlidar/robot_odom
+  /go2_unit_38712/utlidar/cloud:
+    type: sensor_msgs/msg/PointCloud2
+    remap: /utlidar/cloud
+  /go2_unit_38712/lf/lowstate:
+    type: unitree_go/msg/LowState
+    remap: /lf/lowstate
+  /go2_unit_38712/sportmodestate:
+    type: unitree_go/msg/SportModeState
+    remap: /sportmodestate
+  /go2_unit_38712/sensor/battery/state:
+    type: sensor_msgs/msg/BatteryState
+    remap: /sensor/battery/state
+  /go2_unit_38712/sensor/imu/data:
+    type: sensor_msgs/msg/Imu
+    remap: /sensor/imu/data

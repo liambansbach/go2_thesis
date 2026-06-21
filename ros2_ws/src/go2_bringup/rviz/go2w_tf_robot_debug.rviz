@@ -110,7 +110,19 @@ Visualization Manager:
           Value: true
         camera_depth_optical_frame:
           Value: true
-        camera_link:
+        front_realsense:
+          Value: true
+        front_realsense_base:
+          Value: true
+        front_realsense_body:
+          Value: true
+        front_realsense_flange_left:
+          Value: false
+        front_realsense_flange_right:
+          Value: false
+        front_realsense_mount:
+          Value: true
+        front_realsense_tilt_axis:
           Value: true
         imu:
           Value: true
@@ -118,18 +130,6 @@ Visualization Manager:
           Value: true
         radar:
           Value: true
-        rs_base:
-          Value: false
-        rs_d456_solid:
-          Value: false
-        rs_flange_left:
-          Value: false
-        rs_flange_right:
-          Value: false
-        rs_mount:
-          Value: false
-        rs_tilt_axis:
-          Value: false
         utlidar_lidar:
           Value: true
       Marker Scale: 0.3499999940395355
@@ -188,15 +188,15 @@ Visualization Manager:
             radar:
               utlidar_lidar:
                 {}
-            rs_base:
-              rs_tilt_axis:
-                rs_flange_left:
+            front_realsense_base:
+              front_realsense_tilt_axis:
+                front_realsense_flange_left:
                   {}
-                rs_flange_right:
+                front_realsense_flange_right:
                   {}
-                rs_mount:
-                  rs_d456_solid:
-                    camera_link:
+                front_realsense_mount:
+                  front_realsense_body:
+                    front_realsense:
                       camera_color_frame:
                         camera_color_optical_frame:
                           {}
@@ -378,7 +378,19 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        camera_link:
+        front_realsense:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        front_realsense_base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        front_realsense_body:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        front_realsense_mount:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -390,32 +402,32 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        rs_base:
+        front_realsense_base:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        rs_d456_solid:
+        front_realsense_body:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        rs_flange_left:
+        front_realsense_flange_left:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        rs_flange_right:
+        front_realsense_flange_right:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        rs_mount:
+        front_realsense_mount:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        rs_tilt_axis:
+        front_realsense_tilt_axis:
           Alpha: 1
           Show Axes: false
           Show Trail: false

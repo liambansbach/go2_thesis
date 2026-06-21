@@ -5,17 +5,20 @@ from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
-# Robot description TF:
+# Full URDF TF fallback:
 # ros2 launch go2_bringup go2w_tf.launch.py publish_robot_description_tf:=true
+#
+# Use publish_robot_description_tf:=true only when vendor /tf and /tf_static are
+# not available. Do not run the full URDF robot_state_publisher on top of
+# bridged vendor TF unless intentionally debugging duplicate TF child frames.
 #
 # Offline fake static odom TF:
 # ros2 launch go2_bringup go2w_tf.launch.py \
 #   publish_robot_description_tf:=true publish_static_odom_tf:=true
 #
-# Rough camera TF fallback only, when no robot description/camera TF is
-# available:
+# Thesis front RealSense TF complement, for the custom physical mount only:
 # ros2 launch go2_bringup go2w_tf.launch.py \
-#   publish_camera_tf:=true camera_x:=0.25 camera_y:=0.0 camera_z:=0.18
+#   publish_front_realsense_tf:=true
 #
 # Dynamic odometry bridge, disabled by default:
 # ros2 launch go2_bringup go2w_tf.launch.py \
@@ -46,6 +49,27 @@ def _robot_state_publisher(context, *args, **kwargs):
     ]
 
 
+def _static_tf_node(name, condition, parent_frame, child_frame,
+                    x, y, z, roll, pitch, yaw):
+    return Node(
+        condition=condition,
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name=name,
+        arguments=[
+            '--x', x,
+            '--y', y,
+            '--z', z,
+            '--roll', roll,
+            '--pitch', pitch,
+            '--yaw', yaw,
+            '--frame-id', parent_frame,
+            '--child-frame-id', child_frame,
+        ],
+        output='screen',
+    )
+
+
 def generate_launch_description():
     args = [
         DeclareLaunchArgument('use_sim_time', default_value='false'),
@@ -53,7 +77,9 @@ def generate_launch_description():
             'publish_robot_description_tf',
             default_value='false',
             description=(
-                'Publish fixed/movable TF from the installed Go2-W URDF.'
+                'Publish fixed/movable TF from the installed Go2-W URDF. '
+                'Use only when vendor /tf and /tf_static are unavailable; '
+                'otherwise it can duplicate bridged vendor child frames.'
             ),
         ),
         DeclareLaunchArgument(
@@ -80,33 +106,90 @@ def generate_launch_description():
             'publish_static_odom_tf',
             default_value='false',
             description=(
-                'Publish a fake static identity odom->base transform for '
-                'offline bag/RViz/Nvblox sanity checks only.'
+                'Publish a fake static identity odom->base_frame transform for '
+                'offline standing/RViz/Nvblox sanity checks only. Never use '
+                'for moving-map evaluation.'
             ),
         ),
         DeclareLaunchArgument('odom_frame', default_value='odom'),
-        DeclareLaunchArgument('base_frame', default_value='base'),
+        DeclareLaunchArgument('base_frame', default_value='base_link'),
         DeclareLaunchArgument(
             'publish_lowstate_joint_states',
             default_value='false',
             description=(
                 'Publish /joint_states from Unitree LowState for '
-                'visualization. Requires the Unitree message overlay.'
+                'visualization only when /joint_states is not already '
+                'provided by the vendor/domain bridge. Requires the Unitree '
+                'message overlay.'
             ),
         ),
         DeclareLaunchArgument('lowstate_topic', default_value='/lowstate'),
-        DeclareLaunchArgument('publish_camera_tf', default_value='false'),
-        DeclareLaunchArgument('camera_parent_frame', default_value='base'),
         DeclareLaunchArgument(
-            'camera_child_frame',
-            default_value='camera_link',
+            'publish_front_realsense_tf',
+            default_value='false',
+            description=(
+                'Publish the thesis front RealSense complement chain: '
+                'base_link to front_realsense_base to '
+                'front_realsense_tilt_axis to front_realsense_mount to '
+                'front_realsense_body to front_realsense. Does not publish '
+                'flange visual frames, camera_link, or optical frames.'
+            ),
         ),
-        DeclareLaunchArgument('camera_x', default_value='0.32'),
-        DeclareLaunchArgument('camera_y', default_value='0.0'),
-        DeclareLaunchArgument('camera_z', default_value='0.1'),
-        DeclareLaunchArgument('camera_roll', default_value='0.0'),
-        DeclareLaunchArgument('camera_pitch', default_value='0.05'),
-        DeclareLaunchArgument('camera_yaw', default_value='0.0'),
+        DeclareLaunchArgument(
+            'front_realsense_parent_frame',
+            default_value='base_link',
+        ),
+        DeclareLaunchArgument(
+            'front_realsense_base_frame',
+            default_value='front_realsense_base',
+        ),
+        DeclareLaunchArgument(
+            'front_realsense_tilt_axis_frame',
+            default_value='front_realsense_tilt_axis',
+        ),
+        DeclareLaunchArgument(
+            'front_realsense_mount_frame',
+            default_value='front_realsense_mount',
+        ),
+        DeclareLaunchArgument(
+            'front_realsense_body_frame',
+            default_value='front_realsense_body',
+        ),
+        DeclareLaunchArgument(
+            'front_realsense_frame',
+            default_value='front_realsense',
+        ),
+        DeclareLaunchArgument('front_realsense_base_x', default_value='0.295'),
+        DeclareLaunchArgument('front_realsense_base_y', default_value='0.0'),
+        DeclareLaunchArgument('front_realsense_base_z', default_value='0.075'),
+        DeclareLaunchArgument('front_realsense_base_roll', default_value='0.0'),
+        DeclareLaunchArgument('front_realsense_base_pitch', default_value='0.0'),
+        DeclareLaunchArgument('front_realsense_base_yaw', default_value='0.0'),
+        DeclareLaunchArgument('front_realsense_tilt_axis_x', default_value='0.005'),
+        DeclareLaunchArgument('front_realsense_tilt_axis_y', default_value='0.0'),
+        DeclareLaunchArgument('front_realsense_tilt_axis_z', default_value='0.032'),
+        DeclareLaunchArgument('front_realsense_mount_x', default_value='0.0'),
+        DeclareLaunchArgument('front_realsense_mount_y', default_value='0.0'),
+        DeclareLaunchArgument('front_realsense_mount_z', default_value='0.0'),
+        DeclareLaunchArgument(
+            'front_realsense_pitch',
+            default_value='0.0',
+            description=(
+                'Camera pitch about the front_realsense_tilt_axis local Y '
+                'axis. Match front_realsense_pitch_joint in the URDF.'
+            ),
+        ),
+        DeclareLaunchArgument('front_realsense_mount_roll', default_value='0.0'),
+        DeclareLaunchArgument('front_realsense_mount_yaw', default_value='0.0'),
+        DeclareLaunchArgument('front_realsense_body_x', default_value='0.02'),
+        DeclareLaunchArgument('front_realsense_body_y', default_value='0.0'),
+        DeclareLaunchArgument('front_realsense_body_z', default_value='0.0'),
+        DeclareLaunchArgument('front_realsense_body_roll', default_value='0.0'),
+        DeclareLaunchArgument('front_realsense_body_pitch', default_value='0.0'),
+        DeclareLaunchArgument('front_realsense_body_yaw', default_value='0.0'),
+        DeclareLaunchArgument('front_realsense_sensor_x', default_value='0.02145'),
+        DeclareLaunchArgument('front_realsense_sensor_y', default_value='0.04750'),
+        DeclareLaunchArgument('front_realsense_sensor_z', default_value='0.0'),
         DeclareLaunchArgument(
             'publish_lidar_tf',
             default_value='false',
@@ -126,7 +209,14 @@ def generate_launch_description():
         DeclareLaunchArgument('lidar_roll', default_value='0.0'),
         DeclareLaunchArgument('lidar_pitch', default_value='0.0'),
         DeclareLaunchArgument('lidar_yaw', default_value='-2.09439510239'), # -120 degrees to roughly align the front of the LiDAR FOV with the front of the robot, based on visual inspection of the cloud in RViz. This is not a verified physical calibration.
-        DeclareLaunchArgument('publish_odom_tf', default_value='false'),
+        DeclareLaunchArgument(
+            'publish_odom_tf',
+            default_value='false',
+            description=(
+                'Publish TF from a selected nav_msgs/Odometry topic only when '
+                'that topic has actual messages.'
+            ),
+        ),
         DeclareLaunchArgument(
             'odom_topic',
             default_value='/utlidar/robot_odom',
@@ -142,8 +232,9 @@ def generate_launch_description():
         function=_robot_state_publisher,
     )
 
-    # Fake/static identity TF for offline replay sanity checks only. Do not use
-    # this for real moving-map evaluation; Nvblox needs real dynamic odom.
+    # Fake/static identity TF for static standing/RViz/Nvblox sanity checks
+    # only. Do not use this for moving-map evaluation; Nvblox needs real
+    # dynamic odom -> base_link when the robot moves.
     static_odom_tf = Node(
         condition=IfCondition(LaunchConfiguration('publish_static_odom_tf')),
         package='tf2_ros',
@@ -170,32 +261,72 @@ def generate_launch_description():
         output='screen',
     )
 
-    # Rough fallback only. Prefer publish_robot_description_tf with the Go2-W
-    # URDF, plus RealSense-provided optical-frame TF from the bag/driver.
-    camera_tf = Node(
-        condition=IfCondition(LaunchConfiguration('publish_camera_tf')),
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        name='go2w_realsense_d456_static_tf',
-        arguments=[
-            '--x',
-            LaunchConfiguration('camera_x'),
-            '--y',
-            LaunchConfiguration('camera_y'),
-            '--z',
-            LaunchConfiguration('camera_z'),
-            '--roll',
-            LaunchConfiguration('camera_roll'),
-            '--pitch',
-            LaunchConfiguration('camera_pitch'),
-            '--yaw',
-            LaunchConfiguration('camera_yaw'),
-            '--frame-id',
-            LaunchConfiguration('camera_parent_frame'),
-            '--child-frame-id',
-            LaunchConfiguration('camera_child_frame'),
-        ],
-        output='screen',
+    # Clean complement for vendor TF: publish only the non-visual front
+    # RealSense chain that the Domain 10 vendor tree should not already own.
+    # Flange visual frames come from URDF/RobotModel only. This intentionally
+    # avoids camera_link and optical frames.
+    front_realsense_condition = IfCondition(
+        LaunchConfiguration('publish_front_realsense_tf')
+    )
+    front_realsense_base_tf = _static_tf_node(
+        'go2w_front_realsense_base_static_tf',
+        front_realsense_condition,
+        LaunchConfiguration('front_realsense_parent_frame'),
+        LaunchConfiguration('front_realsense_base_frame'),
+        LaunchConfiguration('front_realsense_base_x'),
+        LaunchConfiguration('front_realsense_base_y'),
+        LaunchConfiguration('front_realsense_base_z'),
+        LaunchConfiguration('front_realsense_base_roll'),
+        LaunchConfiguration('front_realsense_base_pitch'),
+        LaunchConfiguration('front_realsense_base_yaw'),
+    )
+    front_realsense_tilt_axis_tf = _static_tf_node(
+        'go2w_front_realsense_tilt_axis_static_tf',
+        front_realsense_condition,
+        LaunchConfiguration('front_realsense_base_frame'),
+        LaunchConfiguration('front_realsense_tilt_axis_frame'),
+        LaunchConfiguration('front_realsense_tilt_axis_x'),
+        LaunchConfiguration('front_realsense_tilt_axis_y'),
+        LaunchConfiguration('front_realsense_tilt_axis_z'),
+        '0.0',
+        '0.0',
+        '0.0',
+    )
+    front_realsense_mount_tf = _static_tf_node(
+        'go2w_front_realsense_mount_static_tf',
+        front_realsense_condition,
+        LaunchConfiguration('front_realsense_tilt_axis_frame'),
+        LaunchConfiguration('front_realsense_mount_frame'),
+        LaunchConfiguration('front_realsense_mount_x'),
+        LaunchConfiguration('front_realsense_mount_y'),
+        LaunchConfiguration('front_realsense_mount_z'),
+        LaunchConfiguration('front_realsense_mount_roll'),
+        LaunchConfiguration('front_realsense_pitch'),
+        LaunchConfiguration('front_realsense_mount_yaw'),
+    )
+    front_realsense_body_tf = _static_tf_node(
+        'go2w_front_realsense_body_static_tf',
+        front_realsense_condition,
+        LaunchConfiguration('front_realsense_mount_frame'),
+        LaunchConfiguration('front_realsense_body_frame'),
+        LaunchConfiguration('front_realsense_body_x'),
+        LaunchConfiguration('front_realsense_body_y'),
+        LaunchConfiguration('front_realsense_body_z'),
+        LaunchConfiguration('front_realsense_body_roll'),
+        LaunchConfiguration('front_realsense_body_pitch'),
+        LaunchConfiguration('front_realsense_body_yaw'),
+    )
+    front_realsense_sensor_tf = _static_tf_node(
+        'go2w_front_realsense_sensor_static_tf',
+        front_realsense_condition,
+        LaunchConfiguration('front_realsense_body_frame'),
+        LaunchConfiguration('front_realsense_frame'),
+        LaunchConfiguration('front_realsense_sensor_x'),
+        LaunchConfiguration('front_realsense_sensor_y'),
+        LaunchConfiguration('front_realsense_sensor_z'),
+        '0.0',
+        '0.0',
+        '0.0',
     )
 
     # Experimental visual alignment for /utlidar/cloud only. This is not a
@@ -260,7 +391,11 @@ def generate_launch_description():
     return LaunchDescription(args + [
         robot_description_tf,
         static_odom_tf,
-        camera_tf,
+        front_realsense_base_tf,
+        front_realsense_tilt_axis_tf,
+        front_realsense_mount_tf,
+        front_realsense_body_tf,
+        front_realsense_sensor_tf,
         lidar_tf,
         lowstate_joint_states,
         odom_to_tf,

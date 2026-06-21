@@ -7,7 +7,7 @@ Panels:
         - /Global Options1
         - /TF1
         - /RobotModel1
-        - /RealSense D4561
+        - /Front RealSense1
         - /Go2-W LiDAR Overlay1
         - /Nvblox Outputs1
       Splitter Ratio: 0.5
@@ -108,25 +108,25 @@ Visualization Manager:
           Value: true
         camera_depth_optical_frame:
           Value: true
-        camera_link:
+        front_realsense:
+          Value: true
+        front_realsense_base:
+          Value: true
+        front_realsense_body:
+          Value: true
+        front_realsense_flange_left:
+          Value: true
+        front_realsense_flange_right:
+          Value: true
+        front_realsense_mount:
+          Value: true
+        front_realsense_tilt_axis:
           Value: true
         imu:
           Value: true
         odom:
           Value: true
         radar:
-          Value: true
-        rs_base:
-          Value: true
-        rs_d456_solid:
-          Value: true
-        rs_flange_left:
-          Value: true
-        rs_flange_right:
-          Value: true
-        rs_mount:
-          Value: true
-        rs_tilt_axis:
           Value: true
       Marker Scale: 0.3499999940395355
       Name: TF
@@ -183,15 +183,15 @@ Visualization Manager:
               {}
             radar:
               {}
-            rs_base:
-              rs_tilt_axis:
-                rs_flange_left:
+            front_realsense_base:
+              front_realsense_tilt_axis:
+                front_realsense_flange_left:
                   {}
-                rs_flange_right:
+                front_realsense_flange_right:
                   {}
-                rs_mount:
-                  rs_d456_solid:
-                    camera_link:
+                front_realsense_mount:
+                  front_realsense_body:
+                    front_realsense:
                       camera_color_frame:
                         camera_color_optical_frame:
                           {}
@@ -373,7 +373,19 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        camera_link:
+        front_realsense:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        front_realsense_base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        front_realsense_body:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        front_realsense_mount:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -385,32 +397,32 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        rs_base:
+        front_realsense_base:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        rs_d456_solid:
+        front_realsense_body:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        rs_flange_left:
+        front_realsense_flange_left:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        rs_flange_right:
+        front_realsense_flange_right:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        rs_mount:
+        front_realsense_mount:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        rs_tilt_axis:
+        front_realsense_tilt_axis:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -453,7 +465,7 @@ Visualization Manager:
             Value: /camera/depth/image_rect_raw
           Value: true
       Enabled: true
-      Name: RealSense D456
+      Name: Front RealSense
     - Class: rviz_common/Group
       Displays:
         - Alpha: 0.11999999731779099

@@ -14,6 +14,8 @@ setup(
         ('share/' + package_name + '/launch', glob('launch/*.launch.py')),
         ('share/' + package_name + '/config/nvblox',
             glob('config/nvblox/*.yaml')),
+        ('share/' + package_name + '/config/domain_bridge',
+            glob('config/domain_bridge/*.yaml')),
         ('share/' + package_name + '/rviz', glob('rviz/*.rviz')),
     ],
     install_requires=['setuptools'],

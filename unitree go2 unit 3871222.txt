@@ -1,0 +1,2841 @@
+unitree@go2-unit-38712:~$ ros2 topic list
+/api/assistant_recorder/request
+/api/assistant_recorder/response
+/api/audiohub/request
+/api/audiohub/response
+/api/bashrunner/request
+/api/bashrunner/response
+/api/config/request
+/api/config/response
+/api/fourg_agent/request
+/api/fourg_agent/response
+/api/gas_sensor/request
+/api/gas_sensor/response
+/api/gpt/request
+/api/gpt/response
+/api/motion_switcher/request
+/api/motion_switcher/response
+/api/obstacles_avoid/request
+/api/obstacles_avoid/response
+/api/pet/request
+/api/pet/response
+/api/programming_actuator/request
+/api/programming_actuator/response
+/api/robot_state/request
+/api/robot_state/response
+/api/sport/request
+/api/sport/response
+/api/sport_lease/request
+/api/sport_lease/response
+/api/uwbswitch/request
+/api/uwbswitch/response
+/api/videohub/request
+/api/videohub/response
+/api/vui/request
+/api/vui/response
+/arm_Command
+/arm_Feedback
+/audiohub/player/state
+/audioreceiver
+/audiosender
+/camera/color/camera_info
+/camera/color/image_raw
+/camera/color/metadata
+/camera/depth/camera_info
+/camera/depth/image_rect_raw
+/camera/depth/metadata
+/camera/extrinsics/depth_to_color
+/camera/extrinsics/depth_to_depth
+/camera/imu
+/config_change_status
+/frontvideostream
+/gas_sensor
+/gnss
+/gpt_cmd
+/gptflowfeedback
+/joint_states
+/lf/lowstate
+/lf/sportmodestate
+/lio_sam_ros2/mapping/odometry
+/lowcmd
+/lowstate
+/multiplestate
+/parameter_events
+/pctoimage_local
+/pet/flowfeedback
+/programming_actuator/command
+/programming_actuator/feedback
+/public_network_status
+/qt_add_edge
+/qt_add_node
+/qt_command
+/qt_notice
+/query_result_edge
+/query_result_node
+/robot_description
+/rosout
+/rtc/state
+/rtc_status
+/selftest
+/servicestate
+/servicestateactivate
+/sportmodestate
+/tf
+/tf_static
+/uslam/client_command
+/uslam/frontend/cloud_world_ds
+/uslam/frontend/odom
+/uslam/localization/cloud_world
+/uslam/localization/odom
+/uslam/navigation/global_path
+/uslam/server_log
+/utlidar/client_cmd
+/utlidar/cloud
+/utlidar/cloud_base
+/utlidar/cloud_deskewed
+/utlidar/grid_map
+/utlidar/height_map
+/utlidar/height_map_array
+/utlidar/imu
+/utlidar/lidar_state
+/utlidar/mapping_cmd
+/utlidar/range_info
+/utlidar/range_map
+/utlidar/robot_odom
+/utlidar/robot_pose
+/utlidar/server_log
+/utlidar/switch
+/utlidar/voxel_map
+/utlidar/voxel_map_compressed
+/uwbstate
+/uwbswitch
+/videohub/inner
+/webrtcreq
+/webrtcres
+/wirelesscontroller
+/wirelesscontroller_unprocessed
+/xfk_webrtcreq
+/xfk_webrtcres
+
+
+
+
+-------------------------------
+
+
+unitree@go2-unit-38712:~$ echo $ROS_DOMAIN_ID
+10
+unitree@go2-unit-38712:~$ ros2 topic list
+/fixposition/odometry_enu_smooth
+/fixposition/odometry_llh
+/go2_unit_38712/autonomous_high_priority/cmd_vel
+/go2_unit_38712/autonomous_low_priority/cmd_vel
+/go2_unit_38712/autonomous_mid_priority/cmd_vel
+/go2_unit_38712/base/odom
+/go2_unit_38712/client_count
+/go2_unit_38712/cmd_vel
+/go2_unit_38712/connected_clients
+/go2_unit_38712/d1/joint_states
+/go2_unit_38712/diagnostics
+/go2_unit_38712/e_stop
+/go2_unit_38712/fixposition/odometry_llh
+/go2_unit_38712/hardware/cmd_vel
+/go2_unit_38712/joint_states
+/go2_unit_38712/joy
+/go2_unit_38712/joy/set_feedback
+/go2_unit_38712/joy_teleop/cmd_vel
+/go2_unit_38712/lf/lowstate
+/go2_unit_38712/map
+/go2_unit_38712/open_manipulator/corrected_joint_states
+/go2_unit_38712/platform/joint_states
+/go2_unit_38712/robot_description
+/go2_unit_38712/sensor/battery/state
+/go2_unit_38712/sensor/camera_info
+/go2_unit_38712/sensor/camera_raw
+/go2_unit_38712/sensor/camera_raw/compressed
+/go2_unit_38712/sensor/imu/data
+/go2_unit_38712/sportmodestate
+/go2_unit_38712/steamdeck_joy_teleop/cmd_vel
+/go2_unit_38712/tf
+/go2_unit_38712/tf_static
+/go2_unit_38712/twist_marker_server/cmd_vel
+/go2_unit_38712/utlidar/cloud
+/go2_unit_38712/utlidar/robot_odom
+/go2_unit_38712/webserver/cmd_vel
+/go2_unit_38712/webserver/enu_markers
+/go2_unit_38712/zt30/joint_states
+/parameter_events
+/rosout
+
+
+
+
+unitree@go2-unit-38712:~$ ros2 topic list
+/api/assistant_recorder/request
+/api/assistant_recorder/response
+/api/audiohub/request
+/api/audiohub/response
+/api/bashrunner/request
+/api/bashrunner/response
+/api/config/request
+/api/config/response
+/api/fourg_agent/request
+/api/fourg_agent/response
+/api/gas_sensor/request
+/api/gas_sensor/response
+/api/gpt/request
+/api/gpt/response
+/api/motion_switcher/request
+/api/motion_switcher/response
+/api/obstacles_avoid/request
+/api/obstacles_avoid/response
+/api/pet/request
+/api/pet/response
+/api/programming_actuator/request
+/api/programming_actuator/response
+/api/robot_state/request
+/api/robot_state/response
+/api/sport/request
+/api/sport/response
+/api/sport_lease/request
+/api/sport_lease/response
+/api/uwbswitch/request
+/api/uwbswitch/response
+/api/videohub/request
+/api/videohub/response
+/api/vui/request
+/api/vui/response
+/arm_Command
+/arm_Feedback
+/audiohub/player/state
+/audioreceiver
+/audiosender
+/camera/color/camera_info
+/camera/color/image_raw
+/camera/color/metadata
+/camera/depth/camera_info
+/camera/depth/image_rect_raw
+/camera/depth/metadata
+/camera/extrinsics/depth_to_color
+/camera/extrinsics/depth_to_depth
+/camera/imu
+/config_change_status
+/frontvideostream
+/gas_sensor
+/gnss
+/gpt_cmd
+/gptflowfeedback
+/joint_states
+/lf/lowstate
+/lf/sportmodestate
+/lio_sam_ros2/mapping/odometry
+/lowcmd
+/lowstate
+/multiplestate
+/parameter_events
+/pctoimage_local
+/pet/flowfeedback
+/programming_actuator/command
+/programming_actuator/feedback
+/public_network_status
+/qt_add_edge
+/qt_add_node
+/qt_command
+/qt_notice
+/query_result_edge
+/query_result_node
+/rosout
+/rtc/state
+/rtc_status
+/selftest
+/servicestate
+/servicestateactivate
+/sportmodestate
+/tf_static
+/uslam/client_command
+/uslam/frontend/cloud_world_ds
+/uslam/frontend/odom
+/uslam/localization/cloud_world
+/uslam/localization/odom
+/uslam/navigation/global_path
+/uslam/server_log
+/utlidar/client_cmd
+/utlidar/cloud
+/utlidar/cloud_base
+/utlidar/cloud_deskewed
+/utlidar/grid_map
+/utlidar/height_map
+/utlidar/height_map_array
+/utlidar/imu
+/utlidar/lidar_state
+/utlidar/mapping_cmd
+/utlidar/range_info
+/utlidar/range_map
+/utlidar/robot_odom
+/utlidar/robot_pose
+/utlidar/server_log
+/utlidar/switch
+/utlidar/voxel_map
+/utlidar/voxel_map_compressed
+/uwbstate
+/uwbswitch
+/videohub/inner
+/webrtcreq
+/webrtcres
+/wirelesscontroller
+/wirelesscontroller_unprocessed
+/xfk_webrtcreq
+/xfk_webrtcres
+
+
+
+---------
+
+
+unitree@go2-unit-38712:~$ export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+unitree@go2-unit-38712:~$ export ROS_DOMAIN_ID=10
+unitree@go2-unit-38712:~$ 
+unitree@go2-unit-38712:~$ for t in \
+>   /go2_unit_38712/base/odom \
+>   /go2_unit_38712/utlidar/robot_odom \
+>   /fixposition/odometry_enu_smooth \
+>   /go2_unit_38712/sportmodestate \
+>   /go2_unit_38712/tf \
+>   /go2_unit_38712/tf_static
+> do
+>   echo "================ $t ================"
+>   ros2 topic info "$t" -v || true
+>   timeout 8 ros2 topic hz "$t" || true
+>   timeout 3 ros2 topic echo "$t" || true
+> done
+================ /go2_unit_38712/base/odom ================
+Type: nav_msgs/msg/Odometry
+
+Publisher count: 1
+
+Node name: go2_statepublisher
+Node namespace: /go2_unit_38712
+Topic type: nav_msgs/msg/Odometry
+Endpoint type: PUBLISHER
+GID: 01.10.9a.d9.8e.f9.44.6f.a6.48.25.f2.00.00.17.03.00.00.00.00.00.00.00.00
+QoS profile:
+  Reliability: RMW_QOS_POLICY_RELIABILITY_RELIABLE
+  Durability: RMW_QOS_POLICY_DURABILITY_VOLATILE
+  Lifespan: 9223372036854775807 nanoseconds
+  Deadline: 9223372036854775807 nanoseconds
+  Liveliness: RMW_QOS_POLICY_LIVELINESS_AUTOMATIC
+  Liveliness lease duration: 9223372036854775807 nanoseconds
+
+Subscription count: 0
+
+================ /go2_unit_38712/utlidar/robot_odom ================
+Type: nav_msgs/msg/Odometry
+
+Publisher count: 1
+
+Node name: go2_unit_38712_domain_bridge_10
+Node namespace: /
+Topic type: nav_msgs/msg/Odometry
+Endpoint type: PUBLISHER
+GID: 01.10.23.ca.0a.53.5b.5c.bc.b1.60.84.00.00.0a.03.00.00.00.00.00.00.00.00
+QoS profile:
+  Reliability: RMW_QOS_POLICY_RELIABILITY_RELIABLE
+  Durability: RMW_QOS_POLICY_DURABILITY_VOLATILE
+  Lifespan: 9223372036854775807 nanoseconds
+  Deadline: 9223372036854775807 nanoseconds
+  Liveliness: RMW_QOS_POLICY_LIVELINESS_AUTOMATIC
+  Liveliness lease duration: 9223372036854775807 nanoseconds
+
+Subscription count: 1
+
+Node name: go2_statepublisher
+Node namespace: /go2_unit_38712
+Topic type: nav_msgs/msg/Odometry
+Endpoint type: SUBSCRIPTION
+GID: 01.10.9a.d9.8e.f9.44.6f.a6.48.25.f2.00.00.16.04.00.00.00.00.00.00.00.00
+QoS profile:
+  Reliability: RMW_QOS_POLICY_RELIABILITY_RELIABLE
+  Durability: RMW_QOS_POLICY_DURABILITY_VOLATILE
+  Lifespan: 9223372036854775807 nanoseconds
+  Deadline: 9223372036854775807 nanoseconds
+  Liveliness: RMW_QOS_POLICY_LIVELINESS_AUTOMATIC
+  Liveliness lease duration: 9223372036854775807 nanoseconds
+
+================ /fixposition/odometry_enu_smooth ================
+Type: nav_msgs/msg/Odometry
+
+Publisher count: 0
+
+Subscription count: 1
+
+Node name: go2_webserver
+Node namespace: /go2_unit_38712
+Topic type: nav_msgs/msg/Odometry
+Endpoint type: SUBSCRIPTION
+GID: 01.10.f9.50.52.7d.bd.0f.9a.97.8c.75.00.00.22.04.00.00.00.00.00.00.00.00
+QoS profile:
+  Reliability: RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT
+  Durability: RMW_QOS_POLICY_DURABILITY_VOLATILE
+  Lifespan: 9223372036854775807 nanoseconds
+  Deadline: 9223372036854775807 nanoseconds
+  Liveliness: RMW_QOS_POLICY_LIVELINESS_AUTOMATIC
+  Liveliness lease duration: 9223372036854775807 nanoseconds
+
+================ /go2_unit_38712/sportmodestate ================
+Type: unitree_go/msg/SportModeState
+
+Publisher count: 1
+
+Node name: go2_unit_38712_domain_bridge_10
+Node namespace: /
+Topic type: unitree_go/msg/SportModeState
+Endpoint type: PUBLISHER
+GID: 01.10.23.ca.0a.53.5b.5c.bc.b1.60.84.00.00.08.03.00.00.00.00.00.00.00.00
+QoS profile:
+  Reliability: RMW_QOS_POLICY_RELIABILITY_RELIABLE
+  Durability: RMW_QOS_POLICY_DURABILITY_VOLATILE
+  Lifespan: 9223372036854775807 nanoseconds
+  Deadline: 9223372036854775807 nanoseconds
+  Liveliness: RMW_QOS_POLICY_LIVELINESS_AUTOMATIC
+  Liveliness lease duration: 9223372036854775807 nanoseconds
+
+Subscription count: 1
+
+Node name: go2_statepublisher
+Node namespace: /go2_unit_38712
+Topic type: unitree_go/msg/SportModeState
+Endpoint type: SUBSCRIPTION
+GID: 01.10.9a.d9.8e.f9.44.6f.a6.48.25.f2.00.00.14.04.00.00.00.00.00.00.00.00
+QoS profile:
+  Reliability: RMW_QOS_POLICY_RELIABILITY_RELIABLE
+  Durability: RMW_QOS_POLICY_DURABILITY_VOLATILE
+  Lifespan: 9223372036854775807 nanoseconds
+  Deadline: 9223372036854775807 nanoseconds
+  Liveliness: RMW_QOS_POLICY_LIVELINESS_AUTOMATIC
+  Liveliness lease duration: 9223372036854775807 nanoseconds
+
+average rate: 10.033
+	min: 0.096s max: 0.103s std dev: 0.00218s window: 12
+average rate: 10.013
+	min: 0.094s max: 0.103s std dev: 0.00225s window: 23
+average rate: 10.001
+	min: 0.094s max: 0.105s std dev: 0.00234s window: 33
+average rate: 10.013
+	min: 0.094s max: 0.105s std dev: 0.00232s window: 44
+average rate: 10.004
+	min: 0.090s max: 0.110s std dev: 0.00307s window: 54
+stamp:
+  sec: 0
+  nanosec: 0
+error_code: 0
+imu_state:
+  quaternion:
+  - 0.9193410277366638
+  - 0.006853011436760426
+  - 0.0020269635133445263
+  - -0.3933968245983124
+  gyroscope:
+  - 0.04367583617568016
+  - 0.0010652643395587802
+  - 0.0031957929022610188
+  accelerometer:
+  - -0.11611878126859665
+  - 0.13048399984836578
+  - 9.563638687133789
+  rpy:
+  - 0.011006386950612068
+  - 0.009118974208831787
+  - -0.8086185455322266
+  temperature: 80
+mode: 1
+progress: 0.0
+gait_type: 0
+foot_raise_height: 0.0
+position:
+- 0.0
+- 0.0
+- 0.0
+body_height: 0.0
+velocity:
+- 0.0
+- 0.0
+- 0.0
+yaw_speed: 0.0
+range_obstacle:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+foot_force:
+- 0
+- 0
+- 0
+- 0
+foot_position_body:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+foot_speed_body:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+stamp:
+  sec: 0
+  nanosec: 0
+error_code: 0
+imu_state:
+  quaternion:
+  - 0.9193556904792786
+  - 0.006907232105731964
+  - 0.0020776065066456795
+  - -0.39336127042770386
+  gyroscope:
+  - 0.03621898591518402
+  - 0.0021305286791175604
+  - 0.017044229432940483
+  accelerometer:
+  - -0.11971008777618408
+  - 0.21428105235099792
+  - 9.563638687133789
+  rpy:
+  - 0.01106660719960928
+  - 0.009254326112568378
+  - -0.8085405826568604
+  temperature: 79
+mode: 1
+progress: 0.0
+gait_type: 0
+foot_raise_height: 0.0
+position:
+- 0.0
+- 0.0
+- 0.0
+body_height: 0.0
+velocity:
+- 0.0
+- 0.0
+- 0.0
+yaw_speed: 0.0
+range_obstacle:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+foot_force:
+- 0
+- 0
+- 0
+- 0
+foot_position_body:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+foot_speed_body:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+stamp:
+  sec: 0
+  nanosec: 0
+error_code: 0
+imu_state:
+  quaternion:
+  - 0.91935133934021
+  - 0.006877819076180458
+  - 0.0021231556311249733
+  - -0.39337170124053955
+  gyroscope:
+  - 0.02876213565468788
+  - -0.015978964045643806
+  - 0.0063915858045220375
+  accelerometer:
+  - -0.14365209639072418
+  - 0.17717093229293823
+  - 9.554061889648438
+  rpy:
+  - 0.010976582765579224
+  - 0.009315066039562225
+  - -0.808563232421875
+  temperature: 79
+mode: 1
+progress: 0.0
+gait_type: 0
+foot_raise_height: 0.0
+position:
+- 0.0
+- 0.0
+- 0.0
+body_height: 0.0
+velocity:
+- 0.0
+- 0.0
+- 0.0
+yaw_speed: 0.0
+range_obstacle:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+foot_force:
+- 0
+- 0
+- 0
+- 0
+foot_position_body:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+foot_speed_body:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+stamp:
+  sec: 0
+  nanosec: 0
+error_code: 0
+imu_state:
+  quaternion:
+  - 0.9193134903907776
+  - 0.006821154151111841
+  - 0.0021513833198696375
+  - -0.3934610188007355
+  gyroscope:
+  - 0.03941477835178375
+  - 0.0063915858045220375
+  - 0.004261057358235121
+  accelerometer:
+  - -0.09217676520347595
+  - 0.19871874153614044
+  - 9.563638687133789
+  rpy:
+  - 0.010849271900951862
+  - 0.009323442354798317
+  - -0.8087578415870667
+  temperature: 79
+mode: 1
+progress: 0.0
+gait_type: 0
+foot_raise_height: 0.0
+position:
+- 0.0
+- 0.0
+- 0.0
+body_height: 0.0
+velocity:
+- 0.0
+- 0.0
+- 0.0
+yaw_speed: 0.0
+range_obstacle:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+foot_force:
+- 0
+- 0
+- 0
+- 0
+foot_position_body:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+foot_speed_body:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+stamp:
+  sec: 0
+  nanosec: 0
+error_code: 0
+imu_state:
+  quaternion:
+  - 0.9193059802055359
+  - 0.0068286107853055
+  - 0.0021523633040487766
+  - -0.3934786021709442
+  gyroscope:
+  - 0.030892664566636086
+  - 0.0053263213485479355
+  - 0.013848436065018177
+  accelerometer:
+  - -0.1041477769613266
+  - 0.14604631066322327
+  - 9.477447509765625
+  rpy:
+  - 0.010862031951546669
+  - 0.00933132041245699
+  - -0.8087961077690125
+  temperature: 79
+mode: 1
+progress: 0.0
+gait_type: 0
+foot_raise_height: 0.0
+position:
+- 0.0
+- 0.0
+- 0.0
+body_height: 0.0
+velocity:
+- 0.0
+- 0.0
+- 0.0
+yaw_speed: 0.0
+range_obstacle:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+foot_force:
+- 0
+- 0
+- 0
+- 0
+foot_position_body:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+foot_speed_body:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+stamp:
+  sec: 0
+  nanosec: 0
+error_code: 0
+imu_state:
+  quaternion:
+  - 0.9193094968795776
+  - 0.006789724342525005
+  - 0.002151483902707696
+  - -0.3934710621833801
+  gyroscope:
+  - 0.009587379172444344
+  - -0.008522114716470242
+  - 0.014913700520992279
+  accelerometer:
+  - -0.1041477769613266
+  - 0.20111294090747833
+  - 9.552865028381348
+  rpy:
+  - 0.010791297070682049
+  - 0.009299013763666153
+  - -0.8087799549102783
+  temperature: 80
+mode: 1
+progress: 0.0
+gait_type: 0
+foot_raise_height: 0.0
+position:
+- 0.0
+- 0.0
+- 0.0
+body_height: 0.0
+velocity:
+- 0.0
+- 0.0
+- 0.0
+yaw_speed: 0.0
+range_obstacle:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+foot_force:
+- 0
+- 0
+- 0
+- 0
+foot_position_body:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+foot_speed_body:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+stamp:
+  sec: 0
+  nanosec: 0
+error_code: 0
+imu_state:
+  quaternion:
+  - 0.9193074107170105
+  - 0.006792132742702961
+  - 0.0021585666108876467
+  - -0.3934757709503174
+  gyroscope:
+  - 0.030892664566636086
+  - 0.012783171609044075
+  - 0.0074568502604961395
+  accelerometer:
+  - -0.07541735470294952
+  - 0.17238251864910126
+  - 9.589975357055664
+  rpy:
+  - 0.010790104977786541
+  - 0.009313986636698246
+  - -0.8087900876998901
+  temperature: 80
+mode: 1
+progress: 0.0
+gait_type: 0
+foot_raise_height: 0.0
+position:
+- 0.0
+- 0.0
+- 0.0
+body_height: 0.0
+velocity:
+- 0.0
+- 0.0
+- 0.0
+yaw_speed: 0.0
+range_obstacle:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+foot_force:
+- 0
+- 0
+- 0
+- 0
+foot_position_body:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+foot_speed_body:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+stamp:
+  sec: 0
+  nanosec: 0
+error_code: 0
+imu_state:
+  quaternion:
+  - 0.9192923307418823
+  - 0.006849084980785847
+  - 0.0021986407227814198
+  - -0.3935096561908722
+  gyroscope:
+  - 0.024501079693436623
+  - -0.01810949295759201
+  - 0.008522114716470242
+  accelerometer:
+  - -0.12210428714752197
+  - 0.20350714027881622
+  - 9.545681953430176
+  rpy:
+  - 0.010862947441637516
+  - 0.009432889521121979
+  - -0.8088631629943848
+  temperature: 79
+mode: 1
+progress: 0.0
+gait_type: 0
+foot_raise_height: 0.0
+position:
+- 0.0
+- 0.0
+- 0.0
+body_height: 0.0
+velocity:
+- 0.0
+- 0.0
+- 0.0
+yaw_speed: 0.0
+range_obstacle:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+foot_force:
+- 0
+- 0
+- 0
+- 0
+foot_position_body:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+foot_speed_body:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+stamp:
+  sec: 0
+  nanosec: 0
+error_code: 0
+imu_state:
+  quaternion:
+  - 0.9193069934844971
+  - 0.0068853190168738365
+  - 0.002237866632640362
+  - -0.3934747278690338
+  gyroscope:
+  - 0.019174758344888687
+  - -0.0031957929022610188
+  - 0.0074568502604961395
+  accelerometer:
+  - -0.0933738648891449
+  - 0.18794482946395874
+  - 9.514557838439941
+  rpy:
+  - 0.010899066925048828
+  - 0.009533115662634373
+  - -0.8087868094444275
+  temperature: 80
+mode: 1
+progress: 0.0
+gait_type: 0
+foot_raise_height: 0.0
+position:
+- 0.0
+- 0.0
+- 0.0
+body_height: 0.0
+velocity:
+- 0.0
+- 0.0
+- 0.0
+yaw_speed: 0.0
+range_obstacle:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+foot_force:
+- 0
+- 0
+- 0
+- 0
+foot_position_body:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+foot_speed_body:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+stamp:
+  sec: 0
+  nanosec: 0
+error_code: 0
+imu_state:
+  quaternion:
+  - 0.919301450252533
+  - 0.0068857730366289616
+  - 0.0023119188845157623
+  - -0.3934871554374695
+  gyroscope:
+  - 0.029827401041984558
+  - -0.009587379172444344
+  - 0.0074568502604961395
+  accelerometer:
+  - -0.08379705995321274
+  - 0.23582886159420013
+  - 9.53969669342041
+  rpy:
+  - 0.01084150094538927
+  - 0.009669777937233448
+  - -0.8088135123252869
+  temperature: 79
+mode: 1
+progress: 0.0
+gait_type: 0
+foot_raise_height: 0.0
+position:
+- 0.0
+- 0.0
+- 0.0
+body_height: 0.0
+velocity:
+- 0.0
+- 0.0
+- 0.0
+yaw_speed: 0.0
+range_obstacle:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+foot_force:
+- 0
+- 0
+- 0
+- 0
+foot_position_body:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+foot_speed_body:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+stamp:
+  sec: 0
+  nanosec: 0
+error_code: 0
+imu_state:
+  quaternion:
+  - 0.9193053245544434
+  - 0.006900629494339228
+  - 0.0022779840510338545
+  - -0.3934781551361084
+  gyroscope:
+  - 0.014913700520992279
+  - -0.0053263213485479355
+  - 0.004261057358235121
+  accelerometer:
+  - -0.10773907601833344
+  - 0.16639702022075653
+  - 9.5408935546875
+  rpy:
+  - 0.010895614512264729
+  - 0.009618967771530151
+  - -0.8087940216064453
+  temperature: 80
+mode: 1
+progress: 0.0
+gait_type: 0
+foot_raise_height: 0.0
+position:
+- 0.0
+- 0.0
+- 0.0
+body_height: 0.0
+velocity:
+- 0.0
+- 0.0
+- 0.0
+yaw_speed: 0.0
+range_obstacle:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+foot_force:
+- 0
+- 0
+- 0
+- 0
+foot_position_body:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+foot_speed_body:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+================ /go2_unit_38712/tf ================
+Type: tf2_msgs/msg/TFMessage
+
+Publisher count: 2
+
+Node name: go2_statepublisher
+Node namespace: /go2_unit_38712
+Topic type: tf2_msgs/msg/TFMessage
+Endpoint type: PUBLISHER
+GID: 01.10.9a.d9.8e.f9.44.6f.a6.48.25.f2.00.00.18.03.00.00.00.00.00.00.00.00
+QoS profile:
+  Reliability: RMW_QOS_POLICY_RELIABILITY_RELIABLE
+  Durability: RMW_QOS_POLICY_DURABILITY_VOLATILE
+  Lifespan: 9223372036854775807 nanoseconds
+  Deadline: 9223372036854775807 nanoseconds
+  Liveliness: RMW_QOS_POLICY_LIVELINESS_AUTOMATIC
+  Liveliness lease duration: 9223372036854775807 nanoseconds
+
+Node name: robot_state_publisher
+Node namespace: /go2_unit_38712
+Topic type: tf2_msgs/msg/TFMessage
+Endpoint type: PUBLISHER
+GID: 01.10.cf.bb.91.2c.e1.f0.6b.a9.86.ae.00.00.15.03.00.00.00.00.00.00.00.00
+QoS profile:
+  Reliability: RMW_QOS_POLICY_RELIABILITY_RELIABLE
+  Durability: RMW_QOS_POLICY_DURABILITY_VOLATILE
+  Lifespan: 9223372036854775807 nanoseconds
+  Deadline: 9223372036854775807 nanoseconds
+  Liveliness: RMW_QOS_POLICY_LIVELINESS_AUTOMATIC
+  Liveliness lease duration: 9223372036854775807 nanoseconds
+
+Subscription count: 1
+
+Node name: go2_webserver
+Node namespace: /go2_unit_38712
+Topic type: tf2_msgs/msg/TFMessage
+Endpoint type: SUBSCRIPTION
+GID: 01.10.f9.50.52.7d.bd.0f.9a.97.8c.75.00.00.19.04.00.00.00.00.00.00.00.00
+QoS profile:
+  Reliability: RMW_QOS_POLICY_RELIABILITY_RELIABLE
+  Durability: RMW_QOS_POLICY_DURABILITY_VOLATILE
+  Lifespan: 9223372036854775807 nanoseconds
+  Deadline: 9223372036854775807 nanoseconds
+  Liveliness: RMW_QOS_POLICY_LIVELINESS_AUTOMATIC
+  Liveliness lease duration: 9223372036854775807 nanoseconds
+
+average rate: 25.051
+	min: 0.028s max: 0.049s std dev: 0.00374s window: 27
+average rate: 24.934
+	min: 0.028s max: 0.049s std dev: 0.00381s window: 52
+average rate: 25.025
+	min: 0.028s max: 0.051s std dev: 0.00413s window: 78
+average rate: 25.016
+	min: 0.028s max: 0.051s std dev: 0.00397s window: 104
+average rate: 24.998
+	min: 0.028s max: 0.051s std dev: 0.00376s window: 129
+transforms:
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 544614912
+    frame_id: FL_thigh
+  child_frame_id: FL_calf
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: -0.213
+    rotation:
+      x: 0.0
+      y: -0.6010434237553249
+      z: 0.0
+      w: 0.7992163679257809
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 544614912
+    frame_id: FL_calf
+  child_frame_id: FL_foot
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: -0.213
+    rotation:
+      x: -0.706825181105366
+      y: 0.0
+      z: 0.0
+      w: 0.7073882691671998
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 544614912
+    frame_id: trunk
+  child_frame_id: FL_hip
+  transform:
+    translation:
+      x: 0.1934
+      y: 0.0465
+      z: 0.0
+    rotation:
+      x: 0.008874897752821508
+      y: 0.0
+      z: 0.0
+      w: 0.9999606173194409
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 544614912
+    frame_id: FL_hip
+  child_frame_id: FL_thigh
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0955
+      z: 0.0
+    rotation:
+      x: 0.0
+      y: 0.3333421990664132
+      z: 0.0
+      w: 0.9428059070251776
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 544614912
+    frame_id: FR_thigh
+  child_frame_id: FR_calf
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: -0.213
+    rotation:
+      x: 0.0
+      y: -0.619203080321428
+      z: 0.0
+      w: 0.7852308866317316
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 544614912
+    frame_id: FR_calf
+  child_frame_id: FR_foot
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: -0.213
+    rotation:
+      x: -0.706825181105366
+      y: 0.0
+      z: 0.0
+      w: 0.7073882691671998
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 544614912
+    frame_id: trunk
+  child_frame_id: FR_hip
+  transform:
+    translation:
+      x: 0.1934
+      y: -0.0465
+      z: 0.0
+    rotation:
+      x: 0.0012225207621442812
+      y: 0.0
+      z: 0.0
+      w: 0.9999992527212138
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 544614912
+    frame_id: FR_hip
+  child_frame_id: FR_thigh
+  transform:
+    translation:
+      x: 0.0
+      y: -0.0955
+      z: 0.0
+    rotation:
+      x: 0.0
+      y: 0.33988538308804883
+      z: 0.0
+      w: 0.9404668661697181
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 544614912
+    frame_id: RL_thigh
+  child_frame_id: RL_calf
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: -0.213
+    rotation:
+      x: 0.0
+      y: -0.5948073806979476
+      z: 0.0
+      w: 0.8038682602685883
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 544614912
+    frame_id: RL_calf
+  child_frame_id: RL_foot
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: -0.213
+    rotation:
+      x: -0.706825181105366
+      y: 0.0
+      z: 0.0
+      w: 0.7073882691671998
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 544614912
+    frame_id: trunk
+  child_frame_id: RL_hip
+  transform:
+    translation:
+      x: -0.1934
+      y: 0.0465
+      z: 0.0
+    rotation:
+      x: -0.0004933178224743441
+      y: 0.0
+      z: 0.0
+      w: 0.9999998783187555
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 544614912
+    frame_id: RL_hip
+  child_frame_id: RL_thigh
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0955
+      z: 0.0
+    rotation:
+      x: 0.0
+      y: 0.3394101794035951
+      z: 0.0
+      w: 0.940638469401087
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 544614912
+    frame_id: RR_thigh
+  child_frame_id: RR_calf
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: -0.213
+    rotation:
+      x: 0.0
+      y: -0.6181543198042208
+      z: 0.0
+      w: 0.7860567644307764
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 544614912
+    frame_id: RR_calf
+  child_frame_id: RR_foot
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: -0.213
+    rotation:
+      x: -0.706825181105366
+      y: 0.0
+      z: 0.0
+      w: 0.7073882691671998
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 544614912
+    frame_id: trunk
+  child_frame_id: RR_hip
+  transform:
+    translation:
+      x: -0.1934
+      y: -0.0465
+      z: 0.0
+    rotation:
+      x: 0.006579034997455738
+      y: 0.0
+      z: 0.0
+      w: 0.9999783579150612
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 544614912
+    frame_id: RR_hip
+  child_frame_id: RR_thigh
+  transform:
+    translation:
+      x: 0.0
+      y: -0.0955
+      z: 0.0
+    rotation:
+      x: 0.0
+      y: 0.34977030583328084
+      z: 0.0
+      w: 0.9368354888438488
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 544614912
+    frame_id: d1_base_link
+  child_frame_id: d1_link1
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: 0.0738
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 544614912
+    frame_id: d1_link1
+  child_frame_id: d1_link2
+  transform:
+    translation:
+      x: 0.0
+      y: -0.0276
+      z: 0.0578
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 544614912
+    frame_id: d1_link2
+  child_frame_id: d1_link3
+  transform:
+    translation:
+      x: 0.0
+      y: -0.0004
+      z: 0.27
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 544614912
+    frame_id: d1_link3
+  child_frame_id: d1_link4
+  transform:
+    translation:
+      x: 0.05
+      y: 0.0275
+      z: 0.041325
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 544614912
+    frame_id: d1_link4
+  child_frame_id: d1_link5
+  transform:
+    translation:
+      x: 0.15468
+      y: -0.0258
+      z: 0.0001
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 544614912
+    frame_id: d1_link5
+  child_frame_id: d1_link6
+  transform:
+    translation:
+      x: 0.0777
+      y: 0.025822
+      z: -0.0010718
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 544614912
+    frame_id: d1_link6
+  child_frame_id: d1_link_l
+  transform:
+    translation:
+      x: 0.0718
+      y: -0.033778
+      z: 0.0031
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 544614912
+    frame_id: d1_link6
+  child_frame_id: d1_link_r
+  transform:
+    translation:
+      x: 0.0718
+      y: 0.033022
+      z: 0.0031
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+---
+transforms:
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 583263872
+    frame_id: FL_thigh
+  child_frame_id: FL_calf
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: -0.213
+    rotation:
+      x: 0.0
+      y: -0.6010434237553249
+      z: 0.0
+      w: 0.7992163679257809
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 583263872
+    frame_id: FL_calf
+  child_frame_id: FL_foot
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: -0.213
+    rotation:
+      x: -0.706825181105366
+      y: 0.0
+      z: 0.0
+      w: 0.7073882691671998
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 583263872
+    frame_id: trunk
+  child_frame_id: FL_hip
+  transform:
+    translation:
+      x: 0.1934
+      y: 0.0465
+      z: 0.0
+    rotation:
+      x: 0.008829483586934948
+      y: 0.0
+      z: 0.0
+      w: 0.9999610193500486
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 583263872
+    frame_id: FL_hip
+  child_frame_id: FL_thigh
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0955
+      z: 0.0
+    rotation:
+      x: 0.0
+      y: 0.3333421990664132
+      z: 0.0
+      w: 0.9428059070251776
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 583263872
+    frame_id: FR_thigh
+  child_frame_id: FR_calf
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: -0.213
+    rotation:
+      x: 0.0
+      y: -0.619203080321428
+      z: 0.0
+      w: 0.7852308866317316
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 583263872
+    frame_id: FR_calf
+  child_frame_id: FR_foot
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: -0.213
+    rotation:
+      x: -0.706825181105366
+      y: 0.0
+      z: 0.0
+      w: 0.7073882691671998
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 583263872
+    frame_id: trunk
+  child_frame_id: FR_hip
+  transform:
+    translation:
+      x: 0.1934
+      y: -0.0465
+      z: 0.0
+    rotation:
+      x: 0.0012073811935452922
+      y: 0.0
+      z: 0.0
+      w: 0.999999271115061
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 583263872
+    frame_id: FR_hip
+  child_frame_id: FR_thigh
+  transform:
+    translation:
+      x: 0.0
+      y: -0.0955
+      z: 0.0
+    rotation:
+      x: 0.0
+      y: 0.33995657347990105
+      z: 0.0
+      w: 0.9404411348658696
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 583263872
+    frame_id: RL_thigh
+  child_frame_id: RL_calf
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: -0.213
+    rotation:
+      x: 0.0
+      y: -0.5948137053647747
+      z: 0.0
+      w: 0.8038635804103996
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 583263872
+    frame_id: RL_calf
+  child_frame_id: RL_foot
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: -0.213
+    rotation:
+      x: -0.706825181105366
+      y: 0.0
+      z: 0.0
+      w: 0.7073882691671998
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 583263872
+    frame_id: trunk
+  child_frame_id: RL_hip
+  transform:
+    translation:
+      x: -0.1934
+      y: 0.0465
+      z: 0.0
+    rotation:
+      x: -0.00047817824448764015
+      y: 0.0
+      z: 0.0
+      w: 0.9999998856727768
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 583263872
+    frame_id: RL_hip
+  child_frame_id: RL_thigh
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0955
+      z: 0.0
+    rotation:
+      x: 0.0
+      y: 0.33942442023584196
+      z: 0.0
+      w: 0.9406333307657997
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 583263872
+    frame_id: RR_thigh
+  child_frame_id: RR_calf
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: -0.213
+    rotation:
+      x: 0.0
+      y: -0.6181481352373716
+      z: 0.0
+      w: 0.7860616279291084
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 583263872
+    frame_id: RR_calf
+  child_frame_id: RR_foot
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: -0.213
+    rotation:
+      x: -0.706825181105366
+      y: 0.0
+      z: 0.0
+      w: 0.7073882691671998
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 583263872
+    frame_id: trunk
+  child_frame_id: RR_hip
+  transform:
+    translation:
+      x: -0.1934
+      y: -0.0465
+      z: 0.0
+    rotation:
+      x: 0.006563897607186481
+      y: 0.0
+      z: 0.0
+      w: 0.9999784573920593
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 583263872
+    frame_id: RR_hip
+  child_frame_id: RR_thigh
+  transform:
+    translation:
+      x: 0.0
+      y: -0.0955
+      z: 0.0
+    rotation:
+      x: 0.0
+      y: 0.34981285535935475
+      z: 0.0
+      w: 0.9368196017512311
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 583263872
+    frame_id: d1_base_link
+  child_frame_id: d1_link1
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: 0.0738
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 583263872
+    frame_id: d1_link1
+  child_frame_id: d1_link2
+  transform:
+    translation:
+      x: 0.0
+      y: -0.0276
+      z: 0.0578
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 583263872
+    frame_id: d1_link2
+  child_frame_id: d1_link3
+  transform:
+    translation:
+      x: 0.0
+      y: -0.0004
+      z: 0.27
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 583263872
+    frame_id: d1_link3
+  child_frame_id: d1_link4
+  transform:
+    translation:
+      x: 0.05
+      y: 0.0275
+      z: 0.041325
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 583263872
+    frame_id: d1_link4
+  child_frame_id: d1_link5
+  transform:
+    translation:
+      x: 0.15468
+      y: -0.0258
+      z: 0.0001
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 583263872
+    frame_id: d1_link5
+  child_frame_id: d1_link6
+  transform:
+    translation:
+      x: 0.0777
+      y: 0.025822
+      z: -0.0010718
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 583263872
+    frame_id: d1_link6
+  child_frame_id: d1_link_l
+  transform:
+    translation:
+      x: 0.0718
+      y: -0.033778
+      z: 0.0031
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 583263872
+    frame_id: d1_link6
+  child_frame_id: d1_link_r
+  transform:
+    translation:
+      x: 0.0718
+      y: 0.033022
+      z: 0.0031
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+---
+transforms:
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 623290048
+    frame_id: FL_thigh
+  child_frame_id: FL_calf
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: -0.213
+    rotation:
+      x: 0.0
+      y: -0.6010434237553249
+      z: 0.0
+      w: 0.7992163679257809
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 623290048
+    frame_id: FL_calf
+  child_frame_id: FL_foot
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: -0.213
+    rotation:
+      x: -0.706825181105366
+      y: 0.0
+      z: 0.0
+      w: 0.7073882691671998
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 623290048
+    frame_id: trunk
+  child_frame_id: FL_hip
+  transform:
+    translation:
+      x: 0.1934
+      y: 0.0465
+      z: 0.0
+    rotation:
+      x: 0.008829483586934948
+      y: 0.0
+      z: 0.0
+      w: 0.9999610193500486
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 623290048
+    frame_id: FL_hip
+  child_frame_id: FL_thigh
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0955
+      z: 0.0
+    rotation:
+      x: 0.0
+      y: 0.3333421990664132
+      z: 0.0
+      w: 0.9428059070251776
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 623290048
+    frame_id: FR_thigh
+  child_frame_id: FR_calf
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: -0.213
+    rotation:
+      x: 0.0
+      y: -0.619203080321428
+      z: 0.0
+      w: 0.7852308866317316
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 623290048
+    frame_id: FR_calf
+  child_frame_id: FR_foot
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: -0.213
+    rotation:
+      x: -0.706825181105366
+      y: 0.0
+      z: 0.0
+      w: 0.7073882691671998
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 623290048
+    frame_id: trunk
+  child_frame_id: FR_hip
+  transform:
+    translation:
+      x: 0.1934
+      y: -0.0465
+      z: 0.0
+    rotation:
+      x: 0.0012073811935452922
+      y: 0.0
+      z: 0.0
+      w: 0.999999271115061
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 623290048
+    frame_id: FR_hip
+  child_frame_id: FR_thigh
+  transform:
+    translation:
+      x: 0.0
+      y: -0.0955
+      z: 0.0
+    rotation:
+      x: 0.0
+      y: 0.33995657347990105
+      z: 0.0
+      w: 0.9404411348658696
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 623290048
+    frame_id: RL_thigh
+  child_frame_id: RL_calf
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: -0.213
+    rotation:
+      x: 0.0
+      y: -0.5948137053647747
+      z: 0.0
+      w: 0.8038635804103996
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 623290048
+    frame_id: RL_calf
+  child_frame_id: RL_foot
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: -0.213
+    rotation:
+      x: -0.706825181105366
+      y: 0.0
+      z: 0.0
+      w: 0.7073882691671998
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 623290048
+    frame_id: trunk
+  child_frame_id: RL_hip
+  transform:
+    translation:
+      x: -0.1934
+      y: 0.0465
+      z: 0.0
+    rotation:
+      x: -0.00047817824448764015
+      y: 0.0
+      z: 0.0
+      w: 0.9999998856727768
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 623290048
+    frame_id: RL_hip
+  child_frame_id: RL_thigh
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0955
+      z: 0.0
+    rotation:
+      x: 0.0
+      y: 0.33942442023584196
+      z: 0.0
+      w: 0.9406333307657997
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 623290048
+    frame_id: RR_thigh
+  child_frame_id: RR_calf
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: -0.213
+    rotation:
+      x: 0.0
+      y: -0.6181481352373716
+      z: 0.0
+      w: 0.7860616279291084
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 623290048
+    frame_id: RR_calf
+  child_frame_id: RR_foot
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: -0.213
+    rotation:
+      x: -0.706825181105366
+      y: 0.0
+      z: 0.0
+      w: 0.7073882691671998
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 623290048
+    frame_id: trunk
+  child_frame_id: RR_hip
+  transform:
+    translation:
+      x: -0.1934
+      y: -0.0465
+      z: 0.0
+    rotation:
+      x: 0.006563897607186481
+      y: 0.0
+      z: 0.0
+      w: 0.9999784573920593
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 623290048
+    frame_id: RR_hip
+  child_frame_id: RR_thigh
+  transform:
+    translation:
+      x: 0.0
+      y: -0.0955
+      z: 0.0
+    rotation:
+      x: 0.0
+      y: 0.34981285535935475
+      z: 0.0
+      w: 0.9368196017512311
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 623290048
+    frame_id: d1_base_link
+  child_frame_id: d1_link1
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: 0.0738
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 623290048
+    frame_id: d1_link1
+  child_frame_id: d1_link2
+  transform:
+    translation:
+      x: 0.0
+      y: -0.0276
+      z: 0.0578
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 623290048
+    frame_id: d1_link2
+  child_frame_id: d1_link3
+  transform:
+    translation:
+      x: 0.0
+      y: -0.0004
+      z: 0.27
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 623290048
+    frame_id: d1_link3
+  child_frame_id: d1_link4
+  transform:
+    translation:
+      x: 0.05
+      y: 0.0275
+      z: 0.041325
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 623290048
+    frame_id: d1_link4
+  child_frame_id: d1_link5
+  transform:
+    translation:
+      x: 0.15468
+      y: -0.0258
+      z: 0.0001
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 623290048
+    frame_id: d1_link5
+  child_frame_id: d1_link6
+  transform:
+    translation:
+      x: 0.0777
+      y: 0.025822
+      z: -0.0010718
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 623290048
+    frame_id: d1_link6
+  child_frame_id: d1_link_l
+  transform:
+    translation:
+      x: 0.0718
+      y: -0.033778
+      z: 0.0031
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 623290048
+    frame_id: d1_link6
+  child_frame_id: d1_link_r
+  transform:
+    translation:
+      x: 0.0718
+      y: 0.033022
+      z: 0.0031
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+---
+transforms:
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 663370880
+    frame_id: FL_thigh
+  child_frame_id: FL_calf
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: -0.213
+    rotation:
+      x: 0.0
+      y: -0.6010497594584642
+      z: 0.0
+      w: 0.7992116031783587
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 663370880
+    frame_id: FL_calf
+  child_frame_id: FL_foot
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: -0.213
+    rotation:
+      x: -0.706825181105366
+      y: 0.0
+      z: 0.0
+      w: 0.7073882691671998
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 663370880
+    frame_id: trunk
+  child_frame_id: FL_hip
+  transform:
+    translation:
+      x: 0.1934
+      y: 0.0465
+      z: 0.0
+    rotation:
+      x: 0.008829483586934948
+      y: 0.0
+      z: 0.0
+      w: 0.9999610193500486
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 663370880
+    frame_id: FL_hip
+  child_frame_id: FL_thigh
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0955
+      z: 0.0
+    rotation:
+      x: 0.0
+      y: 0.3333564727134503
+      z: 0.0
+      w: 0.9428008602563145
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 663370880
+    frame_id: FR_thigh
+  child_frame_id: FR_calf
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: -0.213
+    rotation:
+      x: 0.0
+      y: -0.6191969022523984
+      z: 0.0
+      w: 0.7852357583815409
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 663370880
+    frame_id: FR_calf
+  child_frame_id: FR_foot
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: -0.213
+    rotation:
+      x: -0.706825181105366
+      y: 0.0
+      z: 0.0
+      w: 0.7073882691671998
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 663370880
+    frame_id: trunk
+  child_frame_id: FR_hip
+  transform:
+    translation:
+      x: 0.1934
+      y: -0.0465
+      z: 0.0
+    rotation:
+      x: 0.0012073811935452922
+      y: 0.0
+      z: 0.0
+      w: 0.999999271115061
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 663370880
+    frame_id: FR_hip
+  child_frame_id: FR_thigh
+  transform:
+    translation:
+      x: 0.0
+      y: -0.0955
+      z: 0.0
+    rotation:
+      x: 0.0
+      y: 0.3399423355573583
+      z: 0.0
+      w: 0.940446281557755
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 663370880
+    frame_id: RL_thigh
+  child_frame_id: RL_calf
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: -0.213
+    rotation:
+      x: 0.0
+      y: -0.5948010080797385
+      z: 0.0
+      w: 0.8038729755299198
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 663370880
+    frame_id: RL_calf
+  child_frame_id: RL_foot
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: -0.213
+    rotation:
+      x: -0.706825181105366
+      y: 0.0
+      z: 0.0
+      w: 0.7073882691671998
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 663370880
+    frame_id: trunk
+  child_frame_id: RL_hip
+  transform:
+    translation:
+      x: -0.1934
+      y: 0.0465
+      z: 0.0
+    rotation:
+      x: -0.000508457400347976
+      y: 0.0
+      z: 0.0
+      w: 0.9999998707355277
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 663370880
+    frame_id: RL_hip
+  child_frame_id: RL_thigh
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0955
+      z: 0.0
+    rotation:
+      x: 0.0
+      y: 0.3394386609902904
+      z: 0.0
+      w: 0.9406281919149132
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 663370880
+    frame_id: RR_thigh
+  child_frame_id: RR_calf
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: -0.213
+    rotation:
+      x: 0.0
+      y: -0.6181419037790422
+      z: 0.0
+      w: 0.7860665282229115
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 663370880
+    frame_id: RR_calf
+  child_frame_id: RR_foot
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: -0.213
+    rotation:
+      x: -0.706825181105366
+      y: 0.0
+      z: 0.0
+      w: 0.7073882691671998
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 663370880
+    frame_id: trunk
+  child_frame_id: RR_hip
+  transform:
+    translation:
+      x: -0.1934
+      y: -0.0465
+      z: 0.0
+    rotation:
+      x: 0.006579034997455738
+      y: 0.0
+      z: 0.0
+      w: 0.9999783579150612
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 663370880
+    frame_id: RR_hip
+  child_frame_id: RR_thigh
+  transform:
+    translation:
+      x: 0.0
+      y: -0.0955
+      z: 0.0
+    rotation:
+      x: 0.0
+      y: 0.34977030583328084
+      z: 0.0
+      w: 0.9368354888438488
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 663370880
+    frame_id: d1_base_link
+  child_frame_id: d1_link1
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: 0.0738
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 663370880
+    frame_id: d1_link1
+  child_frame_id: d1_link2
+  transform:
+    translation:
+      x: 0.0
+      y: -0.0276
+      z: 0.0578
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 663370880
+    frame_id: d1_link2
+  child_frame_id: d1_link3
+  transform:
+    translation:
+      x: 0.0
+      y: -0.0004
+      z: 0.27
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 663370880
+    frame_id: d1_link3
+  child_frame_id: d1_link4
+  transform:
+    translation:
+      x: 0.05
+      y: 0.0275
+      z: 0.041325
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 663370880
+    frame_id: d1_link4
+  child_frame_id: d1_link5
+  transform:
+    translation:
+      x: 0.15468
+      y: -0.0258
+      z: 0.0001
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 663370880
+    frame_id: d1_link5
+  child_frame_id: d1_link6
+  transform:
+    translation:
+      x: 0.0777
+      y: 0.025822
+      z: -0.0010718
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 663370880
+    frame_id: d1_link6
+  child_frame_id: d1_link_l
+  transform:
+    translation:
+      x: 0.0718
+      y: -0.033778
+      z: 0.0031
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 21655
+      nanosec: 663370880
+    frame_id: d1_link6
+  child_frame_id: d1_link_r
+  transform:
+    translation:
+      x: 0.0718
+      y: 0.033022
+      z: 0.0031
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+---
+

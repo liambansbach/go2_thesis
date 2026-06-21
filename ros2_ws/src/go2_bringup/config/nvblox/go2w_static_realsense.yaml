@@ -14,10 +14,10 @@
     use_topic_transforms: false
 
     global_frame: odom
-    map_clearing_frame_id: base
+    map_clearing_frame_id: base_link
     map_clearing_radius_m: 5.0
-    esdf_slice_bounds_visualization_attachment_frame_id: base
-    workspace_height_bounds_visualization_attachment_frame_id: base
+    esdf_slice_bounds_visualization_attachment_frame_id: base_link
+    workspace_height_bounds_visualization_attachment_frame_id: base_link
     voxel_size: 0.08
 
     print_rates_to_console: true

@@ -67,8 +67,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libnpp-12-6 \
     libnvvpi3 \
     ros-humble-rqt-image-view \
-    ros-humble-compressed-image-transport \
-    ros-humble-image-proc \
+	    ros-humble-compressed-image-transport \
+	    ros-humble-domain-bridge \
+	    ros-humble-image-proc \
     ros-humble-depth-image-proc \
     ros-humble-realsense2-camera \
     ros-humble-realsense2-description \

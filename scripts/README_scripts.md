@@ -140,20 +140,18 @@ ROS_NET_IFACE=<your_ethernet_interface> ./scripts/docker/run.sh
 
 ## Inspect
 
-- `inspect/inspect_go2w_topics.sh`: Inspect known Go2-W topics and message types.
-- `inspect/inspect_go2w_nvblox_topics.sh`: Capture Go2-W, RealSense, TF, and Nvblox debug information into `docs/go2_runtime/go2w_nvblox_<timestamp>/`.
-- `inspect/inspect_realsense_topics.sh`: Inspect RealSense camera, depth, image, pointcloud, and TF topics.
+- `inspect/inspect_ros_domains.sh`: Read-only scan of ROS_DOMAIN_ID 0 and 10 into `docs/go2_runtime/domain_scan_<timestamp>/`.
+- `inspect/inspect_realsense_topics.sh`: Inspect RealSense topics, headers, front-mount TF, and optical-frame connectivity.
+- `inspect/inspect_go2w_nvblox_topics.sh`: Optional Nvblox/system state capture after Nvblox is running.
+- `inspect/inspect_bag_topic_counts.sh`: Print sqlite3 rosbag topic names, types, and message counts, including zero-count topics.
 - `inspect/robot_net_check.sh`: Check Go2 network and ROS 2 visibility.
-- `inspect/start_go2w_live_test_log.sh`: Create a Go2-W live-test documentation folder and checklist without starting hardware or recording.
-- `inspect/save_nvblox_outputs.sh`: Save Nvblox outputs and surrounding ROS state when the services are available.
 
 ```bash
 ./scripts/inspect/robot_net_check.sh
-./scripts/inspect/inspect_go2w_topics.sh
-./scripts/inspect/inspect_go2w_nvblox_topics.sh
+./scripts/inspect/inspect_ros_domains.sh
 ./scripts/inspect/inspect_realsense_topics.sh
-./scripts/inspect/start_go2w_live_test_log.sh <label>
-./scripts/inspect/save_nvblox_outputs.sh <label>
+./scripts/inspect/inspect_go2w_nvblox_topics.sh
+./scripts/inspect/inspect_bag_topic_counts.sh bags/<bag_dir>
 ```
 
 ### LiDAR point cloud orientation debugging
@@ -164,16 +162,16 @@ open RViz. First set RViz Fixed Frame to `utlidar_lidar` and view
 only populated LiDAR point cloud topic; `/utlidar/cloud_base` and
 `/utlidar/cloud_deskewed` may exist but can have Count 0.
 
-Until the real `base -> utlidar_lidar` extrinsic is calibrated or verified from
+Until the real `base_link -> utlidar_lidar` extrinsic is calibrated or verified from
 a trusted source, do not publish a guessed fixed transform for it. Treat
 `utlidar_lidar` as the raw `PointCloud2` frame and view `/utlidar/cloud` with
 RViz Fixed Frame set to `utlidar_lidar`. Do not assume the original URDF
 `radar` visual link is identical to the raw `PointCloud2` frame. A correct
-future dynamic odometry source will provide `odom -> base`, but it will not fix
-an incorrect `base -> utlidar_lidar` sensor transform.
+future dynamic odometry source will provide `odom -> base_link`, but it will not
+fix an incorrect `base_link -> utlidar_lidar` sensor transform.
 
 For offline replay/debugging, the TF wrapper can publish the current
-experimental `base -> utlidar_lidar` visual alignment:
+experimental `base_link -> utlidar_lidar` visual alignment:
 
 ```bash
 ros2 launch go2_bringup go2w_tf.launch.py \
@@ -187,8 +185,8 @@ ros2 launch go2_bringup go2w_tf.launch.py \
 `publish_lidar_tf:=true` avoids running a separate
 `static_transform_publisher` terminal. Its default values are not final
 calibration values and must be verified on the real robot or with better data.
-A correct future odometry source gives `odom -> base`, but does not replace the
-need for a correct `base -> utlidar_lidar` transform.
+A correct future odometry source gives `odom -> base_link`, but does not replace
+the need for a correct `base_link -> utlidar_lidar` transform.
 
 Useful checks:
 
@@ -197,10 +195,10 @@ ros2 topic echo /utlidar/cloud --once --field header
 ros2 topic echo /utlidar/lidar_state --once
 ros2 topic echo /utlidar/imu --once
 ros2 bag info <bag_path>
-ros2 run tf2_ros tf2_echo base radar
+ros2 run tf2_ros tf2_echo base_link radar
 ```
 
-`base -> radar` comes from the original Unitree Go2-W URDF and should remain
+`base_link -> radar` comes from the thesis WR Go2-W URDF and should remain
 unchanged while the raw `/utlidar/cloud` frame convention is still unverified.
 
 ## Record
@@ -221,11 +219,12 @@ ros2 launch go2_bringup go2w_nvblox.launch.py use_sim_time:=false launch_realsen
 ros2 launch go2_bringup go2w_nvblox.launch.py use_sim_time:=true launch_realsense:=false
 ros2 launch go2_bringup go2w_debug_rviz.launch.py rviz_config:=go2w_nvblox_debug.rviz
 ros2 launch go2_bringup go2w_debug_rviz.launch.py rviz_config:=go2w_tf_robot_debug.rviz
+ros2 launch go2_bringup go2w_domain_bridge.launch.py
 ros2 launch go2_bringup go2w_tf.launch.py publish_robot_description_tf:=true
 ros2 launch go2_bringup go2w_tf.launch.py publish_robot_description_tf:=true publish_static_odom_tf:=true
 ros2 launch go2_bringup go2w_tf.launch.py publish_robot_description_tf:=true publish_lowstate_joint_states:=true
 ros2 launch go2_bringup go2w_tf.launch.py publish_odom_tf:=true odom_topic:=/utlidar/robot_odom
-ros2 launch go2_bringup go2w_tf.launch.py publish_camera_tf:=true
+ros2 launch go2_bringup go2w_tf.launch.py publish_front_realsense_tf:=true
 ```
 
 For offline replay with `ros2 bag play <bag_path> --clock`, launch TF, RViz,
@@ -237,21 +236,95 @@ Useful Nvblox replay checks:
 ```bash
 ros2 param get /nvblox_node global_frame
 ros2 param get /nvblox_node map_clearing_frame_id
-ros2 run tf2_ros tf2_echo odom base
-ros2 run tf2_ros tf2_echo base camera_link
+ros2 run tf2_ros tf2_echo base_link front_realsense_base
+ros2 run tf2_ros tf2_echo front_realsense_base front_realsense_tilt_axis
+ros2 run tf2_ros tf2_echo front_realsense_tilt_axis front_realsense_mount
+ros2 run tf2_ros tf2_echo front_realsense_mount front_realsense_body
+ros2 run tf2_ros tf2_echo front_realsense_body front_realsense
+ros2 run tf2_ros tf2_echo odom base_link
+ros2 run tf2_ros tf2_echo base_link front_realsense
+ros2 run tf2_ros tf2_echo front_realsense camera_depth_optical_frame
+ros2 run tf2_ros tf2_echo front_realsense front_realsense_depth_optical_frame
 ros2 run tf2_ros tf2_echo odom camera_depth_optical_frame
-ros2 run tf2_ros tf2_echo camera_link camera0_link  # only if alias enabled
 ```
 
+For the next live test, audit the Jetson RealSense wrapper frame parameters
+before changing service files:
+
+```bash
+ros2 node list | grep -i camera
+RS_NODE=/camera/camera
+ros2 param list "$RS_NODE" | grep -Ei "camera_name|camera_namespace|base_frame_id|tf_prefix|publish_tf|tf_publish_rate|frame"
+ros2 param get "$RS_NODE" camera_name || true
+ros2 param get "$RS_NODE" camera_namespace || true
+ros2 param get "$RS_NODE" base_frame_id || true
+ros2 param get "$RS_NODE" tf_prefix || true
+ros2 param get "$RS_NODE" publish_tf || true
+ros2 param get "$RS_NODE" tf_publish_rate || true
+```
+
+If the listed camera node is not `/camera/camera`, repeat the same commands
+with `RS_NODE=/camera`, `RS_NODE=/front_realsense/camera`,
+`RS_NODE=/front/camera`, or the actual node name.
+
+Best final setup: the RealSense driver publishes its internal sensor/optical TF
+tree below the thesis frame:
+
+```text
+base_link -> ... -> front_realsense -> front_realsense_depth_frame -> front_realsense_depth_optical_frame
+```
+
+If a clean parameter combination works, configure the Jetson service rather
+than adding aliases in the laptop workspace. If the wrapper only produces
+`camera_link` / `camera_depth_optical_frame`, inspect the live TF tree before
+adding any compatibility alias.
+
+Live-test hypotheses only, not committed service changes yet:
+
+```bash
+ros2 launch realsense2_camera rs_launch.py \
+  camera_namespace:=front_realsense \
+  camera_name:=front \
+  base_frame_id:=realsense \
+  publish_tf:=true
+```
+
+```bash
+ros2 launch realsense2_camera rs_launch.py \
+  camera_namespace:=front_realsense \
+  camera_name:=front_realsense \
+  publish_tf:=true
+```
+
+Changing `camera_namespace` or `camera_name` may change topic names, so
+`go2w_nvblox.launch.py` topic arguments may need overrides.
+
+Domain 0 is the canonical thesis graph. Domain 10 is an optional
+vendor/MyBotShop source graph. Use `go2w_domain_bridge.launch.py` only to bridge
+safe read-only topics from Domain 10 into Domain 0. Command/control topics such
+as `/cmd_vel`, e-stop, teleop, sport requests, and `/api/.../request` are
+intentionally absent from the bridge config.
+
 `go2w_tf.launch.py` is the reproducible TF wrapper for Go2-W replay and
-visualization. Prefer `publish_robot_description_tf:=true` so
-`robot_state_publisher` publishes the Go2-W URDF tree from the
-`go2w_description` package, including:
+visualization. Use `publish_robot_description_tf:=true` only when vendor `/tf`
+and `/tf_static` are not available; do not run the full URDF publisher on top of
+bridged vendor TF unless intentionally debugging duplicate child frames. The WR
+URDF includes:
 
-- `base -> realsense -> camera_link`
-- `base -> radar`
+- `base_link` to `front_realsense_base` to `front_realsense_tilt_axis` to `front_realsense_mount` to `front_realsense_body` to `front_realsense`
+- `base_link -> radar`
 
-`base -> radar` is copied from the original Unitree Go2-W URDF. Do not treat the
+The front RealSense names describe the custom thesis mount.
+`front_realsense_pitch_joint` in the URDF and `front_realsense_pitch` in
+`go2w_tf.launch.py` are the one place to tune camera pitch about the flange
+axis. `front_realsense_body` holds the currently installed D456 body visual;
+`front_realsense` is the canonical RealSense depth-origin / left-imager frame.
+The frame names also fit a future D435i or another RealSense on the same
+physical mount after the model-specific body-to-sensor offset and visual mesh
+are updated. Do not treat the vendor `camera_link` as this mount. RealSense
+optical frames should normally come from the RealSense driver.
+
+`base_link -> radar` is copied from the original Unitree Go2-W URDF. Do not treat the
 `radar` visual/sensor link as verified equivalent to `/utlidar/cloud`, whose
 `frame_id` is `utlidar_lidar`.
 
@@ -266,16 +339,18 @@ RViz profiles live in `ros2_ws/src/go2_bringup/rviz/` and are installed through
 `go2_bringup`. CycloneDDS interface config is generated dynamically by
 `docker/ros_entrypoint.sh` when `ROS_NET_IFACE` is set.
 
-The `publish_camera_tf:=true` option is only a rough fallback for cases where no
-robot description or camera TF is available. Bags from the current RealSense
-setup already include the camera optical-frame tree under `camera_link` via
-`/tf_static`.
+Use `publish_front_realsense_tf:=true` as the clean complement when bridged
+vendor TF lacks the custom front RealSense mount. It publishes only
+`base_link` to `front_realsense_base` to `front_realsense_tilt_axis` to `front_realsense_mount` to `front_realsense_body` to `front_realsense`
+and does not publish flange visual frames, `camera_link`, or optical frames. If
+the RealSense driver still publishes `camera_depth_optical_frame` below
+`camera_link`, inspect the real TF tree before adding any alias.
 
 `publish_static_odom_tf:=true` publishes a fake static identity transform from
-`odom_frame` to `base_frame`, defaulting to `odom -> base`. Use it only for
+`odom_frame` to `base_frame`, defaulting to `odom -> base_link`. Use it only for
 offline bag, RViz, and Nvblox sanity checks where the robot is treated as fixed.
 It is not valid for real moving-map evaluation. Real Nvblox mapping still needs
-a real dynamic transform such as `odom -> base`, usually from odometry or SLAM.
+a real dynamic transform such as `odom -> base_link`, usually from odometry or SLAM.
 
 `publish_odom_tf:=true` enables the read-only `nav_msgs/Odometry` to TF bridge.
 Use it only when the selected odometry topic contains a usable dynamic pose, for
@@ -291,7 +366,7 @@ overlay to be built and sourced so `unitree_go/msg/LowState` is available. The
 default motor-to-joint order is unverified on the real Go2-W; confirm or
 override the `joint_names` parameter before using it for accurate visualization
 or kinematics. LowState only moves the movable joints through `/joint_states`;
-the robot will not move through the world without a real dynamic `odom -> base`.
+the robot will not move through the world without a real dynamic `odom -> base_link`.
 
 ### Offline Replay TF Check
 
@@ -308,6 +383,19 @@ validation:
 ```bash
 ros2 bag play <bag_path> --clock
 ```
+
+Older Go2-W bags may contain legacy `/tf`, `/tf_static`, and
+`/robot_description` data with frames such as `odom -> base`, `base -> rs_base`,
+`rs_tilt_axis`, `rs_mount`, `rs_d456_solid`, and `camera_link`. Do not replay
+those old TF or robot-description topics while testing the current
+`base_link`/`front_realsense` URDF tree; RViz will show parallel old and new TF
+worlds. To test only the new static robot/RealSense tree, launch
+`go2w_tf.launch.py` without bag replay. To use old sensor data with the current
+tree, replay only selected sensor topics and avoid old TF/robot-description
+topics. Old bags are still useful for qualitative sensor visualization, but
+they are not a clean validation of the current `front_realsense` TF
+architecture. Do not add a permanent `front_realsense -> camera_link` alias just
+to make old bags look clean.
 
 In another shell, launch the static replay TF tree:
 
@@ -334,14 +422,14 @@ ros2 run tf2_tools view_frames
 
 Verify these paths are present:
 
-- `odom -> base`
-- `base -> radar`
-- `base -> realsense -> camera_link -> camera_depth_frame -> camera_depth_optical_frame`
+- `odom -> base_link`
+- `base_link -> radar`
+- `base_link` to `front_realsense_base` to `front_realsense_tilt_axis` to `front_realsense_mount` to `front_realsense_body` to `front_realsense` to `camera_depth_frame` to `camera_depth_optical_frame`
 
 `publish_static_odom_tf:=true` makes the robot fixed in the world. This is only
 for offline bag/RViz/Nvblox sanity checks and is not valid for moving-map
 evaluation. Real Nvblox mapping still requires a real dynamic transform such as
-`odom -> base`, usually from odometry or SLAM.
+`odom -> base_link`, usually from odometry or SLAM.
 
 When using `ros2 bag play --clock --loop`, RViz or TF tools may warn:
 
@@ -360,16 +448,19 @@ Verification checklist after launching bag playback and the TF wrapper:
 ros2 pkg prefix go2w_description
 ros2 topic echo /robot_description --once
 ros2 topic echo /joint_states --once
-ros2 run tf2_ros tf2_echo odom base
-ros2 run tf2_ros tf2_echo base camera_depth_optical_frame
+ros2 run tf2_ros tf2_echo odom base_link
+ros2 run tf2_ros tf2_echo base_link front_realsense
+ros2 run tf2_ros tf2_echo front_realsense camera_depth_optical_frame
+ros2 run tf2_ros tf2_echo front_realsense front_realsense_depth_optical_frame
+ros2 run tf2_ros tf2_echo odom camera_depth_optical_frame
 ros2 run tf2_tools view_frames
 ```
 
 Expected TF paths:
 
-- `odom -> base`
-- `base -> radar`
-- `base -> realsense -> camera_link -> camera_depth_frame -> camera_depth_optical_frame`
+- `odom -> base_link`
+- `base_link -> radar`
+- `base_link` to `front_realsense_base` to `front_realsense_tilt_axis` to `front_realsense_mount` to `front_realsense_body` to `front_realsense` to `camera_depth_frame` to `camera_depth_optical_frame`
 
 Leg and wheel transforms require `/joint_states`. If
 `publish_lowstate_joint_states:=true` is disabled or `/lowstate` is absent in
