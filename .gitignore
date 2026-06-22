@@ -14,9 +14,11 @@ bags/*
 docs/go2_runtime/
 !docs/go2_runtime/
 docs/go2_runtime/*
-!docs/go2_runtime/.gitkeep
-frames*.pdf
-frames*.gv
+!docs/go2_runtime/README.md
+/frames_*.gv
+/frames_*.pdf
+/frames.gv
+/frames.pdf
 
 # Python
 __pycache__/

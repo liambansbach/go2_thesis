@@ -8,12 +8,15 @@ cd "$REPO_ROOT"
 STAMP="$(date +"%Y_%m_%d_%H_%M_%S")"
 OUT="$REPO_ROOT/docs/go2_runtime/realsense_${STAMP}"
 REGEX='camera|realsense|depth|color|infra|image|points|camera_info'
+CAMERA_NS="${CAMERA_NS:-/camera}"
+CAMERA_NS="/${CAMERA_NS#/}"
+CAMERA_NS="${CAMERA_NS%/}"
 
 KEY_TOPICS=(
-  /camera/depth/image_rect_raw
-  /camera/depth/camera_info
-  /camera/color/image_raw
-  /camera/color/camera_info
+  "$CAMERA_NS/depth/image_rect_raw"
+  "$CAMERA_NS/depth/camera_info"
+  "$CAMERA_NS/color/image_raw"
+  "$CAMERA_NS/color/camera_info"
 )
 
 TF_CHECKS=(
@@ -26,6 +29,7 @@ TF_CHECKS=(
   "front_realsense camera_depth_optical_frame"
   "front_realsense front_realsense_depth_optical_frame"
   "odom camera_depth_optical_frame"
+  "odom front_realsense_depth_optical_frame"
 )
 
 mkdir -p "$OUT/topic_info" "$OUT/header_samples" "$OUT/tf"
@@ -80,9 +84,10 @@ fi
   printf 'ROS_DOMAIN_ID=%s\n' "${ROS_DOMAIN_ID:-}"
   printf 'ROS_NET_IFACE=%s\n' "${ROS_NET_IFACE:-}"
   printf 'CYCLONEDDS_URI=%s\n' "${CYCLONEDDS_URI:-}"
+  printf 'CAMERA_NS=%s\n' "$CAMERA_NS"
 } > "$OUT/environment.txt"
 
-echo "Writing RealSense and optical-frame inspection to $OUT"
+echo "Writing RealSense and optical-frame inspection for $CAMERA_NS to $OUT"
 
 run_capture topics_with_types.txt ros2 topic list -t
 grep -Ei "$REGEX" "$OUT/topics_with_types.txt" > "$OUT/filtered_camera_topics.txt" || true
@@ -149,8 +154,11 @@ Key ambiguity this captures:
 - Is front_realsense connected to camera_depth_optical_frame?
 - Is front_realsense connected to front_realsense_depth_optical_frame?
 - Is odom connected to camera_depth_optical_frame for Nvblox global_frame=odom?
+- Is odom connected to front_realsense_depth_optical_frame for Nvblox global_frame=odom?
 
 No aliases are published by this script.
+Set CAMERA_NS=/camera for the legacy/current service or
+CAMERA_NS=/front_realsense for the clean front-mount service.
 EOF
 
 echo "Done: $OUT"

@@ -20,6 +20,10 @@ from launch_ros.substitutions import FindPackageShare
 # ros2 launch go2_bringup go2w_tf.launch.py \
 #   publish_front_realsense_tf:=true
 #
+# Legacy RealSense camera_link compatibility, disabled by default:
+# ros2 launch go2_bringup go2w_tf.launch.py \
+#   publish_realsense_camera_link_alias:=true
+#
 # Dynamic odometry bridge, disabled by default:
 # ros2 launch go2_bringup go2w_tf.launch.py \
 #   publish_odom_tf:=true odom_topic:=/utlidar/robot_odom
@@ -158,6 +162,16 @@ def generate_launch_description():
         DeclareLaunchArgument(
             'front_realsense_frame',
             default_value='front_realsense',
+        ),
+        DeclareLaunchArgument(
+            'publish_realsense_camera_link_alias',
+            default_value='false',
+            description=(
+                'Publish an identity front_realsense->camera_link static TF '
+                'for legacy RealSense wrappers/services that publish '
+                'camera_link-based optical frames. Keep disabled unless the '
+                'live RealSense tree requires this compatibility bridge.'
+            ),
         ),
         DeclareLaunchArgument('front_realsense_base_x', default_value='0.295'),
         DeclareLaunchArgument('front_realsense_base_y', default_value='0.0'),
@@ -329,6 +343,24 @@ def generate_launch_description():
         '0.0',
     )
 
+    # Compatibility bridge for RealSense wrappers/services that publish
+    # camera_link-based optical frames. This does not change the thesis URDF
+    # geometry or rename the canonical front_realsense frame.
+    realsense_camera_link_alias_tf = _static_tf_node(
+        'go2w_realsense_camera_link_alias_static_tf',
+        IfCondition(
+            LaunchConfiguration('publish_realsense_camera_link_alias')
+        ),
+        'front_realsense',
+        'camera_link',
+        '0.0',
+        '0.0',
+        '0.0',
+        '0.0',
+        '0.0',
+        '0.0',
+    )
+
     # Experimental visual alignment for /utlidar/cloud only. This is not a
     # verified final physical sensor calibration.
     lidar_tf = Node(
@@ -396,6 +428,7 @@ def generate_launch_description():
         front_realsense_mount_tf,
         front_realsense_body_tf,
         front_realsense_sensor_tf,
+        realsense_camera_link_alias_tf,
         lidar_tf,
         lowstate_joint_states,
         odom_to_tf,

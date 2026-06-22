@@ -37,9 +37,10 @@ def generate_launch_description():
             'launch_realsense',
             default_value='false',
             description=(
-                'Canonical Go2-W runs keep this false. The local/container '
-                'RealSense launch path was removed; camera topics must already '
-                'exist from the onboard service, bag, or explicit external test.'
+                'Compatibility/documentation flag only. This launch does not '
+                'start a local RealSense driver; camera topics must already '
+                'exist from the onboard service, bag, or explicit external '
+                'test.'
             ),
         ),
         DeclareLaunchArgument('nvblox_config', default_value=nvblox_config),
@@ -58,69 +59,63 @@ def generate_launch_description():
             description='Composable node container used by Nvblox.',
         ),
         DeclareLaunchArgument(
+            'camera_namespace',
+            default_value='/camera',
+            description=(
+                'Convenience namespace for the RealSense topic defaults. Use '
+                '/camera for the legacy/current service or /front_realsense '
+                'for the clean front-mount service. Explicit topic launch '
+                'arguments still take precedence.'
+            ),
+        ),
+        DeclareLaunchArgument(
             'depth_image_topic',
-            default_value='/camera/depth/image_rect_raw',
-            description='RealSense depth topic remapped to camera_0/depth/image. '
-                        'Fallbacks include /camera/camera/depth/image_rect_raw '
-                        'and /camera/aligned_depth_to_color/image_raw. Future '
-                        'front-mount naming may use '
-                        '/front_realsense/depth/image_rect_raw.',
+            default_value=[
+                LaunchConfiguration('camera_namespace'),
+                '/depth/image_rect_raw',
+            ],
+            description=(
+                'RealSense depth topic remapped to camera_0/depth/image. '
+                'Defaults under camera_namespace; override this directly for '
+                'non-standard RealSense topic layouts.'
+            ),
         ),
         DeclareLaunchArgument(
             'depth_camera_info_topic',
-            default_value='/camera/depth/camera_info',
-            description='RealSense depth CameraInfo remapped to camera_0/depth/camera_info. '
-                        'Fallbacks include /camera/camera/depth/camera_info '
-                        'and /camera/aligned_depth_to_color/camera_info. Future '
-                        'front-mount naming may use '
-                        '/front_realsense/depth/camera_info.',
+            default_value=[
+                LaunchConfiguration('camera_namespace'),
+                '/depth/camera_info',
+            ],
+            description=(
+                'RealSense depth CameraInfo remapped to '
+                'camera_0/depth/camera_info. Defaults under camera_namespace; '
+                'override this directly for non-standard RealSense topic '
+                'layouts.'
+            ),
         ),
         DeclareLaunchArgument(
             'color_image_topic',
-            default_value='/camera/color/image_raw',
-            description='RealSense color topic remapped to camera_0/color/image. '
-                        'Fallback: /camera/camera/color/image_raw. Future '
-                        'front-mount naming may use '
-                        '/front_realsense/color/image_raw.',
+            default_value=[
+                LaunchConfiguration('camera_namespace'),
+                '/color/image_raw',
+            ],
+            description=(
+                'RealSense color topic remapped to camera_0/color/image. '
+                'Defaults under camera_namespace; override this directly for '
+                'non-standard RealSense topic layouts.'
+            ),
         ),
         DeclareLaunchArgument(
             'color_camera_info_topic',
-            default_value='/camera/color/camera_info',
-            description='RealSense color CameraInfo remapped to camera_0/color/camera_info. '
-                        'Fallback: /camera/camera/color/camera_info. Future '
-                        'front-mount naming may use '
-                        '/front_realsense/color/camera_info.',
-        ),
-        DeclareLaunchArgument(
-            'front_realsense_depth_image_topic',
-            default_value='/front_realsense/depth/image_rect_raw',
+            default_value=[
+                LaunchConfiguration('camera_namespace'),
+                '/color/camera_info',
+            ],
             description=(
-                'Reference future front RealSense depth topic. Pass this value '
-                'to depth_image_topic when the onboard service is renamed.'
-            ),
-        ),
-        DeclareLaunchArgument(
-            'front_realsense_depth_camera_info_topic',
-            default_value='/front_realsense/depth/camera_info',
-            description=(
-                'Reference future front RealSense depth CameraInfo topic. Pass '
-                'this value to depth_camera_info_topic when renamed.'
-            ),
-        ),
-        DeclareLaunchArgument(
-            'front_realsense_color_image_topic',
-            default_value='/front_realsense/color/image_raw',
-            description=(
-                'Reference future front RealSense color topic. Pass this value '
-                'to color_image_topic when the onboard service is renamed.'
-            ),
-        ),
-        DeclareLaunchArgument(
-            'front_realsense_color_camera_info_topic',
-            default_value='/front_realsense/color/camera_info',
-            description=(
-                'Reference future front RealSense color CameraInfo topic. Pass '
-                'this value to color_camera_info_topic when renamed.'
+                'RealSense color CameraInfo remapped to '
+                'camera_0/color/camera_info. Defaults under camera_namespace; '
+                'override this directly for non-standard RealSense topic '
+                'layouts.'
             ),
         ),
         DeclareLaunchArgument(
@@ -130,9 +125,9 @@ def generate_launch_description():
         ),
     ]
 
-    # Normal Go2-W replay/live operation consumes existing /camera/... topics
-    # from the onboard service or bag. This launch intentionally does not start
-    # a local RealSense driver or compatibility frame aliases.
+    # Normal Go2-W replay/live operation consumes existing RealSense topics from
+    # the onboard service or bag. This launch intentionally does not start a
+    # local RealSense driver or compatibility frame aliases.
     nvblox_node = ComposableNode(
         name='nvblox_node',
         package='nvblox_ros',

@@ -8,7 +8,7 @@ Where to change things in the Go2-W-first repository.
 go2_thesis/
 ├── bags/                         local rosbag data, ignored/generated
 ├── docker/                       container image, compose file, ROS entrypoint
-├── docs/                         setup, workflow, live-test, and runtime notes
+├── docs/                         setup, workflow, status, and code notes
 ├── requirements/                 Python requirement files
 ├── ros2_ws/
 │   └── src/
@@ -41,7 +41,9 @@ scripts/inspect/  read-only topic, TF, RealSense, Nvblox inspection helpers
 scripts/record/   Go2-W bag recorder
 ```
 
-Use `scripts/README_scripts.md` for detailed commands and launch-wrapper examples. The canonical recorder is `scripts/record/record_go2w_bag.sh`.
+Use `docs/workflow.md` for the daily command sequence and
+`scripts/README_scripts.md` for script names. The canonical recorder is
+`scripts/record/record_go2w_bag.sh`.
 
 ## `ros2_ws/src/go2_bringup/`
 
