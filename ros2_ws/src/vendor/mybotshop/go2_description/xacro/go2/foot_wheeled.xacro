@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:macro name="foot" params="name mirror mirror_dae front_hind front_hind_dae">
+        <xacro:property name="wheel_mass" value="0.5"/>
+        <xacro:property name="wheel_radius" value="0.0889"/>
+        <xacro:property name="wheel_width" value="0.05"/>
+
+        <joint name="${name}_foot_fixed" type="continuous">
+            <origin rpy="-1.57 0 0" xyz="0 0 ${-(calf_length)}"/>
+            <parent link="${name}_calf"/>
+            <child link="${name}_foot"/>
+            <axis xyz="0 0 1" effort="1000" />
+        </joint>
+
+        <link name="${name}_foot">
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+                </geometry>
+            </collision>
+
+            <visual>
+                <xacro:if value="${mirror_dae == True}">
+                    <origin rpy="0 0 0" xyz="0 0 0.035"/>
+                    <geometry>
+                        <mesh filename="package://go2_description/meshes/go2/wheel.dae" scale="0.1 0.1 0.1"/>
+                    </geometry>
+                </xacro:if>
+                <xacro:if value="${mirror_dae == False}">
+                    <origin rpy="0 3.14 1.57" xyz="0 0 -0.05"/>
+                    <geometry>
+                        <mesh filename="package://go2_description/meshes/go2/wheel.dae" scale="0.1 0.1 0.1"/>
+                    </geometry>
+                </xacro:if>
+            </visual>
+
+            <inertial>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <mass value="${wheel_mass}"/>
+                <inertia ixx="${(1.0/12.0)*wheel_mass*(3*wheel_radius*wheel_radius + wheel_width*wheel_width)}" iyy="${(1.0/12.0)*wheel_mass*(3*wheel_radius*wheel_radius + wheel_width*wheel_width)}" izz="${0.5*wheel_mass*wheel_radius*wheel_radius}" ixy="0" ixz="0" iyz="0"/>
+            </inertial>
+        </link>
+
+    </xacro:macro>
+</robot>

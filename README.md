@@ -49,7 +49,13 @@ docker/                         Docker image, compose file, ROS entrypoint
 scripts/                        Workflow helpers
 docs/                           Setup, workflow, status, and code notes
 ros2_ws/src/go2_bringup/        Go2-W launch files, TF helpers, RViz profiles
-ros2_ws/src/go2w_description/   Canonical editable Go2-W URDF, meshes, and joint config
+ros2_ws/src/vendor/mybotshop/go2_description/
+                                Unmodified MYBOTSHOP base package and meshes
+ros2_ws/src/hexlab_go2w_description/
+                                Current HEXLab Go2-W robot description for ROS/RViz/Jetson visualization
+ros2_ws/src/hexlab_go2w_bringup/
+                                Future live Jetson/domain-10 state bringup package
+ros2_ws/src/go2w_description/   Legacy/reference only, ignored by colcon
 ros2_ws/src/semantic_risk_node/ Future semantic perception package
 ros2_ws/src/risk_map_projection/ Future risk projection package
 bags/                           Local rosbag data, ignored/generated

@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="front_realsense_d456_mount" params="parent:=base_link">
+
+    <link name="front_realsense_base">
+      <visual>
+        <origin xyz="0 0 0" rpy="1.57079632679 0 -1.57079632679"/>
+        <geometry>
+          <mesh filename="package://hexlab_go2w_description/meshes/realsense_mount/rs_base.stl"
+                scale="0.001 0.001 0.001"/>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name="front_realsense_base_joint" type="fixed">
+      <origin xyz="0.295 0 0.075" rpy="0 0 0"/>
+      <parent link="${parent}"/>
+      <child link="front_realsense_base"/>
+    </joint>
+
+    <link name="front_realsense_tilt_axis"/>
+
+    <joint name="front_realsense_tilt_axis_joint" type="fixed">
+      <origin xyz="0.005 0 0.032" rpy="0 0 0"/>
+      <parent link="front_realsense_base"/>
+      <child link="front_realsense_tilt_axis"/>
+    </joint>
+
+    <link name="front_realsense_flange_right">
+      <visual>
+        <origin xyz="0.005 0 -0.004" rpy="1.57079632679 0 -1.57079632679"/>
+        <geometry>
+          <mesh filename="package://hexlab_go2w_description/meshes/realsense_mount/rs_flange.stl"
+                scale="0.001 0.001 0.001"/>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name="front_realsense_flange_right_joint" type="fixed">
+      <origin xyz="0 -0.02 -0.028" rpy="0 0 0"/>
+      <parent link="front_realsense_tilt_axis"/>
+      <child link="front_realsense_flange_right"/>
+    </joint>
+
+    <link name="front_realsense_flange_left">
+      <visual>
+        <origin xyz="0.005 0 -0.004" rpy="1.57079632679 0 -1.57079632679"/>
+        <geometry>
+          <mesh filename="package://hexlab_go2w_description/meshes/realsense_mount/rs_flange_mirror.stl"
+                scale="0.001 0.001 0.001"/>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name="front_realsense_flange_left_joint" type="fixed">
+      <origin xyz="0 0.02 -0.028" rpy="0 0 0"/>
+      <parent link="front_realsense_tilt_axis"/>
+      <child link="front_realsense_flange_left"/>
+    </joint>
+
+    <link name="front_realsense_mount">
+      <visual>
+        <origin xyz="0.02 0 0" rpy="3.14159265359 0 -1.57079632679"/>
+        <geometry>
+          <mesh filename="package://hexlab_go2w_description/meshes/realsense_mount/rs_mount.stl"
+                scale="0.001 0.001 0.001"/>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name="front_realsense_pitch_joint" type="fixed">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <parent link="front_realsense_tilt_axis"/>
+      <child link="front_realsense_mount"/>
+    </joint>
+
+    <link name="front_realsense_body">
+      <visual>
+        <origin xyz="0 -0.063 -0.0145" rpy="1.57079632679 0 1.57079632679"/>
+        <geometry>
+          <mesh filename="package://hexlab_go2w_description/meshes/realsense_mount/rs_D456_Solid.STL"
+                scale="0.001 0.001 0.001"/>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name="front_realsense_body_joint" type="fixed">
+      <origin xyz="0.02 0 0" rpy="0 0 0"/>
+      <parent link="front_realsense_mount"/>
+      <child link="front_realsense_body"/>
+    </joint>
+
+    <link name="front_realsense"/>
+
+    <joint name="front_realsense_sensor_joint" type="fixed">
+      <origin xyz="0.02145 0.04750 0" rpy="0 0 0"/>
+      <parent link="front_realsense_body"/>
+      <child link="front_realsense"/>
+    </joint>
+
+    <!-- RealSense ROS driver should publish optical frames below front_realsense_link. -->
+    <link name="front_realsense_link"/>
+
+    <joint name="front_realsense_driver_link_joint" type="fixed">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <parent link="front_realsense"/>
+      <child link="front_realsense_link"/>
+    </joint>
+
+  </xacro:macro>
+</robot>

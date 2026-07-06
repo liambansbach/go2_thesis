@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:macro name="zt30" params="xyz rpy parent">
+
+        <!-- ZT30 Root -->
+        <joint name="zt30_base_joint" type="fixed">
+            <axis xyz="0 0 1" />
+            <origin xyz="${xyz}" rpy="${rpy}" />
+            <parent link="${parent}" />
+            <child link="zt30_base_link" />
+        </joint>
+
+        <link name="zt30_base_link">
+            <visual>
+                <geometry>
+                    <mesh filename="package://go2_description/meshes/zt30/zt30_base.dae" />
+                </geometry>
+            </visual>
+        </link>
+
+        <!-- ZT30 Stand -->
+        <joint name="zt30_stand_joint" type="revolute">
+            <axis xyz="0 0 1" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <parent link="zt30_base_link" />
+            <child link="zt30_stand_link" />
+             <limit lower="-3.14159" upper="3.14159" effort="10.0" velocity="1.0" />
+        </joint>
+        <link name="zt30_stand_link">
+            <visual>
+                <geometry>
+                    <mesh filename="package://go2_description/meshes/zt30/zt30_stand.dae" />
+                </geometry>
+            </visual>
+        </link>
+
+        <!-- ZT30 Camera -->
+         <joint name="zt30_camera_joint" type="revolute">
+            <axis xyz="1 0 0" />
+            <origin xyz="0 -0.016 0.136" rpy="0 0 0" />
+            <parent link="zt30_stand_link" />
+            <child link="zt30_camera_link" />
+             <limit lower="-1.57" upper="1.57" effort="10.0" velocity="1.0" />
+        </joint>
+        <link name="zt30_camera_link">
+            <visual>
+                <geometry>
+                    <mesh filename="package://go2_description/meshes/zt30/zt30_camera.dae" />
+                </geometry>
+            </visual>
+        </link>
+    </xacro:macro>
+
+</robot>

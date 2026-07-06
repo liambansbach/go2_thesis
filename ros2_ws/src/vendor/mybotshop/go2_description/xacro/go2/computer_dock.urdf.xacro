@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:macro name="computer_dock" params="xyz rpy parent">
+        <joint name="computer_dock_joint" type="fixed">
+            <axis xyz="0 0 1" />
+            <origin xyz="${xyz}" rpy="${rpy}" />
+            <parent link="${parent}" />
+            <child link="computer_dock_link" />
+        </joint>
+        <link name="computer_dock_link">
+            <visual>
+                <geometry>
+                    <mesh filename="package://go2_description/meshes/go2/computer_dock.dae" scale="1 1 1" />
+                </geometry>
+            </visual>
+            <collision>
+                <geometry>
+                    <box size="0.11 0.2 0.025" />
+                </geometry>
+                <origin xyz="0 0.025 0.13" rpy="0 0 0" />
+            </collision>
+        </link>
+    </xacro:macro>
+
+</robot>

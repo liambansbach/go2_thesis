@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!-- Add GO2 Computer Dock -->
+  <xacro:if value="$(optenv GO2_COMPUTER_DOCK 1)">
+    <xacro:include filename="$(find go2_description)/xacro/go2/computer_dock.urdf.xacro" />
+    <xacro:computer_dock xyz='0 0 -0.057' rpy='0 0 1.57' parent='base_link' />
+  </xacro:if>
+
+  <!--  +++++++++++++++++++++++++++++++++++++++++++++ Paws +++++++++++++++++++++++++++++++++++++++++++++  -->
+  <!-- Foot -->
+  <xacro:if value="$(optenv GO2_FOOT 1)">
+    <xacro:include filename="$(find go2_description)/xacro/go2/foot_fix.xacro"/>
+    <xacro:foot name="FR" mirror="-1" mirror_dae= "False" front_hind="1" front_hind_dae="True" />
+    <xacro:foot name="FL" mirror="1" mirror_dae="True" front_hind="1" front_hind_dae="True" />
+    <xacro:foot name="RR" mirror="-1" mirror_dae="False" front_hind="-1" front_hind_dae="False" />
+    <xacro:foot name="RL" mirror="1" mirror_dae="True" front_hind="-1" front_hind_dae="False" />
+
+    <link name="utlidar_lidar"/>
+    <joint name="utlidar_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="utlidar_lidar"/>
+        <origin rpy="3.14 0.0 3.14" xyz="0.29 0 -0.08"/>
+    </joint>
+
+    <link name="utlidar_lidar_webserver"/>
+    <joint name="utlidar_webserver_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="utlidar_lidar_webserver"/>
+        <origin rpy="0 0 0" xyz="0.29 0 -0.08"/>
+    </joint>
+  </xacro:if>
+
+  <!-- Wheels -->
+  <xacro:if value="$(optenv GO2_WHEELED 0)">
+    <xacro:include filename="$(find go2_description)/xacro/go2/foot_wheeled.xacro"/>
+    <xacro:foot name="FR" mirror="-1" mirror_dae= "False" front_hind="1" front_hind_dae="True" />
+    <xacro:foot name="FL" mirror="1" mirror_dae="True" front_hind="1" front_hind_dae="True" />
+    <xacro:foot name="RR" mirror="-1" mirror_dae="False" front_hind="-1" front_hind_dae="False" />
+    <xacro:foot name="RL" mirror="1" mirror_dae="True" front_hind="-1" front_hind_dae="False" />
+
+    <link name="utlidar_lidar"/>
+    <joint name="utlidar_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="utlidar_lidar"/>
+        <origin rpy="3.14 0.2181662 3.14" xyz="0.2 0 0"/>
+    </joint>
+
+    <link name="utlidar_lidar_webserver"/>
+    <joint name="utlidar_webserver_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="utlidar_lidar_webserver"/>
+        <origin rpy="3.14 0.2181662 3.14" xyz="0.29 0 -0.08"/>
+    </joint>
+  </xacro:if>
+
+  <!--  +++++++++++++++++++++++++++++++++++++++++++++ Cameras +++++++++++++++++++++++++++++++++++++++++++++  -->
+  <!-- Add ZT30 -->
+  <xacro:if value="$(optenv GO2_ZT30 0)">
+    <xacro:include filename="$(find go2_description)/xacro/zt30/zt30.xacro" />
+    <xacro:zt30 xyz='0 -0.11 0.148' rpy='0 0 0' parent='computer_dock_link' />
+  </xacro:if>
+  <!-- Add Realsense D435i Depth Camera -->
+  <xacro:if value="$(optenv GO2_REALSENSE 0)">
+    <xacro:include filename="$(find go2_description)/xacro/realsense/d435i.urdf.xacro" />
+  </xacro:if>
+  <!-- Add Realsense D405 Depth Camera -->
+  <xacro:if value="$(optenv GO2_REALSENSE_WRIST 0)">
+    <xacro:include filename="$(find go2_description)/xacro/realsense/d405.urdf.xacro" />
+    <xacro:d405 xyz='0.0245 0 0.03' rpy='0 0 0' parent='link5' />
+  </xacro:if>
+
+  <!--  +++++++++++++++++++++++++++++++++++++++++++++ Lidars +++++++++++++++++++++++++++++++++++++++++++++  -->
+  <!-- Add Livox Mid360 -->
+  <xacro:if value="$(optenv GO2_MID360 0)">
+    <xacro:include filename="$(find go2_description)/xacro/livox/mid360.urdf.xacro" />
+    <xacro:mid360 xyz='-0.085 0 0.08' rpy='0 0 3.14' parent='base_link' />
+  </xacro:if>
+  <!-- Add Hesai Pandar XT16 Default Mount -->
+  <xacro:if value="$(optenv GO2_HESAI_DEFAULT 0)">
+    <xacro:include filename="$(find go2_description)/xacro/hesai/pandar_xt16.xacro" />
+    <xacro:hesai_lidar xyz='0 -0.14 0.14' rpy='0 0 0' parent='computer_dock_link' />
+  </xacro:if>
+  <!-- Add Hesai Pandar XT16 Custom Mount -->
+  <xacro:if value="$(optenv GO2_HESAI_CUSTOM 0)">
+    <xacro:include filename="$(find go2_description)/xacro/hesai/pandar_xt16.xacro" />
+    <xacro:hesai_lidar xyz='-0.04 0 0.04' rpy='0 -0.02 -1.57' parent='computer_dock_link' />
+  </xacro:if>
+  <!-- Add Ouster -->
+  <xacro:if value="$(optenv GO2_Ouster 0)">
+    <xacro:include filename="$(find go2_description)/xacro/ouster/ouster.xacro" />
+    <xacro:ouster xyz='0 -0.215 0.148' rpy='0 0 0' parent='computer_dock_link' />
+  </xacro:if>
+
+  <!--  +++++++++++++++++++++++++++++++++++++++++++++ Robotic Arms +++++++++++++++++++++++++++++++++++++++++++++  -->
+  <!-- Add D1 Arm Custom -->
+  <xacro:if value="$(optenv GO2_D1_CUSTOM 0)">
+    <xacro:include filename="$(find go2_description)/xacro/d1/d1_qre.xacro" />
+    <xacro:d1 xyz='0 0.2 0.15' rpy='0 0 0' parent='computer_dock_link' />
+  </xacro:if>
+  <!-- Add D1 Arm Exporter -->
+  <xacro:if value="$(optenv GO2_D1_EXPORTER 0)">
+    <xacro:include filename="$(find go2_description)/xacro/d1/d1_unitree.xacro" />
+  </xacro:if>
+  <!-- Add Open Manipulator -->
+  <xacro:if value="$(optenv GO2_OPEN_MANIPULATOR 1)">
+    <xacro:include filename="$(find go2_description)/xacro/open_manipulator/om_complete.urdf.xacro" />
+  </xacro:if>
+
+  <!--  +++++++++++++++++++++++++++++++++++++++++++++ 3D Rigs +++++++++++++++++++++++++++++++++++++++++++++  -->
+  <!-- Add Steamdeck Bracket -->
+  <xacro:if value="$(optenv GO2_RIG_STEAMDECK 0)">
+    <xacro:include filename="$(find go2_description)/xacro/3d_rigs/rig_steamdeck.xacro" />
+    <xacro:steamdeck_bracket xyz='0 0.04 0.1425' rpy='0 0 -1.57' parent='computer_dock_link' />
+  </xacro:if>
+  <!-- Add Box Bracket -->
+  <xacro:if value="$(optenv GO2_RIG_Z 0)">
+    <xacro:include filename="$(find go2_description)/xacro/3d_rigs/rig_z.xacro" />
+    <xacro:bracket xyz='0 0 0.1425' rpy='0 0 -1.57' parent='computer_dock_link' />
+  </xacro:if>
+  <!-- Add Ouster Bracket -->
+  <xacro:if value="$(optenv GO2_RIG_OUSTER 0)">
+    <xacro:include filename="$(find go2_description)/xacro/3d_rigs/rig_ouster.xacro" />
+    <xacro:ouster_bracket xyz='0 -0.22 0.14' rpy='0 0 0' parent='computer_dock_link' />
+  </xacro:if>
+</robot>

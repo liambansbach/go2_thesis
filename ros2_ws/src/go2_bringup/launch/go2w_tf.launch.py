@@ -24,6 +24,10 @@ from launch_ros.substitutions import FindPackageShare
 # ros2 launch go2_bringup go2w_tf.launch.py \
 #   publish_realsense_camera_link_alias:=true
 #
+# RealSense driver link bridge, enabled by default for /front_realsense:
+# ros2 launch go2_bringup go2w_tf.launch.py \
+#   publish_realsense_driver_link_tf:=true
+#
 # Dynamic odometry bridge, disabled by default:
 # ros2 launch go2_bringup go2w_tf.launch.py \
 #   publish_odom_tf:=true odom_topic:=/utlidar/robot_odom
@@ -172,6 +176,46 @@ def generate_launch_description():
                 'camera_link-based optical frames. Keep disabled unless the '
                 'live RealSense tree requires this compatibility bridge.'
             ),
+        ),
+        DeclareLaunchArgument(
+            'publish_realsense_driver_link_tf',
+            default_value='true',
+            description=(
+                'Publish the front_realsense->front_realsense_link identity '
+                'TF that connects the custom Go2-W mount frame to the '
+                'RealSense driver optical-frame subtree.'
+            ),
+        ),
+        DeclareLaunchArgument(
+            'realsense_mount_frame',
+            default_value='front_realsense',
+            description=(
+                'Parent frame for the RealSense driver link TF. This should '
+                'match the custom mount chain endpoint.'
+            ),
+        ),
+        DeclareLaunchArgument(
+            'realsense_driver_link_frame',
+            default_value='front_realsense_link',
+            description=(
+                'Child frame used by the RealSense driver as the root of its '
+                'camera/optical-frame subtree.'
+            ),
+        ),
+        DeclareLaunchArgument('realsense_driver_link_x', default_value='0.0'),
+        DeclareLaunchArgument('realsense_driver_link_y', default_value='0.0'),
+        DeclareLaunchArgument('realsense_driver_link_z', default_value='0.0'),
+        DeclareLaunchArgument(
+            'realsense_driver_link_roll',
+            default_value='0.0',
+        ),
+        DeclareLaunchArgument(
+            'realsense_driver_link_pitch',
+            default_value='0.0',
+        ),
+        DeclareLaunchArgument(
+            'realsense_driver_link_yaw',
+            default_value='0.0',
         ),
         DeclareLaunchArgument('front_realsense_base_x', default_value='0.295'),
         DeclareLaunchArgument('front_realsense_base_y', default_value='0.0'),
@@ -361,6 +405,23 @@ def generate_launch_description():
         '0.0',
     )
 
+    # Bridge the custom mount endpoint to the RealSense driver's own subtree.
+    # The driver publishes front_realsense_* optical frames below
+    # front_realsense_link; this identity TF keeps RViz DepthCloud connected to
+    # odom/base_link without using the legacy camera_link alias.
+    realsense_driver_link_tf = _static_tf_node(
+        'go2w_realsense_driver_link_static_tf',
+        IfCondition(LaunchConfiguration('publish_realsense_driver_link_tf')),
+        LaunchConfiguration('realsense_mount_frame'),
+        LaunchConfiguration('realsense_driver_link_frame'),
+        LaunchConfiguration('realsense_driver_link_x'),
+        LaunchConfiguration('realsense_driver_link_y'),
+        LaunchConfiguration('realsense_driver_link_z'),
+        LaunchConfiguration('realsense_driver_link_roll'),
+        LaunchConfiguration('realsense_driver_link_pitch'),
+        LaunchConfiguration('realsense_driver_link_yaw'),
+    )
+
     # Experimental visual alignment for /utlidar/cloud only. This is not a
     # verified final physical sensor calibration.
     lidar_tf = Node(
@@ -429,6 +490,7 @@ def generate_launch_description():
         front_realsense_body_tf,
         front_realsense_sensor_tf,
         realsense_camera_link_alias_tf,
+        realsense_driver_link_tf,
         lidar_tf,
         lowstate_joint_states,
         odom_to_tf,

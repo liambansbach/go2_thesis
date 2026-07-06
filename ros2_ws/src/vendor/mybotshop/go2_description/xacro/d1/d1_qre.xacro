@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:macro name="d1" params="xyz rpy parent">
+
+        <!-- D1 Root -->
+        <joint name="d1_base_joint" type="fixed">
+            <axis xyz="0 0 1" />
+            <origin xyz="${xyz}" rpy="${rpy}" />
+            <parent link="${parent}" />
+            <child link="d1_base_link" />
+        </joint>
+        <link name="d1_base_link">
+            <visual>
+                <geometry>
+                    <mesh filename="package://go2_description/meshes/d1/d1_base.dae" />
+                </geometry>
+            </visual>
+        </link>
+
+        <!-- Link 1 -->
+        <joint name="d1_link1_joint" type="revolute">
+            <axis xyz="0 0 1" />
+            <origin xyz="0 0 0.075" rpy="0 0 0" />
+            <parent link="d1_base_link" />
+            <child link="d1_link1" />
+            <limit lower="-2.235619" upper="2.235619" effort="3.3" velocity="1.0" />
+        </joint>
+        <link name="d1_link1">
+            <visual>
+                <geometry>
+                    <mesh filename="package://go2_description/meshes/d1/d1_link1.dae" />
+                </geometry>
+            </visual>
+        </link>
+
+        <!-- Link 2 -->
+        <joint name="d1_link2_joint" type="revolute">
+            <axis xyz="1 0 0" />
+            <origin xyz="0 -0.01 0.055" rpy="0 0 0" />
+            <parent link="d1_link1" />
+            <child link="d1_link2" />
+            <limit lower="-1.57" upper="1.57" effort="3.3" velocity="1.0" />
+        </joint>
+        <link name="d1_link2">
+            <visual>
+                <geometry>
+                    <mesh filename="package://go2_description/meshes/d1/d1_link2.dae" />
+                </geometry>
+            </visual>
+        </link>
+
+        <!-- Link 3 -->
+        <joint name="d1_link3_joint" type="revolute">
+            <axis xyz="1 0 0" />
+            <origin xyz="0 0.27 0" rpy="0 0 0" />
+            <parent link="d1_link2" />
+            <child link="d1_link3" />
+            <limit lower="-1.57" upper="1.57" effort="1.7" velocity="1.0" />
+        </joint>
+        <link name="d1_link3">
+            <visual>
+                <geometry>
+                    <mesh filename="package://go2_description/meshes/d1/d1_link3.dae" />
+                </geometry>
+            </visual>
+        </link>
+
+        <!-- Link 4 -->
+        <joint name="d1_link4_joint" type="revolute">
+            <axis xyz="0 1 0" />
+            <origin xyz="0 -0.032 0.05" rpy="0 0 0" />
+            <parent link="d1_link3" />
+            <child link="d1_link4" />
+            <limit lower="-2.235619" upper="2.235619" effort="1.7" velocity="1.0" />
+        </joint>
+        <link name="d1_link4">
+            <visual>
+                <geometry>
+                    <mesh filename="package://go2_description/meshes/d1/d1_link4.dae" />
+                </geometry>
+            </visual>
+        </link>
+
+        <!-- Link 5 -->
+        <joint name="d1_link5_joint" type="revolute">
+            <axis xyz="1 0 0" />
+            <origin xyz="0 -0.17 0" rpy="0 0 0" />
+            <parent link="d1_link4" />
+            <child link="d1_link5" />
+            <limit lower="-1.57" upper="1.57" effort="1.7" velocity="1.0" />
+        </joint>
+        <link name="d1_link5">
+            <visual>
+                <geometry>
+                    <mesh filename="package://go2_description/meshes/d1/d1_link5.dae" />
+                </geometry>
+            </visual>
+        </link>
+
+        <!-- Link 6 -->
+        <joint name="d1_link6_joint" type="revolute">
+            <axis xyz="0 1 0" />
+            <origin xyz="0 -0.075 0" rpy="0 0 0" />
+            <parent link="d1_link5" />
+            <child link="d1_link6" />
+            <limit lower="-2.235619" upper="2.235619" effort="1.7" velocity="1.0" />
+        </joint>
+        <link name="d1_link6">
+            <visual>
+                <geometry>
+                    <mesh filename="package://go2_description/meshes/d1/d1_link6.dae" />
+                </geometry>
+            </visual>
+        </link>
+
+        <!-- Gripper -->
+        <joint name="d1_gripper_joint" type="prismatic">
+            <axis xyz="1 0 0" />
+            <origin xyz="0.002 -0.075 0" rpy="0 0 0" />
+            <parent link="d1_link6" />
+            <child link="d1_gripper_left" />
+            <limit lower="0.0" upper="0.05" effort="1.7" velocity="1.0"/>
+        </joint>
+
+        <link name="d1_gripper_left">
+            <visual>
+                <geometry>
+                    <mesh filename="package://go2_description/meshes/d1/d1_gripper_left.dae" />
+                </geometry>
+            </visual>
+        </link>
+
+        <joint name="d1_gripper_right_joint" type="prismatic">
+            <axis xyz="1 0 0" />
+            <origin xyz="-0.002 -0.075 0" rpy="0 0 0" />
+            <parent link="d1_link6" />
+            <child link="d1_gripper_right" />
+            <mimic joint="d1_gripper_joint" multiplier="-1.0" offset="0.0"/>
+            <limit lower="0.0" upper="0.05" effort="1.7" velocity="1.0"/>
+        </joint>
+        <link name="d1_gripper_right">
+            <visual>
+                <geometry>
+                    <mesh filename="package://go2_description/meshes/d1/d1_gripper_right.dae" />
+                </geometry>
+            </visual>
+        </link>
+
+    </xacro:macro>
+</robot>

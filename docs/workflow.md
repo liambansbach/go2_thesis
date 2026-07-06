@@ -93,6 +93,8 @@ Preferred `/front_realsense` service:
 ```bash
 ros2 launch go2_bringup go2w_tf.launch.py \
   publish_robot_description_tf:=true \
+  publish_front_realsense_tf:=false \
+  publish_realsense_driver_link_tf:=true \
   publish_static_odom_tf:=true \
   publish_lowstate_joint_states:=true \
   publish_lidar_tf:=true \
@@ -118,14 +120,24 @@ only. Do not use it for moving-map evaluation.
 `publish_lidar_tf:=true` is experimental visual alignment for `/utlidar/cloud`,
 not final LiDAR calibration.
 
+`publish_realsense_driver_link_tf:=true` publishes the identity
+`front_realsense -> front_realsense_link` transform. The custom Go2-W mount
+chain ends at `front_realsense`, while the Jetson RealSense driver publishes
+`front_realsense_depth_optical_frame` and
+`front_realsense_color_optical_frame` below `front_realsense_link`. This bridge
+is required for RViz DepthCloud and checks such as
+`odom -> front_realsense_depth_optical_frame`.
+
 `publish_realsense_camera_link_alias:=true` is only for legacy single-camera
 `/camera` services using `camera_name:=camera`. Keep it false for the preferred
 `/front_realsense` service.
 
 ### Domain 10 bridge visualization mode
 
-Use this when Domain 10 provides useful vendor TF, RobotDescription, and
-JointStates. Start the read-only bridge:
+Use this only when Domain 10 provides useful vendor TF, RobotDescription, and
+JointStates that are missing from the local graph. Bridge mode is optional and
+should supplement missing custom frames, not replace the self-contained local
+baseline. Start the read-only bridge:
 
 ```bash
 ros2 launch go2_bringup go2w_domain_bridge.launch.py
@@ -134,9 +146,10 @@ ros2 launch go2_bringup go2w_domain_bridge.launch.py
 The bridge intentionally excludes command, request, teleop, e-stop, and other
 robot-state-changing topics.
 
-Do not run `publish_robot_description_tf:=true` on top of bridged vendor TF.
-Use `publish_front_realsense_tf:=true` only if the bridged vendor TF lacks the
-custom front RealSense mount:
+Do not run the Domain 10 bridge together with
+`publish_robot_description_tf:=true`; that can duplicate the vendor TF and
+RobotDescription tree. Use `publish_front_realsense_tf:=true` only if the
+bridged vendor TF lacks the custom front RealSense mount:
 
 ```bash
 ros2 launch go2_bringup go2w_tf.launch.py \
@@ -189,8 +202,9 @@ Useful TF checks:
 ```bash
 ros2 run tf2_ros tf2_echo odom base_link
 ros2 run tf2_ros tf2_echo base_link front_realsense
-ros2 run tf2_ros tf2_echo front_realsense camera_depth_optical_frame
+ros2 run tf2_ros tf2_echo front_realsense front_realsense_link
 ros2 run tf2_ros tf2_echo front_realsense front_realsense_depth_optical_frame
+ros2 run tf2_ros tf2_echo odom front_realsense_depth_optical_frame
 ros2 run tf2_tools view_frames
 ```
 
